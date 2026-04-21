@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}Projects - Aravind{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="v2-section pt-200 bg-darker">
+    <div class="container">
+        <h1 class="display-1 fw-black" data-aos="fade-up">SELECTED <span class="outline-text">PROJECTS</span></h1>
+    </div>
+</section>
+
+<!-- Portfolio Grid -->
+<section class="v2-section">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Project 1 -->
+            <div class="col-lg-6" data-aos="fade-up">
+                <div class="v2-card shadow-lg bg-dark rounded-4 overflow-hidden h-100">
+                    <img src="{{ url_for('static', filename='img/gallery/img-6.png') }}" alt="Flipbook"
+                        class="img-fluid w-100" style="height: 300px; object-fit: cover;">
+                    <div class="p-5">
+                        <span class="text-red fw-bold">WEB APP</span>
+                        <h3 class="mt-2 mb-3">FLIPBOOK WEB APP</h3>
+                        <p class="text-gray mb-4">It converts your boring PDF into an amazing real book experience with
+                            smooth pageturn animations.</p>
+                        <a href="/project-details.html" class="v2-btn py-2 px-4 shadow-sm"
+                            style="font-size: 0.8rem;">VIEW DETAILS</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Project 2 -->
+            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="v2-card shadow-lg bg-dark rounded-4 overflow-hidden h-100">
+                    <img src="{{ url_for('static', filename='img/gallery/img-4.png') }}" alt="Student Analysis"
+                        class="img-fluid w-100" style="height: 300px; object-fit: cover;">
+                    <div class="p-5">
+                        <span class="text-red fw-bold">DATA SCIENCE</span>
+                        <h3 class="mt-2 mb-3">STUDENT SCORE ANALYSIS</h3>
+                        <p class="text-gray mb-4">Comprehensive analysis of student performance using Python and data
+                            visualization libraries.</p>
+                        <a href="/project-details.html" class="v2-btn py-2 px-4 shadow-sm"
+                            style="font-size: 0.8rem;">VIEW DETAILS</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Project 3 -->
+            <div class="col-lg-6" data-aos="fade-up">
+                <div class="v2-card shadow-lg bg-dark rounded-4 overflow-hidden h-100">
+                    <img src="{{ url_for('static', filename='img/gallery/img-9.png') }}" alt="YOLOv8"
+                        class="img-fluid w-100" style="height: 300px; object-fit: cover;">
+                    <div class="p-5">
+                        <span class="text-red fw-bold">AI / ML</span>
+                        <h3 class="mt-2 mb-3">YOLOV8 OBJECT DETECTION</h3>
+                        <p class="text-gray mb-4">Real-time object detection and classification using the
+                            state-of-the-art YOLOv8 architecture.</p>
+                        <a href="/project-details.html" class="v2-btn py-2 px-4 shadow-sm"
+                            style="font-size: 0.8rem;">VIEW DETAILS</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- AI Mini Projects Section -->
+<section class="v2-section bg-darker">
+    <div class="container">
+        <h2 class="display-4 mb-5" data-aos="fade-up">AI MINI PROJECTS <span class="outline-text">(PROMPT ENG)</span></h2>
+        <p class="text-gray mb-5" data-aos="fade-up">Developed using Prompt Engineering (Vibe Coding), these interactive educational games were built during my internship to help kids understand core concepts through play.</p>
+        
+        <div class="row g-4">
+            <!-- Mini Project 1 -->
+            <div class="col-lg-3 col-md-6" data-aos="fade-up">
+                <div class="v2-card shadow-lg bg-dark rounded-4 overflow-hidden h-100">
+                    <img src="{{ url_for('static', filename='img/gallery/game-1.png') }}" alt="Arts of Chemistry" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                    <div class="p-4">
+                        <span class="text-red fw-bold small">AI GAME</span>
+                        <h4 class="mt-2 mb-3 h5">ARTS OF CHEMISTRY</h4>
+                        <a href="https://arts-of-chemistry.vercel.app" target="_blank" class="text-white text-decoration-none small">LAUNCH APP <i class="bi bi-arrow-up-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- Mini Project 2 -->
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="v2-card shadow-lg bg-dark rounded-4 overflow-hidden h-100">
+                    <img src="{{ url_for('static', filename='img/gallery/game-2.png') }}" alt="Maths Quest" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                    <div class="p-4">
+                        <span class="text-red fw-bold small">AI GAME</span>
+                        <h4 class="mt-2 mb-3 h5">MATHS QUEST</h4>
+                        <a href="https://maths-quest.vercel.app" target="_blank" class="text-white text-decoration-none small">LAUNCH APP <i class="bi bi-arrow-up-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- Mini Project 3 -->
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="v2-card shadow-lg bg-dark rounded-4 overflow-hidden h-100">
+                    <img src="{{ url_for('static', filename='img/gallery/game-3.png') }}" alt="Science Game" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                    <div class="p-4">
+                        <span class="text-red fw-bold small">AI GAME</span>
+                        <h4 class="mt-2 mb-3 h5">SCIENCE GAME</h4>
+                        <a href="https://science-game-theta.vercel.app" target="_blank" class="text-white text-decoration-none small">LAUNCH APP <i class="bi bi-arrow-up-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- Mini Project 4 -->
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="v2-card shadow-lg bg-dark rounded-4 overflow-hidden h-100">
+                    <img src="{{ url_for('static', filename='img/gallery/game-4.png') }}" alt="Brain Game" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                    <div class="p-4">
+                        <span class="text-red fw-bold small">AI GAME</span>
+                        <h4 class="mt-2 mb-3 h5">BRAIN GAME</h4>
+                        <a href="https://brain-game-sable.vercel.app" target="_blank" class="text-white text-decoration-none small">LAUNCH APP <i class="bi bi-arrow-up-right ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section (Red) -->
+<section class="v2-section v2-section-red">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <h2 class="display-3 fw-black">08+</h2>
+                <p class="fw-bold">COMPLETED PROJECTS</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h2 class="display-3 fw-black">01+</h2>
+                <p class="fw-bold">YEARS EXPERIENCE</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h2 class="display-3 fw-black">100%</h2>
+                <p class="fw-bold">DEDICATION</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block head %}
+<style>
+    .v2-card {
+        transition: transform 0.4s ease;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .v2-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--accent-red);
+    }
+</style>
+{% endblock %}

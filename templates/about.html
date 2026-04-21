@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+
+{% block title %}About Aravind - Personal Portfolio{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="v2-section pt-200 bg-darker">
+    <div class="container">
+        <div class="row align-items-end">
+            <div class="col-lg-8">
+                <h1 class="display-1 fw-black mb-0" data-aos="fade-up">MY <span class="outline-text">JOURNEY.</span>
+                </h1>
+            </div>
+            <div class="col-lg-4 text-lg-end" data-aos="fade-up" data-aos-delay="200">
+                <p class="text-red fw-bold mb-0">AI ENGINEER • DEVELOPER • DATA SCIENTIST</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main About -->
+<section class="v2-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-5" data-aos="fade-right">
+                <div class="position-relative">
+                    <img src="{{ url_for('static', filename='img/hero/author-md-2.png') }}" alt="About Aravind"
+                        class="img-fluid grayscale hover-color shadow-lg rounded-4" style="transition: all 0.5s;">
+                    <div class="position-absolute bottom-0 end-0 bg-red p-4 rounded-start-4 shadow-lg d-none d-md-block"
+                        style="transform: translate(20px, 20px);">
+                        <h4 class="mb-0 text-white">01+ YEARS</h4>
+                        <p class="mb-0 text-white small">OF PRACTICAL EXPERIENCE</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <h2 class="text-red mb-4">DRIVEN BY INNOVATION</h2>
+                <p class="fs-4 text-white mb-4">I bridge the gap between complex data algorithms and user-centric
+                    applications.</p>
+
+                <div class="text-gray lh-lg mb-5">
+                    <p>My journey in Artificial Intelligence and Data Science started with a simple question: <i>How can
+                            we make data work for us?</i> This curiosity led me to pursue my B.Tech, where I delve deep
+                        into machine learning, neural networks, and computational logic.</p>
+                    <p>During my time at Adhi College of Engineering, I've focused on not just the theory, but the
+                        practical application of AI. Whether it's building object detection systems with YOLOv8 or
+                        creating intuitive web interfaces, I strive for excellence in every line of code.</p>
+                    <p>My internship at Book Buddy Library & Organization was a turning point, where I learned the
+                        critical importance of data organization and systematic workflows in a professional environment.
+                        It taught me that behind every great AI model is a foundation of well-structured data.</p>
+                </div>
+
+                <div class="row pt-4 border-top border-secondary">
+                    <div class="col-md-6 mb-4">
+                        <h4 class="text-white mb-2">VISION</h4>
+                        <p class="small text-gray">To engineer AI solutions that simplify complex real-world challenges
+                            and empower decision-makers.</p>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <h4 class="text-white mb-2">MISSION</h4>
+                        <p class="small text-gray">Leveraging cutting-edge technology and clean code to build scalable,
+                            data-driven applications.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Timeline Section (Professional & Academic) -->
+<section class="v2-section bg-darker">
+    <div class="container">
+        <h2 class="display-3 fw-black mb-5 text-center" data-aos="fade-up">EDUCATION & <span
+                class="outline-text">EXPERIENCE</span></h2>
+
+        <div class="timeline mt-5">
+            <!-- Timeline Item 1 -->
+            <div class="timeline-item pb-5 border-start border-red ps-5 position-relative" data-aos="fade-up">
+                <div class="timeline-dot bg-red rounded-circle position-absolute"
+                    style="width: 20px; height: 20px; left: -10px; top: 0;"></div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <h5 class="text-red">2026 - PRESENT</h5>
+                        <p class="text-gray small">INTERNSHIP</p>
+                    </div>
+                    <div class="col-md-9">
+                        <h3 class="text-white">FULL STACK INTERN</h3>
+                        <h5 class="text-gray">Book Buddy Library & Organization</h5>
+                        <p class="text-gray">Specialized in managing operational workflows and handling structured data
+                            systems. Focused on accuracy and process-oriented development.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline Item 2 -->
+            <div class="timeline-item pb-5 border-start border-red ps-5 position-relative" data-aos="fade-up"
+                data-aos-delay="100">
+                <div class="timeline-dot bg-red rounded-circle position-absolute"
+                    style="width: 20px; height: 20px; left: -10px; top: 0;"></div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <h5 class="text-red">2023 - 2027</h5>
+                        <p class="text-gray small">BACHELORS</p>
+                    </div>
+                    <div class="col-md-9">
+                        <h3 class="text-white">B.TECH AI & DATA SCIENCE</h3>
+                        <h5 class="text-gray">Adhi College of Engineering and Technology</h5>
+                        <p class="text-gray">Core focus on Machine Learning, Big Data Analytics, Deep Learning, and
+                            Algorithm Design. Maintaining a strong academic record while building practical projects.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline Item 3 -->
+            <div class="timeline-item border-start border-red ps-5 position-relative" data-aos="fade-up"
+                data-aos-delay="200">
+                <div class="timeline-dot bg-red rounded-circle position-absolute"
+                    style="width: 20px; height: 20px; left: -10px; top: 0;"></div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <h5 class="text-red">2022 - 2023</h5>
+                        <p class="text-gray small">SCHOOLING</p>
+                    </div>
+                    <div class="col-md-9">
+                        <h3 class="text-white">HSC BIO-MATHS</h3>
+                        <h5 class="text-gray">Government Boys HSS, Odugathur</h5>
+                        <p class="text-gray">Focused on Physics, Chemistry, Biology, and Advanced Mathematics, providing
+                            a strong scientific foundation for engineering.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tech Stack Grid -->
+<section class="v2-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-4" data-aos="fade-right">
+                <h2 class="display-4 fw-black mb-4">MY <span class="text-red">TOOLKIT.</span></h2>
+                <p class="text-gray">These are the primary technologies and tools I use to bring ideas to life. I'm
+                    constantly learning and expanding this list.</p>
+                <a href="/portfolio.html" class="v2-btn mt-4">SEE MY WORK</a>
+            </div>
+            <div class="col-lg-8" data-aos="fade-left">
+                <div class="row g-4 text-center">
+                    <div class="col-3 col-md-2">
+                        <div class="p-4 bg-darker rounded-4 hover-red-border transition">
+                            <i class="fab fa-python fs-1 text-white"></i>
+                            <p class="small text-gray mt-2 mb-0">PYTHON</p>
+                        </div>
+                    </div>
+                    <div class="col-3 col-md-2">
+                        <div class="p-4 bg-darker rounded-4 hover-red-border transition">
+                            <i class="fas fa-leaf fs-1 text-white"></i>
+                            <p class="small text-gray mt-2 mb-0">FLASK</p>
+                        </div>
+                    </div>
+                    <div class="col-3 col-md-2">
+                        <div class="p-4 bg-darker rounded-4 hover-red-border transition">
+                            <i class="fab fa-java fs-1 text-white"></i>
+                            <p class="small text-gray mt-2 mb-0">JAVA</p>
+                        </div>
+                    </div>
+                    <div class="col-3 col-md-2">
+                        <div class="p-4 bg-darker rounded-4 hover-red-border transition">
+                            <i class="fab fa-js fs-1 text-white"></i>
+                            <p class="small text-gray mt-2 mb-0">JS</p>
+                        </div>
+                    </div>
+                    <div class="col-3 col-md-2">
+                        <div class="p-4 bg-darker rounded-4 hover-red-border transition">
+                            <i class="fab fa-react fs-1 text-white"></i>
+                            <p class="small text-gray mt-2 mb-0">REACT</p>
+                        </div>
+                    </div>
+                    <div class="col-3 col-md-2">
+                        <div class="p-4 bg-darker rounded-4 hover-red-border transition">
+                            <i class="fab fa-git-alt fs-1 text-white"></i>
+                            <p class="small text-gray mt-2 mb-0">GIT</p>
+                        </div>
+                    </div>
+                    <div class="col-3 col-md-2">
+                        <div class="p-4 bg-darker rounded-4 hover-red-border transition">
+                            <i class="fab fa-github fs-1 text-white"></i>
+                            <p class="small text-gray mt-2 mb-0">GITHUB</p>
+                        </div>
+                    </div>
+                    <div class="col-3 col-md-2">
+                        <div class="p-4 bg-darker rounded-4 hover-red-border transition">
+                            <i class="fas fa-terminal fs-1 text-white"></i>
+                            <p class="small text-gray mt-2 mb-0">LEETCODE</p>
+                        </div>
+                    </div>
+                    <div class="col-3 col-md-2">
+                        <div class="p-4 bg-darker rounded-4 hover-red-border transition">
+                            <i class="fas fa-database fs-1 text-white"></i>
+                            <p class="small text-gray mt-2 mb-0">SQL</p>
+                        </div>
+                    </div>
+                    <div class="col-3 col-md-2">
+                        <div class="p-4 bg-darker rounded-4 hover-red-border transition">
+                            <i class="fab fa-html5 fs-1 text-white"></i>
+                            <p class="small text-gray mt-2 mb-0">HTML5</p>
+                        </div>
+                    </div>
+                    <div class="col-3 col-md-2">
+                        <div class="p-4 bg-darker rounded-4 hover-red-border transition">
+                            <i class="fab fa-css3-alt fs-1 text-white"></i>
+                            <p class="small text-gray mt-2 mb-0">CSS3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quote Section -->
+<section class="v2-section v2-section-red">
+    <div class="container text-center" data-aos="zoom-in">
+        <i class="fas fa-quote-left display-1 opacity-25 mb-4"></i>
+        <h2 class="display-4 fw-black italic mb-4">"THE BEST WAY TO PREDICT THE FUTURE IS TO CREATE IT."</h2>
+        <p class="fs-5 fw-bold mb-0">— PETER DRUCKER</p>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block head %}
+<style>
+    .grayscale {
+        filter: grayscale(1);
+    }
+
+    .grayscale:hover {
+        filter: grayscale(0);
+    }
+
+    .hover-color:hover {
+        transform: scale(1.02);
+    }
+
+    .italic {
+        font-style: italic;
+    }
+
+    .transition {
+        transition: all 0.3s ease;
+    }
+
+    .hover-red-border:hover {
+        border-color: var(--accent-red) !important;
+        transform: translateY(-5px);
+        background: #1a1a1a !important;
+    }
+
+    .hover-red-border {
+        border: 1px solid transparent;
+    }
+
+    .timeline-item::after {
+        content: '';
+        position: absolute;
+        left: -1px;
+        top: 20px;
+        bottom: 0;
+        width: 1px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .timeline-item:last-child::after {
+        display: none;
+    }
+</style>
+{% endblock %}

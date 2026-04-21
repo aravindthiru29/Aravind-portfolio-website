@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Contact - Aravind{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="v2-section pt-200 bg-darker">
+    <div class="container">
+        <h1 class="display-1 fw-black" data-aos="fade-up">GET IN <span class="outline-text">TOUCH</span></h1>
+    </div>
+</section>
+
+<!-- Contact Form -->
+<section class="v2-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 mb-5" data-aos="fade-right">
+                <h2 class="text-red mb-5">CONTACT INFO</h2>
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-red p-3 rounded-circle me-4">
+                        <i class="fas fa-map-marker-alt fs-4 text-white"></i>
+                    </div>
+                    <div>
+                        <h4 class="mb-0">LOCATION</h4>
+                        <p class="text-gray mb-0">Odugathur, Vellore, Tamil Nadu</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-red p-3 rounded-circle me-4">
+                        <i class="fas fa-phone fs-4 text-white"></i>
+                    </div>
+                    <div>
+                        <h4 class="mb-0">PHONE</h4>
+                        <p class="text-gray mb-0">+91 86102 67200</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-red p-3 rounded-circle me-4">
+                        <i class="fas fa-envelope fs-4 text-white"></i>
+                    </div>
+                    <div>
+                        <h4 class="mb-0">EMAIL</h4>
+                        <p class="text-gray mb-0">aravthiru131@example.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7" data-aos="fade-left">
+                <h2 class="mb-5">SEND A MESSAGE</h2>
+                
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    {% for category, message in messages %}
+                      <div class="alert alert-{{ category }} bg-darker border-red text-white mb-4 p-3 fw-bold">
+                        {{ message }}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+
+                <form class="v2-contact-form" action="/contact" method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <input type="text" name="name" class="form-control-v2" placeholder="YOUR NAME" required>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <input type="email" name="email" class="form-control-v2" placeholder="YOUR EMAIL" required>
+                        </div>
+                        <div class="col-12 mb-4">
+                            <input type="text" name="subject" class="form-control-v2" placeholder="SUBJECT" required>
+                        </div>
+                        <div class="col-12 mb-5">
+                            <textarea name="message" class="form-control-v2" rows="5" placeholder="YOUR MESSAGE" required></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="v2-btn w-100 fs-4 py-3">SEND MESSAGE</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map or Section (Red) -->
+<section class="v2-section v2-section-red text-center">
+    <div class="container h-100 d-flex flex-column justify-content-center align-items-center">
+        <h2 class="display-3 fw-black mb-4">READY TO COLLABORATE?</h2>
+        <p class="fs-4 mb-5">Let's build something amazing together.</p>
+        <div class="d-flex gap-4">
+            <a href="https://github.com/aravindthiru29" class="text-black fs-2"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/aravind-t-b724012b4/" class="text-black fs-2"><i class="fab fa-linkedin"></i></a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block head %}
+<style>
+    .form-control-v2 {
+        background: #111;
+        border: 1px solid #222;
+        padding: 20px;
+        color: white;
+        width: 100%;
+        transition: all 0.3s;
+        border-radius: 0;
+        font-family: 'Poppins', sans-serif;
+    }
+    .form-control-v2:focus {
+        outline: none;
+        border-color: var(--accent-red, #ff2d2d);
+        background: #151515;
+    }
+    .v2-btn {
+        background-color: #ff2d2d;
+        color: white;
+        border: none;
+        font-weight: 800;
+        letter-spacing: 1px;
+        transition: all 0.3s;
+        text-transform: uppercase;
+    }
+    .v2-btn:hover {
+        background-color: #d21f1f;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255, 45, 45, 0.2);
+    }
+    .bg-darker {
+        background-color: #080808;
+    }
+</style>
+{% endblock %}

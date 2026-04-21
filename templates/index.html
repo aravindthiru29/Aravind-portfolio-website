@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Aravind - AI Engineer & Developer{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="v2-hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7 v2-hero-content" data-aos="fade-right">
+                <span class="badge-red">PRE-FINAL YEAR STUDENT</span>
+                <h1 class="text-white">ENGINEERING THE <span class="outline-text">FUTURE</span> WITH AI</h1>
+                <p class="text-gray fs-5 mb-5 mw-75">I am an Artificial Intelligence and Data Science student focusing on building a solid foundation in data-driven decision-making and computational techniques.</p>
+                <div class="d-flex gap-3">
+                    <a href="/contact" class="v2-btn">BOOK A CALL</a>
+                    <a href="/portfolio.html" class="v2-btn v2-btn-outline">VIEW WORK</a>
+                </div>
+            </div>
+            <div class="col-lg-5" data-aos="fade-left">
+                <div class="v2-hero-img">
+                    <img src="{{ url_for('static', filename='img/hero/author-thumb-2.jpg') }}" alt="Aravind">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section (Red Accent) -->
+<section class="v2-section v2-section-red">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4" data-aos="fade-up">
+                <h2 class="display-3 fw-black">ABOUT ME.</h2>
+            </div>
+            <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+                <p class="fs-4 fw-bold">Hello, I’m Aravind. I focus on building a solid foundation in data-driven decision-making, logical reasoning, and computational techniques.</p>
+                <p class="mt-4">Currently pursuing B.Tech in AI & Data Science. I bridge the gap between complex algorithms and real-world applications.</p>
+                <a href="/about.html" class="v2-btn mt-4 bg-black text-white border-black">READ MORE</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Section -->
+<section class="v2-section bg-darker">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-5">
+            <h2 class="display-4" data-aos="fade-up">SELECTED WORKS</h2>
+            <a href="/portfolio.html" class="v2-btn v2-btn-outline" data-aos="fade-up">VIEW ALL</a>
+        </div>
+
+        <div class="project-list mt-5">
+            <a href="/portfolio.html" class="v2-project-item" data-aos="fade-up">
+                <div>
+                    <span class="text-red fw-bold">01.</span>
+                    <h3>FLIPBOOK WEB APP</h3>
+                </div>
+                <div class="d-none d-md-block text-gray">CONVERT PDF TO REAL BOOK EXPERIENCE</div>
+                <div class="arrow"><i class="bi bi-arrow-right"></i></div>
+            </a>
+            <a href="/portfolio.html" class="v2-project-item" data-aos="fade-up" data-aos-delay="100">
+                <div>
+                    <span class="text-red fw-bold">02.</span>
+                    <h3>STUDENT SCORE ANALYSIS</h3>
+                </div>
+                <div class="d-none d-md-block text-gray">DATA-DRIVEN REPORTS</div>
+                <div class="arrow"><i class="bi bi-arrow-right"></i></div>
+            </a>
+            <a href="/portfolio.html" class="v2-project-item" data-aos="fade-up" data-aos-delay="200">
+                <div>
+                    <span class="text-red fw-bold">03.</span>
+                    <h3>YOLOV8 OBJECT DETECTION</h3>
+                </div>
+                <div class="d-none d-md-block text-gray">COMPUTER VISION APPLICATION</div>
+                <div class="arrow"><i class="bi bi-arrow-right"></i></div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Qualification Section (Dark Gradient) -->
+<section class="v2-section" style="background: linear-gradient(0deg, #0b0b0b 0%, #1a1a1a 100%);">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-5" data-aos="fade-right">
+                <h2 class="mb-5">EDUCATION</h2>
+                <div class="mb-4">
+                    <h4 class="text-red">B.TECH AI & DATA SCIENCE</h4>
+                    <p class="text-white mb-0">Adhi College of Engineering - 2023-2027</p>
+                </div>
+                <div>
+                    <h4 class="text-red">HSC BIO-MATHS</h4>
+                    <p class="text-white mb-0">Govt Boys HSS, Odugathur - 2022-2023</p>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <h2 class="mb-5">EXPERIENCE</h2>
+                <div>
+                    <h4 class="text-red">FULL STACK INTERN</h4>
+                    <p class="text-white mb-0">Book Buddy Library - 2026</p>
+                    <p class="text-gray small">Managed structured information and operational workflows.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section (Red) -->
+<section class="v2-section v2-section-red text-center">
+    <div class="container" data-aos="zoom-in">
+        <h2 class="display-2 fw-black mb-4">WANT TO START A PROJECT?</h2>
+        <a href="/contact" class="v2-btn bg-black text-white border-black fs-4 py-3 px-5">GET IN TOUCH</a>
+    </div>
+</section>
+
+{% endblock %}

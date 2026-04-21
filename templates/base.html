@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Aravind - Personal Portfolio{% endblock %}</title>
+    
+    <!-- CSS here -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/bootstrap-icons/font-css.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/all.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/aos.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio-v2.css') }}" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Montserrat:wght@900&display=swap" rel="stylesheet">
+    
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="v2-nav" id="mainNav">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="/" class="v2-logo">ARAVIND.T</a>
+            
+            <div class="d-none d-lg-flex gap-4">
+                <a href="/" class="text-white text-decoration-none fw-bold">HOME</a>
+                <a href="/about.html" class="text-white text-decoration-none fw-bold">ABOUT</a>
+                <a href="/portfolio.html" class="text-white text-decoration-none fw-bold">PROJECTS</a>
+                <a href="/blog-list.html" class="text-white text-decoration-none fw-bold">BLOG</a>
+                <a href="/contact" class="v2-btn py-2 px-4 shadow-sm" style="font-size: 0.8rem;">HIRE ME</a>
+            </div>
+
+            <button class="v2-menu-toggle d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="mobileMenu">
+        <div class="offcanvas-header justify-content-end">
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column gap-4 align-items-center justify-content-center">
+            <a href="/" class="fs-2 text-white text-decoration-none fw-black">HOME</a>
+            <a href="/about.html" class="fs-2 text-white text-decoration-none fw-black">ABOUT</a>
+            <a href="/portfolio.html" class="fs-2 text-white text-decoration-none fw-black">PROJECTS</a>
+            <a href="/blog-list.html" class="fs-2 text-white text-decoration-none fw-black">BLOG</a>
+            <a href="/contact" class="v2-btn mt-4">HIRE ME</a>
+        </div>
+    </div>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="v2-section bg-black text-center">
+        <div class="container">
+            <h2 class="mb-5">LET'S CONNECT</h2>
+            <div class="d-flex justify-content-center gap-4 mb-5">
+                <a href="https://github.com/aravindthiru29" class="text-white fs-3"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/aravind-t-b724012b4/" class="text-white fs-3"><i class="fab fa-linkedin"></i></a>
+                <a href="https://leetcode.com/u/aravindthiru/" class="text-white fs-3"><i class="fas fa-code"></i></a>
+                <a href="https://www.instagram.com/arav45_" class="text-white fs-3"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p class="text-gray">&copy; 2026 ARAVIND. ALL RIGHTS RESERVED.</p>
+        </div>
+    </footer>
+
+    <!-- JS here -->
+    <script src="{{ url_for('static', filename='js/vendor/jquery-2.2.4.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vendor/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/aos.js') }}"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+        
+        // Sticky Nav
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('mainNav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

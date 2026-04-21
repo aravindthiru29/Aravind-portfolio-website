@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Blog Post - Aravind{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="v2-section pt-200 bg-darker">
+    <div class="container text-center">
+        <div class="text-red fw-bold mb-3">AI ENGINEERING • APRIL 20, 2026</div>
+        <h1 class="display-3 fw-black" data-aos="fade-up">THE FUTURE OF <span class="outline-text">GENERATIVE AI</span></h1>
+    </div>
+</section>
+
+<!-- Blog Post Layout -->
+<section class="v2-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8" data-aos="fade-up">
+                <img src="{{ url_for('static', filename='img/gallery/img-6.png') }}" alt="Blog Detail" class="img-fluid rounded-4 shadow-lg mb-5 w-100">
+                <div class="blog-content fs-5 text-gray lh-lg">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    
+                    <h3 class="text-white mt-5 mb-4">THE RISE OF MULTI-MODAL MODELS</h3>
+                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    
+                    <blockquote class="bg-darker p-5 border-start border-red border-5 my-5 text-white italic">
+                        "The most profound technologies are those that disappear. They weave themselves into the fabric of everyday life until they are indistinguishable from it."
+                    </blockquote>
+                    
+                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+                </div>
+                
+                <!-- Comments Placeholder -->
+                <div class="mt-100 p-5 bg-darker rounded-4">
+                    <h4 class="mb-4">LEAVE A REPLY</h4>
+                    <form>
+                        <textarea class="form-control-v2 mb-4" rows="4" placeholder="YOUR COMMENT"></textarea>
+                        <button class="v2-btn py-2 px-5 shadow-sm">POST COMMENT</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block head %}
+<style>
+    .italic { font-style: italic; }
+    .border-red { border-color: var(--accent-red) !important; }
+</style>
+{% endblock %}

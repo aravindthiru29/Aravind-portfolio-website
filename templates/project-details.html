@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Project Details - Aravind{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="v2-section pt-200 bg-darker">
+    <div class="container text-center">
+        <span class="badge-red mb-4">CASE STUDY</span>
+        <h1 class="display-2 fw-black" data-aos="fade-up">FLIPBOOK <span class="outline-text">WEB APP</span></h1>
+    </div>
+</section>
+
+<!-- Project Layout -->
+<section class="v2-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8" data-aos="fade-right">
+                <img src="{{ url_for('static', filename='img/gallery/img-6.png') }}" alt="Project Detail" class="img-fluid rounded-4 shadow-lg mb-5">
+                <h2 class="mb-4">PROJECT OVERVIEW</h2>
+                <p class="fs-5 text-gray mb-5">The Flipbook Web App was designed to create an immersive reading experience for digital documents. By leveraging advanced CSS 3D transforms and JavaScript, we simulated the tactile feel of turning pages in a physical book.</p>
+                
+                <h2 class="mb-4">CHALLENGE</h2>
+                <p class="fs-5 text-gray mb-5">Handling large PDF files while maintaining 60FPS animations was the primary hurdle. We implemented a custom tiling system to render pages on-demand, reducing memory overhead significantly.</p>
+            </div>
+            
+            <div class="col-lg-4" data-aos="fade-left">
+                <div class="v2-sidebar p-5 bg-darker rounded-4 position-sticky" style="top: 120px;">
+                    <h4 class="text-red mb-4">DETAILS</h4>
+                    <div class="mb-4">
+                        <span class="text-gray small">CLIENT</span>
+                        <p class="fw-bold">PERSONAL PROJECT</p>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-gray small">TECH STACK</span>
+                        <p class="fw-bold">FLASK, JS, GSAP, CSS3</p>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-gray small">DATE</span>
+                        <p class="fw-bold">JANUARY 2026</p>
+                    </div>
+                    <a href="#" class="v2-btn w-100 text-center">LIVE DEMO</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

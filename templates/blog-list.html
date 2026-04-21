@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Blog - Aravind{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="v2-section pt-200 bg-darker">
+    <div class="container">
+        <h1 class="display-1 fw-black" data-aos="fade-up">MY <span class="outline-text">BLOG</span></h1>
+    </div>
+</section>
+
+<!-- Blog List -->
+<section class="v2-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Blog Item 1 -->
+                <article class="mb-100" data-aos="fade-up">
+                    <div class="v2-blog-img mb-4 overflow-hidden rounded-4">
+                        <img src="{{ url_for('static', filename='img/gallery/img-6.png') }}" alt="Blog 1" class="img-fluid w-100" style="transition: transform 0.5s;">
+                    </div>
+                    <div class="d-flex gap-4 mb-3 text-red fw-bold">
+                        <span>AI ENGINEERING</span>
+                        <span>APRIL 20, 2026</span>
+                    </div>
+                    <h2 class="mb-3"><a href="/blog-details.html" class="text-white text-decoration-none">THE FUTURE OF GENERATIVE AI IN 2026</a></h2>
+                    <p class="text-gray fs-5 mb-4">Exploring how transformer models are evolving to handle multimodal data more efficiently than ever before...</p>
+                    <a href="/blog-details.html" class="v2-btn py-2 px-4 shadow-sm" style="font-size: 0.8rem;">READ MORE</a>
+                </article>
+
+                <!-- Blog Item 2 -->
+                <article class="mb-100" data-aos="fade-up">
+                    <div class="v2-blog-img mb-4 overflow-hidden rounded-4">
+                        <img src="{{ url_for('static', filename='img/gallery/img-6.png') }}" alt="Blog 2" class="img-fluid w-100" style="transition: transform 0.5s;">
+                    </div>
+                    <div class="d-flex gap-4 mb-3 text-red fw-bold">
+                        <span>DEVELOPMENT</span>
+                        <span>MARCH 15, 2026</span>
+                    </div>
+                    <h2 class="mb-3"><a href="/blog-details.html" class="text-white text-decoration-none">SCALABLE ARCHITECTURES FOR PERSONAL PROJECTS</a></h2>
+                    <p class="text-gray fs-5 mb-4">Why choosing the right foundation is critical for long-term maintainability of your portfolio...</p>
+                    <a href="/blog-details.html" class="v2-btn py-2 px-4 shadow-sm" style="font-size: 0.8rem;">READ MORE</a>
+                </article>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="v2-sidebar p-5 bg-darker rounded-4" data-aos="fade-left">
+                    <h4 class="mb-4">SEARCH</h4>
+                    <div class="mb-5">
+                        <input type="text" class="form-control-v2" placeholder="KEYWORD...">
+                    </div>
+                    
+                    <h4 class="mb-4">CATEGORIES</h4>
+                    <ul class="list-none p-0 text-gray">
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-gray hover-red">AI & ML (12)</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-gray hover-red">DATA SCIENCE (8)</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-gray hover-red">WEB DEV (15)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block head %}
+<style>
+    .v2-blog-img:hover img {
+        transform: scale(1.05);
+    }
+    .hover-red:hover {
+        color: var(--accent-red) !important;
+    }
+    .list-none { list-style: none; }
+</style>
+{% endblock %}
