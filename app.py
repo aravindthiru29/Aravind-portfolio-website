@@ -27,13 +27,16 @@ def contact():
 @app.route('/<page>')
 def admins_views(page):  
     try:
+        # Prevent trying to render template for common missing files or paths with dots to avoid issues
+        if '.' in page and not page.endswith('.html'):
+            return "File not found", 404
         return render_template(f"{page}")
     except:
-        return render_template('sign-in.html'), 404
+        return render_template('index.html') # Fallback to home instead of crashing
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template("sign-in.html"), 404
+    return render_template("index.html"), 404
     
 if __name__ == '__main__':
     app.run(debug=True)
