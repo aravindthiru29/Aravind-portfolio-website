@@ -3,7 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Aravind - Personal Portfolio{% endblock %}</title>
+    <title>{% block title %}Aravind - AI & DS Student{% endblock %}</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}" />
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}" />
     
     <!-- CSS here -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
@@ -25,9 +29,9 @@
             
             <div class="d-none d-lg-flex gap-4">
                 <a href="/" class="text-white text-decoration-none fw-bold">HOME</a>
-                <a href="/about.html" class="text-white text-decoration-none fw-bold">ABOUT</a>
-                <a href="/portfolio.html" class="text-white text-decoration-none fw-bold">PROJECTS</a>
-                <a href="/blog-list.html" class="text-white text-decoration-none fw-bold">BLOG</a>
+                <a href="/about" class="text-white text-decoration-none fw-bold">ABOUT</a>
+                <a href="/portfolio" class="text-white text-decoration-none fw-bold">PROJECTS</a>
+                <a href="/blog-list" class="text-white text-decoration-none fw-bold">BLOG</a>
                 <a href="/contact" class="v2-btn py-2 px-4 shadow-sm" style="font-size: 0.8rem;">HIRE ME</a>
             </div>
 
@@ -45,9 +49,9 @@
         </div>
         <div class="offcanvas-body d-flex flex-column gap-4 align-items-center justify-content-center">
             <a href="/" class="fs-2 text-white text-decoration-none fw-black">HOME</a>
-            <a href="/about.html" class="fs-2 text-white text-decoration-none fw-black">ABOUT</a>
-            <a href="/portfolio.html" class="fs-2 text-white text-decoration-none fw-black">PROJECTS</a>
-            <a href="/blog-list.html" class="fs-2 text-white text-decoration-none fw-black">BLOG</a>
+            <a href="/about" class="fs-2 text-white text-decoration-none fw-black">ABOUT</a>
+            <a href="/portfolio" class="fs-2 text-white text-decoration-none fw-black">PROJECTS</a>
+            <a href="/blog-list" class="fs-2 text-white text-decoration-none fw-black">BLOG</a>
             <a href="/contact" class="v2-btn mt-4">HIRE ME</a>
         </div>
     </div>
