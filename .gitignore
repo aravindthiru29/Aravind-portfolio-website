@@ -1,7 +1,54 @@
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
-instance/*.db
-.env
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
 venv/
+env/
+.venv/
+ENV/
+
+# Environment variables (SENSITIVE)
+.env
 .env.local
-.env.example
+.env.development.local
+.env.test.local
+.env.production.local
+*.env*
+
+# Databases
+db.sqlite3
+*.db
+
+# Vercel
+.vercel
+
+# IDEs
+.vscode/
+.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
