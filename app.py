@@ -5,28 +5,38 @@ import os
 
 # Load environment variables
 load_dotenv()
-
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'super-secret-key-for-portfolio')
 
-# Hardcoded Secure Mail Configuration
+# Robust Mail Configuration
+# Priority: Environment Variables > Hardcoded Fallbacks (for Gmail)
+MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.gmail.com')
+MAIL_PORT = int(os.environ.get('MAIL_PORT', 587))
+MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS', 'True').lower() == 'true'
+MAIL_USE_SSL = os.environ.get('MAIL_USE_SSL', 'False').lower() == 'true'
+MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+
+# Configuration for Flask-Mail
 app.config.update(
-    MAIL_SERVER='smtp.gmail.com',
-    MAIL_PORT=465,
-    MAIL_USE_TLS=False,
-    MAIL_USE_SSL=True,
-    MAIL_USERNAME=os.environ.get('MAIL_USERNAME'),
-    MAIL_PASSWORD=os.environ.get('MAIL_PASSWORD'),
-    MAIL_DEFAULT_SENDER=os.environ.get('MAIL_USERNAME')
+    MAIL_SERVER=MAIL_SERVER,
+    MAIL_PORT=MAIL_PORT,
+    MAIL_USE_TLS=MAIL_USE_TLS,
+    MAIL_USE_SSL=MAIL_USE_SSL,
+    MAIL_USERNAME=MAIL_USERNAME,
+    MAIL_PASSWORD=MAIL_PASSWORD,
+    MAIL_DEFAULT_SENDER=MAIL_USERNAME
 )
 
-mail = Mail(app)    
+mail = Mail(app)
 
-# Verification check in logs
-print(f"--- SECURE MAIL INITIALIZED ---")
-print(f"User: {app.config['MAIL_USERNAME']}")
-print(f"Server: {app.config['MAIL_SERVER']}:{app.config['MAIL_PORT']} (SSL: True)")
-print(f"-------------------------------")
+# Diagnostic Logging (Safe for Production)
+print(f"--- MAIL INITIALIZED ---")
+print(f"Server: {MAIL_SERVER}:{MAIL_PORT}")
+print(f"Security: TLS={MAIL_USE_TLS}, SSL={MAIL_USE_SSL}")
+print(f"User Set: {'Yes' if MAIL_USERNAME else 'No'}")
+print(f"Pass Set: {'Yes' if MAIL_PASSWORD else 'No'}")
+print(f"------------------------")
 
 @app.route('/')
 def index():
@@ -41,21 +51,26 @@ def contact():
         message = request.form.get('message')
         
         # Create and send the email
+        receiver = os.environ.get('MAIL_RECEIVER') or MAIL_USERNAME
+        
+        if not MAIL_USERNAME or not MAIL_PASSWORD:
+            print("CRITICAL: Mail credentials missing!")
+            flash('ERROR! CONFIGURATION ISSUE. PLEASE TRY AGAIN LATER.', 'danger')
+            return redirect(url_for('contact'))
+
         msg = Message(
             subject=f"Portfolio Contact: {subject}",
-            recipients=[os.environ.get('MAIL_RECEIVER', os.environ.get('MAIL_USERNAME'))],
-            body=f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}"
+            recipients=[receiver],
+            body=f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}",
+            sender=MAIL_USERNAME
         )
         
         try:
-            with app.app_context():
-                mail.send(msg)
-            print("Mail sent successfully!")
+            mail.send(msg)
+            print(f"Mail sent successfully to {receiver}")
             flash('SUCCESS! YOUR MESSAGE HAS BEEN SENT.', 'success')
         except Exception as e:
-            import traceback
-            print(f"CRITICAL ERROR: {str(e)}")
-            print(traceback.format_exc())
+            print(f"MAIL ERROR: {str(e)}")
             flash('ERROR! UNABLE TO SEND MESSAGE AT THIS TIME.', 'danger')
             
         return redirect(url_for('contact'))
