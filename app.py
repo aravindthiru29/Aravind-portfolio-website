@@ -9,36 +9,24 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'super-secret-key-for-portfolio')
 
-# Mail configuration with Robust Defaults
-MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.gmail.com')
-MAIL_PORT = int(os.environ.get('MAIL_PORT', 465))
-# Auto-configure TLS/SSL based on Port for Gmail compatibility
-if MAIL_PORT == 465:
-    MAIL_USE_TLS = False
-    MAIL_USE_SSL = True
-else:
-    MAIL_USE_TLS = True
-    MAIL_USE_SSL = False
-
+# Hardcoded Secure Mail Configuration
 app.config.update(
-    MAIL_SERVER=MAIL_SERVER,
-    MAIL_PORT=MAIL_PORT,
-    MAIL_USE_TLS=MAIL_USE_TLS,
-    MAIL_USE_SSL=MAIL_USE_SSL,
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=465,
+    MAIL_USE_TLS=False,
+    MAIL_USE_SSL=True,
     MAIL_USERNAME=os.environ.get('MAIL_USERNAME'),
     MAIL_PASSWORD=os.environ.get('MAIL_PASSWORD'),
-    MAIL_DEFAULT_SENDER=os.environ.get('MAIL_DEFAULT_SENDER', os.environ.get('MAIL_USERNAME'))
+    MAIL_DEFAULT_SENDER=os.environ.get('MAIL_USERNAME')
 )
 
-# Debug: Print configuration to Vercel Logs (Hidden Password)
-print(f"--- Mail Config Loaded ---")
-print(f"Server: {app.config['MAIL_SERVER']}:{app.config['MAIL_PORT']}")
-print(f"TLS: {app.config['MAIL_USE_TLS']}, SSL: {app.config['MAIL_USE_SSL']}")
-print(f"User: {app.config['MAIL_USERNAME']}")
-print(f"Password Set: {'Yes' if app.config['MAIL_PASSWORD'] else 'No'}")
-print(f"--------------------------")
+mail = Mail(app)    
 
-mail = Mail(app)
+# Verification check in logs
+print(f"--- SECURE MAIL INITIALIZED ---")
+print(f"User: {app.config['MAIL_USERNAME']}")
+print(f"Server: {app.config['MAIL_SERVER']}:{app.config['MAIL_PORT']} (SSL: True)")
+print(f"-------------------------------")
 
 @app.route('/')
 def index():
