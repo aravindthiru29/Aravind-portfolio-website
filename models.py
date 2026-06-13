@@ -261,7 +261,16 @@ def seed_default_content():
             'description': 'It converts your boring PDF into an amazing real book experience with smooth pageturn animations.',
             'image': 'img/gallery/img-6.png',
             'link': '/project-details.html',
-            'homepage_desc': 'CONVERT PDF TO REAL BOOK EXPERIENCE'
+            'homepage_desc': 'CONVERT PDF TO REAL BOOK EXPERIENCE',
+            'github_link': 'https://github.com/aravindthiru29',
+            'website_link': '',
+            'tech_stack': 'Flask, Python, JavaScript, HTML5, CSS3',
+            'date': 'January 2026',
+            'client': 'PERSONAL PROJECT',
+            'overview': 'The Flipbook Web App was designed to create an immersive reading experience for digital documents. By leveraging advanced CSS 3D transforms and JavaScript, we simulated the tactile feel of turning pages in a physical book.',
+            'challenge': 'Handling large PDF files while maintaining 60FPS animations was the primary hurdle. We implemented a custom tiling system to render pages on-demand, reducing memory overhead significantly.',
+            'solution': 'We used a combination of Web Workers for PDF parsing and GPU-accelerated CSS transforms for animations, achieving smooth page turns even on mobile devices.',
+            'gallery_images': []
         },
         {
             'title': 'STUDENT SCORE ANALYSIS',
@@ -269,7 +278,16 @@ def seed_default_content():
             'description': 'Comprehensive analysis of student performance using Python and data visualization libraries.',
             'image': 'img/gallery/img-4.png',
             'link': '/project-details.html',
-            'homepage_desc': 'DATA-DRIVEN REPORTS'
+            'homepage_desc': 'DATA-DRIVEN REPORTS',
+            'github_link': '',
+            'website_link': '',
+            'tech_stack': 'Python, Pandas, Matplotlib, Seaborn',
+            'date': '2025',
+            'client': 'ACADEMIC PROJECT',
+            'overview': 'A comprehensive data analysis project that processes student performance data to generate insightful reports and visualizations.',
+            'challenge': 'Processing and cleaning large datasets with inconsistent formatting while generating meaningful statistical insights.',
+            'solution': 'Built a robust data pipeline using Pandas for cleaning and transformation, with Matplotlib and Seaborn for creating publication-quality visualizations.',
+            'gallery_images': []
         },
         {
             'title': 'YOLOV8 OBJECT DETECTION',
@@ -277,7 +295,16 @@ def seed_default_content():
             'description': 'Real-time object detection and classification using the state-of-the-art YOLOv8 architecture.',
             'image': 'img/gallery/img-9.png',
             'link': '/project-details.html',
-            'homepage_desc': 'COMPUTER VISION APPLICATION'
+            'homepage_desc': 'COMPUTER VISION APPLICATION',
+            'github_link': '',
+            'website_link': '',
+            'tech_stack': 'Python, YOLOv8, OpenCV, PyTorch',
+            'date': '2025',
+            'client': 'ACADEMIC PROJECT',
+            'overview': 'Real-time object detection and classification using the state-of-the-art YOLOv8 architecture, capable of identifying multiple object classes with high accuracy.',
+            'challenge': 'Achieving real-time detection speeds while maintaining high accuracy across diverse object categories and varying lighting conditions.',
+            'solution': 'Fine-tuned the YOLOv8 model on a custom dataset with data augmentation techniques, optimizing inference time through model quantization.',
+            'gallery_images': []
         }
     ])
 

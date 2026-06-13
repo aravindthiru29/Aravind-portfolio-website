@@ -224,13 +224,28 @@ def admin_save(section):
         count = int(form.get('count', 0))
         items = []
         for i in range(count):
+            # Collect gallery images (up to 3)
+            gallery = []
+            for g in range(3):
+                img = form.get(f'gallery_{i}_{g}', '').strip()
+                if img:
+                    gallery.append(img)
             items.append({
                 'title': form.get(f'title_{i}', ''),
                 'category': form.get(f'category_{i}', ''),
                 'description': form.get(f'description_{i}', ''),
                 'image': form.get(f'image_{i}', ''),
                 'link': form.get(f'link_{i}', ''),
-                'homepage_desc': form.get(f'homepage_desc_{i}', '')
+                'homepage_desc': form.get(f'homepage_desc_{i}', ''),
+                'github_link': form.get(f'github_link_{i}', ''),
+                'website_link': form.get(f'website_link_{i}', ''),
+                'tech_stack': form.get(f'tech_stack_{i}', ''),
+                'date': form.get(f'date_{i}', ''),
+                'client': form.get(f'client_{i}', ''),
+                'overview': form.get(f'overview_{i}', ''),
+                'challenge': form.get(f'challenge_{i}', ''),
+                'solution': form.get(f'solution_{i}', ''),
+                'gallery_images': gallery
             })
         set_content('projects', items)
 
@@ -339,7 +354,7 @@ def admin_add_item(section):
         data = []
 
     templates = {
-        'projects': {'title': 'NEW PROJECT', 'category': 'CATEGORY', 'description': 'Project description...', 'image': 'img/gallery/img-6.png', 'link': '#', 'homepage_desc': 'SHORT DESCRIPTION'},
+        'projects': {'title': 'NEW PROJECT', 'category': 'CATEGORY', 'description': 'Project description...', 'image': 'img/gallery/img-6.png', 'link': '#', 'homepage_desc': 'SHORT DESCRIPTION', 'github_link': '', 'website_link': '', 'tech_stack': '', 'date': '', 'client': 'PERSONAL PROJECT', 'overview': '', 'challenge': '', 'solution': '', 'gallery_images': []},
         'mini_projects': {'title': 'NEW MINI PROJECT', 'category': 'AI GAME', 'image': 'img/gallery/img-6.png', 'link': '#'},
         'education': {'period': '2024 - 2025', 'type': 'DEGREE', 'title': 'NEW DEGREE', 'institution': 'Institution Name', 'description': 'Description...'},
         'experience': {'period': '2024 - PRESENT', 'type': 'JOB', 'title': 'NEW ROLE', 'company': 'Company Name', 'description': 'Description...'},

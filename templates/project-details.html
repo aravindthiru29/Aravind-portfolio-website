@@ -2,43 +2,300 @@
 
 {% block title %}{{ project.title }} - Aravind{% endblock %}
 
+{% block head %}
+<style>
+    .project-hero {
+        padding-top: 160px;
+        padding-bottom: 60px;
+    }
+    .project-badge {
+        display: inline-block;
+        background: var(--accent-red);
+        color: #fff;
+        padding: 6px 18px;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+    }
+    .project-cover {
+        width: 100%;
+        max-height: 520px;
+        object-fit: cover;
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .project-section-title {
+        font-size: 1.1rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--accent-red);
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid rgba(255,255,255,0.06);
+    }
+    .project-text {
+        font-size: 1.05rem;
+        line-height: 1.8;
+        color: rgba(255,255,255,0.7);
+    }
+    .detail-sidebar {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 16px;
+        padding: 32px;
+        position: sticky;
+        top: 100px;
+    }
+    .detail-item {
+        margin-bottom: 24px;
+    }
+    .detail-item:last-child {
+        margin-bottom: 0;
+    }
+    .detail-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.4);
+        margin-bottom: 6px;
+    }
+    .detail-value {
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: #fff;
+    }
+    .project-link-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    .btn-github {
+        background: #fff;
+        color: #000;
+    }
+    .btn-github:hover {
+        background: #e0e0e0;
+        color: #000;
+        transform: translateY(-2px);
+    }
+    .btn-live {
+        background: var(--accent-red);
+        color: #fff;
+    }
+    .btn-live:hover {
+        filter: brightness(1.15);
+        transform: translateY(-2px);
+    }
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+    }
+    .gallery-img {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.06);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        cursor: pointer;
+    }
+    .gallery-img:hover {
+        transform: scale(1.03);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: rgba(255,255,255,0.5);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        transition: color 0.3s ease;
+        margin-bottom: 32px;
+    }
+    .back-link:hover {
+        color: var(--accent-red);
+    }
+
+    /* Lightbox */
+    .lightbox-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.92);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+        cursor: zoom-out;
+    }
+    .lightbox-overlay.active {
+        display: flex;
+    }
+    .lightbox-overlay img {
+        max-width: 90vw;
+        max-height: 90vh;
+        border-radius: 12px;
+        box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Page Header -->
-<section class="v2-section pt-200 bg-darker">
-    <div class="container text-center">
-        <span class="badge-red mb-4">{{ project.category }}</span>
-        <h1 class="display-2 fw-black" data-aos="fade-up">{{ project.title }}</h1>
+<section class="project-hero bg-darker">
+    <div class="container">
+        <a href="/portfolio.html" class="back-link"><i class="bi bi-arrow-left"></i> Back to Projects</a>
+        <div class="text-center">
+            <span class="project-badge" data-aos="fade-down">{{ project.category }}</span>
+            <h1 class="display-2 fw-black" data-aos="fade-up">{{ project.title }}</h1>
+            {% if project.description %}
+            <p class="text-gray fs-5 mt-3 mx-auto" style="max-width:700px;" data-aos="fade-up" data-aos-delay="100">{{ project.description }}</p>
+            {% endif %}
+        </div>
     </div>
 </section>
 
-<!-- Project Layout -->
+<!-- Cover Image -->
+<section class="v2-section pt-0" style="margin-top:-20px;">
+    <div class="container" data-aos="zoom-in">
+        <img src="{{ project.image if project.image.startswith('/') or project.image.startswith('http') else url_for('static', filename=project.image) }}" 
+            alt="{{ project.title }}" class="project-cover">
+    </div>
+</section>
+
+<!-- Project Content -->
 <section class="v2-section">
     <div class="container">
         <div class="row">
+            <!-- Main Content -->
             <div class="col-lg-8" data-aos="fade-right">
-                <img src="{{ project.image if project.image.startswith('/') or project.image.startswith('http') else url_for('static', filename=project.image) }}" alt="{{ project.title }}" class="img-fluid rounded-4 shadow-lg mb-5" style="width: 100%; max-height: 500px; object-fit: cover;">
-                <h2 class="mb-4">PROJECT OVERVIEW</h2>
-                <p class="fs-5 text-gray mb-5">{{ project.description }}</p>
+                {% if project.overview|default('', true) %}
+                <div class="mb-5">
+                    <h2 class="project-section-title"><i class="bi bi-journal-text me-2"></i>Project Overview</h2>
+                    <p class="project-text">{{ project.overview }}</p>
+                </div>
+                {% endif %}
+
+                {% if project.challenge|default('', true) %}
+                <div class="mb-5">
+                    <h2 class="project-section-title"><i class="bi bi-lightning-charge me-2"></i>The Challenge</h2>
+                    <p class="project-text">{{ project.challenge }}</p>
+                </div>
+                {% endif %}
+
+                {% if project.solution|default('', true) %}
+                <div class="mb-5">
+                    <h2 class="project-section-title"><i class="bi bi-check2-circle me-2"></i>The Solution</h2>
+                    <p class="project-text">{{ project.solution }}</p>
+                </div>
+                {% endif %}
+
+                <!-- Gallery -->
+                {% if project.gallery_images is defined and project.gallery_images|length > 0 %}
+                <div class="mb-5">
+                    <h2 class="project-section-title"><i class="bi bi-images me-2"></i>Gallery</h2>
+                    <div class="gallery-grid">
+                        {% for img in project.gallery_images %}
+                        {% if img %}
+                        <img src="{{ img if img.startswith('/') or img.startswith('http') else url_for('static', filename=img) }}" 
+                            alt="{{ project.title }} screenshot {{ loop.index }}" class="gallery-img" onclick="openLightbox(this.src)">
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
             </div>
             
+            <!-- Sidebar -->
             <div class="col-lg-4" data-aos="fade-left">
-                <div class="v2-sidebar p-5 bg-darker rounded-4 position-sticky" style="top: 120px;">
-                    <h4 class="text-red mb-4">DETAILS</h4>
-                    <div class="mb-4">
-                        <span class="text-gray small">CATEGORY</span>
-                        <p class="fw-bold">{{ project.category }}</p>
+                <div class="detail-sidebar">
+                    <h4 class="text-red mb-4" style="font-weight:800;letter-spacing:1px;">PROJECT INFO</h4>
+                    
+                    {% if project.client|default('', true) %}
+                    <div class="detail-item">
+                        <div class="detail-label">Client</div>
+                        <p class="detail-value">{{ project.client }}</p>
                     </div>
-                    <div class="mb-4">
-                        <span class="text-gray small">PROJECT</span>
-                        <p class="fw-bold">{{ project.title }}</p>
-                    </div>
-                    {% if project.link and project.link != '#' and project.link.startswith('http') %}
-                    <a href="{{ project.link }}" target="_blank" class="v2-btn w-100 text-center">LIVE DEMO</a>
                     {% endif %}
-                    <a href="/portfolio.html" class="v2-btn v2-btn-outline w-100 text-center mt-3">← BACK TO PROJECTS</a>
+
+                    <div class="detail-item">
+                        <div class="detail-label">Category</div>
+                        <p class="detail-value">{{ project.category }}</p>
+                    </div>
+
+                    {% if project.tech_stack|default('', true) %}
+                    <div class="detail-item">
+                        <div class="detail-label">Tech Stack</div>
+                        <p class="detail-value">{{ project.tech_stack }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if project.date|default('', true) %}
+                    <div class="detail-item">
+                        <div class="detail-label">Date</div>
+                        <p class="detail-value">{{ project.date }}</p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Action Buttons -->
+                    <div style="margin-top:28px;display:flex;flex-direction:column;gap:12px;">
+                        {% if project.github_link|default('', true) %}
+                        <a href="{{ project.github_link }}" target="_blank" class="project-link-btn btn-github">
+                            <i class="fab fa-github"></i> View on GitHub
+                        </a>
+                        {% endif %}
+                        {% if project.website_link|default('', true) %}
+                        <a href="{{ project.website_link }}" target="_blank" class="project-link-btn btn-live">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        {% endif %}
+                    </div>
+
+                    <div style="margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
+                        <a href="/portfolio.html" style="color:rgba(255,255,255,0.4);text-decoration:none;font-size:0.8rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;">
+                            <i class="bi bi-arrow-left me-1"></i> All Projects
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Lightbox Overlay -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <img src="" alt="Gallery preview" id="lightbox-img">
+</div>
+
+<script>
+function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+}
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+});
+</script>
 {% endblock %}
