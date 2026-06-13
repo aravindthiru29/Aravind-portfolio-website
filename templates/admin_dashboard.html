@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — Portfolio</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body class="admin-body">
+<div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="admin-sidebar-brand">
+            <div class="admin-logo-icon">A</div>
+            <h2><span>Admin</span> Panel</h2>
+            <small>Portfolio CMS</small>
+        </div>
+        <div class="sidebar-section-label">Content</div>
+        <ul class="sidebar-nav">
+            <li><a href="#" class="active" onclick="showTab('hero')"><i class="fas fa-home"></i> Hero</a></li>
+            <li><a href="#" onclick="showTab('about')"><i class="fas fa-user"></i> About</a></li>
+            <li><a href="#" onclick="showTab('education')"><i class="fas fa-graduation-cap"></i> Education</a></li>
+            <li><a href="#" onclick="showTab('experience')"><i class="fas fa-briefcase"></i> Experience</a></li>
+            <li><a href="#" onclick="showTab('skills')"><i class="fas fa-code"></i> Skills</a></li>
+            <li><a href="#" onclick="showTab('projects')"><i class="fas fa-rocket"></i> Projects</a></li>
+            <li><a href="#" onclick="showTab('mini_projects')"><i class="fas fa-gamepad"></i> Mini Projects</a></li>
+            <li><a href="#" onclick="showTab('blog')"><i class="fas fa-blog"></i> Blog Posts</a></li>
+            <li><a href="#" onclick="showTab('contact')"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li><a href="#" onclick="showTab('social')"><i class="fas fa-share-alt"></i> Social Links</a></li>
+            <li><a href="#" onclick="showTab('stats')"><i class="fas fa-chart-bar"></i> Stats</a></li>
+        </ul>
+        <div class="sidebar-section-label">Settings</div>
+        <ul class="sidebar-nav">
+            <li><a href="#" onclick="showTab('site')"><i class="fas fa-globe"></i> Site Meta</a></li>
+            <li><a href="#" onclick="showTab('password')"><i class="fas fa-key"></i> Password</a></li>
+            <li><a href="{{ url_for('admin_logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main -->
+    <div class="admin-main">
+        <div class="admin-topbar">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <button class="mobile-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 id="page-title">Dashboard</h1>
+            </div>
+            <div class="admin-topbar-actions">
+                <a href="/" target="_blank" class="admin-btn admin-btn-outline admin-btn-sm">
+                    <i class="fas fa-external-link-alt"></i> View Site
+                </a>
+            </div>
+        </div>
+        <div class="admin-content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}{% for cat, msg in messages %}
+            <div class="admin-alert admin-alert-{{ cat }}"><i class="fas fa-info-circle"></i> {{ msg }}</div>
+            {% endfor %}{% endif %}{% endwith %}
+
+            <!-- HERO TAB -->
+            <div class="admin-tab-content active" id="tab-hero">
+                <form method="POST" action="{{ url_for('admin_save', section='hero') }}">
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3><i class="fas fa-home"></i> Hero Section</h3></div>
+                        <div class="admin-grid admin-grid-2">
+                            <div class="admin-input-group"><label>Badge Text</label>
+                                <input class="admin-input" name="badge" value="{{ content.hero.badge }}"/></div>
+                            <div class="admin-input-group"><label>Hero Image</label>
+                                <div style="display:flex;gap:12px;align-items:center;">
+                                    {% if content.hero.image %}<img src="{{ url_for('static', filename=content.hero.image) }}" class="img-preview-thumb"/>{% endif %}
+                                    <div style="flex:1;">
+                                        <input class="admin-input" name="image" value="{{ content.hero.image }}"/>
+                                        <div class="file-upload-zone" style="margin-top:8px;padding:12px;"><input type="file" accept="image/*" onchange="uploadFile(this, 'image')"><div class="upload-text"><i class="fas fa-cloud-upload-alt"></i> <span>Upload image</span></div><div class="file-name"></div></div>
+                                    </div>
+                                </div></div>
+                            <div class="admin-input-group"><label>Title Line 1</label>
+                                <input class="admin-input" name="title_line1" value="{{ content.hero.title_line1 }}"/></div>
+                            <div class="admin-input-group"><label>Title Highlight</label>
+                                <input class="admin-input" name="title_highlight" value="{{ content.hero.title_highlight }}"/></div>
+                            <div class="admin-input-group"><label>Title Line 2</label>
+                                <input class="admin-input" name="title_line2" value="{{ content.hero.title_line2 }}"/></div>
+                            <div class="admin-input-group"><label>CTA Primary</label>
+                                <input class="admin-input" name="cta_primary" value="{{ content.hero.cta_primary }}"/></div>
+                        </div>
+                        <div class="admin-input-group"><label>Description</label>
+                            <textarea class="admin-input" name="description" rows="3">{{ content.hero.description }}</textarea></div>
+                        <button type="submit" class="admin-btn"><i class="fas fa-save"></i> Save Hero</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- ABOUT TAB -->
+            <div class="admin-tab-content" id="tab-about">
+                <form method="POST" action="{{ url_for('admin_save', section='about_brief') }}">
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3><i class="fas fa-user"></i> About Brief (Homepage)</h3></div>
+                        <div class="admin-grid admin-grid-2">
+                            <div class="admin-input-group"><label>Title</label>
+                                <input class="admin-input" name="title" value="{{ content.about_brief.title }}"/></div>
+                            <div class="admin-input-group"><label>CTA Text</label>
+                                <input class="admin-input" name="cta_text" value="{{ content.about_brief.cta_text }}"/></div>
+                        </div>
+                        <div class="admin-input-group"><label>Subtitle</label>
+                            <textarea class="admin-input" name="subtitle" rows="2">{{ content.about_brief.subtitle }}</textarea></div>
+                        <div class="admin-input-group"><label>Description</label>
+                            <textarea class="admin-input" name="description" rows="2">{{ content.about_brief.description }}</textarea></div>
+                        <button type="submit" class="admin-btn"><i class="fas fa-save"></i> Save About Brief</button>
+                    </div>
+                </form>
+                <form method="POST" action="{{ url_for('admin_save', section='about_full') }}">
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3>About Page (Full)</h3></div>
+                        <div class="admin-grid admin-grid-2">
+                            <div class="admin-input-group"><label>Section Title</label>
+                                <input class="admin-input" name="section_title" value="{{ content.about_full.section_title }}"/></div>
+                            <div class="admin-input-group"><label>Subtitle</label>
+                                <input class="admin-input" name="subtitle" value="{{ content.about_full.subtitle }}"/></div>
+                            <div class="admin-input-group"><label>Years Experience</label>
+                                <input class="admin-input" name="years_exp" value="{{ content.about_full.years_exp }}"/></div>
+                            <div class="admin-input-group"><label>Years Label</label>
+                                <input class="admin-input" name="years_label" value="{{ content.about_full.years_label }}"/></div>
+                        </div>
+                        <div class="admin-input-group"><label>Section Subtitle</label>
+                            <textarea class="admin-input" name="section_subtitle" rows="2">{{ content.about_full.section_subtitle }}</textarea></div>
+                        {% for p in content.about_full.paragraphs %}
+                        <div class="admin-input-group"><label>Paragraph {{ loop.index }}</label>
+                            <textarea class="admin-input" name="paragraphs" rows="3">{{ p }}</textarea></div>
+                        {% endfor %}
+                        <div class="admin-grid admin-grid-2">
+                            <div class="admin-input-group"><label>Vision</label>
+                                <textarea class="admin-input" name="vision" rows="2">{{ content.about_full.vision }}</textarea></div>
+                            <div class="admin-input-group"><label>Mission</label>
+                                <textarea class="admin-input" name="mission" rows="2">{{ content.about_full.mission }}</textarea></div>
+                        </div>
+                        <div class="admin-grid admin-grid-2">
+                            <div class="admin-input-group"><label>Quote</label>
+                                <input class="admin-input" name="quote" value="{{ content.about_full.quote }}"/></div>
+                            <div class="admin-input-group"><label>Quote Author</label>
+                                <input class="admin-input" name="quote_author" value="{{ content.about_full.quote_author }}"/></div>
+                        </div>
+                        <button type="submit" class="admin-btn"><i class="fas fa-save"></i> Save About Page</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- EDUCATION TAB -->
+            <div class="admin-tab-content" id="tab-education">
+                <form method="POST" action="{{ url_for('admin_save', section='education') }}">
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3><i class="fas fa-graduation-cap"></i> Education</h3>
+                            <span class="badge">{{ content.education|length }} items</span></div>
+                        {% for edu in content.education %}
+                        <div class="admin-card" style="background:var(--admin-bg);">
+                            <div class="item-header"><span class="item-label">EDUCATION {{ loop.index }}</span>
+                                <form method="POST" action="{{ url_for('admin_delete_item', section='education', index=loop.index0) }}" onsubmit="return confirm('Delete?')" style="margin:0;"><button type="submit" class="btn-delete-item"><i class="fas fa-trash"></i> Delete</button></form></div>
+                            <div class="admin-grid admin-grid-2">
+                                <div class="admin-input-group"><label>Period</label>
+                                    <input class="admin-input" name="period_{{ loop.index0 }}" value="{{ edu.period }}"/></div>
+                                <div class="admin-input-group"><label>Type</label>
+                                    <input class="admin-input" name="type_{{ loop.index0 }}" value="{{ edu.type }}"/></div>
+                                <div class="admin-input-group"><label>Title</label>
+                                    <input class="admin-input" name="title_{{ loop.index0 }}" value="{{ edu.title }}"/></div>
+                                <div class="admin-input-group"><label>Institution</label>
+                                    <input class="admin-input" name="institution_{{ loop.index0 }}" value="{{ edu.institution }}"/></div>
+                            </div>
+                            <div class="admin-input-group"><label>Description</label>
+                                <textarea class="admin-input" name="description_{{ loop.index0 }}" rows="2">{{ edu.description }}</textarea></div>
+                        </div>
+                        {% endfor %}
+                        <input type="hidden" name="count" value="{{ content.education|length }}"/>
+                        <button type="submit" class="admin-btn"><i class="fas fa-save"></i> Save Education</button>
+                    </div>
+                </form>
+                <form method="POST" action="{{ url_for('admin_add_item', section='education') }}"><button type="submit" class="btn-add-new"><i class="fas fa-plus"></i> Add Education</button></form>
+            </div>
+
+            <!-- EXPERIENCE TAB -->
+            <div class="admin-tab-content" id="tab-experience">
+                <form method="POST" action="{{ url_for('admin_save', section='experience') }}">
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3><i class="fas fa-briefcase"></i> Experience</h3></div>
+                        {% for exp in content.experience %}
+                        <div class="admin-card" style="background:var(--admin-bg);">
+                            <div class="item-header"><span class="item-label">EXPERIENCE {{ loop.index }}</span>
+                                <form method="POST" action="{{ url_for('admin_delete_item', section='experience', index=loop.index0) }}" onsubmit="return confirm('Delete?')" style="margin:0;"><button type="submit" class="btn-delete-item"><i class="fas fa-trash"></i> Delete</button></form></div>
+                            <div class="admin-grid admin-grid-2">
+                                <div class="admin-input-group"><label>Period</label>
+                                    <input class="admin-input" name="period_{{ loop.index0 }}" value="{{ exp.period }}"/></div>
+                                <div class="admin-input-group"><label>Type</label>
+                                    <input class="admin-input" name="type_{{ loop.index0 }}" value="{{ exp.type }}"/></div>
+                                <div class="admin-input-group"><label>Title</label>
+                                    <input class="admin-input" name="title_{{ loop.index0 }}" value="{{ exp.title }}"/></div>
+                                <div class="admin-input-group"><label>Company</label>
+                                    <input class="admin-input" name="company_{{ loop.index0 }}" value="{{ exp.company }}"/></div>
+                            </div>
+                            <div class="admin-input-group"><label>Description</label>
+                                <textarea class="admin-input" name="description_{{ loop.index0 }}" rows="2">{{ exp.description }}</textarea></div>
+                        </div>
+                        {% endfor %}
+                        <input type="hidden" name="count" value="{{ content.experience|length }}"/>
+                        <button type="submit" class="admin-btn"><i class="fas fa-save"></i> Save Experience</button>
+                    </div>
+                </form>
+                <form method="POST" action="{{ url_for('admin_add_item', section='experience') }}"><button type="submit" class="btn-add-new"><i class="fas fa-plus"></i> Add Experience</button></form>
+            </div>
+
+            <!-- SKILLS TAB -->
+            <div class="admin-tab-content" id="tab-skills">
+                <form method="POST" action="{{ url_for('admin_save', section='skills') }}">
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3><i class="fas fa-code"></i> Skills / Toolkit</h3></div>
+                        <div class="admin-grid admin-grid-3">
+                            {% for skill in content.skills %}
+                            <div class="admin-card" style="background:var(--admin-bg);padding:16px;">
+                                <div class="admin-input-group mb-0"><label>Name</label>
+                                    <input class="admin-input" name="name_{{ loop.index0 }}" value="{{ skill.name }}"/></div>
+                                <div class="admin-input-group mb-0" style="margin-top:8px;"><label>Icon Class</label>
+                                    <input class="admin-input" name="icon_{{ loop.index0 }}" value="{{ skill.icon }}"/></div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <input type="hidden" name="count" value="{{ content.skills|length }}"/>
+                        <button type="submit" class="admin-btn" style="margin-top:16px;"><i class="fas fa-save"></i> Save Skills</button>
+                    </div>
+                </form>
+                <form method="POST" action="{{ url_for('admin_add_item', section='skills') }}"><button type="submit" class="btn-add-new"><i class="fas fa-plus"></i> Add Skill</button></form>
+            </div>
+
+            <!-- PROJECTS TAB -->
+            <div class="admin-tab-content" id="tab-projects">
+                <form method="POST" action="{{ url_for('admin_save', section='projects') }}">
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3><i class="fas fa-rocket"></i> Projects</h3>
+                            <span class="badge">{{ content.projects|length }} projects</span></div>
+                        {% for proj in content.projects %}
+                        <div class="admin-card" style="background:var(--admin-bg);">
+                            <div class="item-header">
+                                <span class="item-label">PROJECT {{ loop.index }}</span>
+                                <form method="POST" action="{{ url_for('admin_delete_item', section='projects', index=loop.index0) }}" onsubmit="return confirm('Delete this project?')" style="margin:0;">
+                                    <button type="submit" class="btn-delete-item"><i class="fas fa-trash"></i> Delete</button>
+                                </form>
+                            </div>
+                            <div class="admin-grid admin-grid-2">
+                                <div class="admin-input-group"><label>Title</label>
+                                    <input class="admin-input" name="title_{{ loop.index0 }}" value="{{ proj.title }}"/></div>
+                                <div class="admin-input-group"><label>Category</label>
+                                    <input class="admin-input" name="category_{{ loop.index0 }}" value="{{ proj.category }}"/></div>
+                                <div class="admin-input-group"><label>Image</label>
+                                    <div style="display:flex;gap:12px;align-items:center;">
+                                        {% if proj.image %}<img src="{{ url_for('static', filename=proj.image) }}" class="img-preview-thumb"/>{% endif %}
+                                        <div style="flex:1;">
+                                            <input class="admin-input img-path-input" name="image_{{ loop.index0 }}" value="{{ proj.image }}"/>
+                                            <div class="file-upload-zone" style="margin-top:8px;padding:12px;">
+                                                <input type="file" accept="image/*" onchange="uploadFile(this, 'image_{{ loop.index0 }}')">
+                                                <div class="upload-text"><i class="fas fa-cloud-upload-alt"></i> <span>Upload image</span></div>
+                                                <div class="file-name"></div>
+                                            </div>
+                                        </div>
+                                    </div></div>
+                                <div class="admin-input-group"><label>Link</label>
+                                    <input class="admin-input" name="link_{{ loop.index0 }}" value="{{ proj.link }}"/></div>
+                            </div>
+                            <div class="admin-input-group"><label>Description</label>
+                                <textarea class="admin-input" name="description_{{ loop.index0 }}" rows="2">{{ proj.description }}</textarea></div>
+                            <div class="admin-input-group"><label>Homepage Short Desc</label>
+                                <input class="admin-input" name="homepage_desc_{{ loop.index0 }}" value="{{ proj.homepage_desc }}"/></div>
+                        </div>
+                        {% endfor %}
+                        <input type="hidden" name="count" value="{{ content.projects|length }}"/>
+                        <button type="submit" class="admin-btn"><i class="fas fa-save"></i> Save Projects</button>
+                    </div>
+                </form>
+                <form method="POST" action="{{ url_for('admin_add_item', section='projects') }}">
+                    <button type="submit" class="btn-add-new"><i class="fas fa-plus"></i> Add New Project</button>
+                </form>
+            </div>
+
+            <!-- MINI PROJECTS TAB -->
+            <div class="admin-tab-content" id="tab-mini_projects">
+                <form method="POST" action="{{ url_for('admin_save', section='mini_projects') }}">
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3><i class="fas fa-gamepad"></i> Mini Projects</h3></div>
+                        <div class="admin-grid admin-grid-2">
+                        {% for mp in content.mini_projects %}
+                            <div class="admin-card" style="background:var(--admin-bg);">
+                                <div class="item-header"><span class="item-label">MINI {{ loop.index }}</span>
+                                    <form method="POST" action="{{ url_for('admin_delete_item', section='mini_projects', index=loop.index0) }}" onsubmit="return confirm('Delete?')" style="margin:0;"><button type="submit" class="btn-delete-item"><i class="fas fa-trash"></i> Delete</button></form></div>
+                                <div class="admin-input-group"><label>Title</label>
+                                    <input class="admin-input" name="title_{{ loop.index0 }}" value="{{ mp.title }}"/></div>
+                                <div class="admin-input-group"><label>Category</label>
+                                    <input class="admin-input" name="category_{{ loop.index0 }}" value="{{ mp.category }}"/></div>
+                                <div class="admin-input-group"><label>Image</label>
+                                    <div style="display:flex;gap:12px;align-items:center;">
+                                        {% if mp.image %}<img src="{{ url_for('static', filename=mp.image) }}" class="img-preview-thumb"/>{% endif %}
+                                        <div style="flex:1;"><input class="admin-input" name="image_{{ loop.index0 }}" value="{{ mp.image }}"/>
+                                            <div class="file-upload-zone" style="margin-top:8px;padding:12px;"><input type="file" accept="image/*" onchange="uploadFile(this, 'image_{{ loop.index0 }}')"><div class="upload-text"><i class="fas fa-cloud-upload-alt"></i> <span>Upload</span></div><div class="file-name"></div></div>
+                                        </div>
+                                    </div></div>
+                                <div class="admin-input-group"><label>Link</label>
+                                    <input class="admin-input" name="link_{{ loop.index0 }}" value="{{ mp.link }}"/></div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                        <input type="hidden" name="count" value="{{ content.mini_projects|length }}"/>
+                        <button type="submit" class="admin-btn" style="margin-top:16px;"><i class="fas fa-save"></i> Save Mini Projects</button>
+                    </div>
+                </form>
+                <form method="POST" action="{{ url_for('admin_add_item', section='mini_projects') }}"><button type="submit" class="btn-add-new"><i class="fas fa-plus"></i> Add Mini Project</button></form>
+            </div>
+
+            <!-- BLOG TAB -->
+            <div class="admin-tab-content" id="tab-blog">
+                <form method="POST" action="{{ url_for('admin_save', section='blog_posts') }}">
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3><i class="fas fa-blog"></i> Blog Posts</h3></div>
+                        {% for post in content.blog_posts %}
+                        <div class="admin-card" style="background:var(--admin-bg);">
+                            <div class="item-header"><span class="item-label">POST {{ loop.index }}</span>
+                                <form method="POST" action="{{ url_for('admin_delete_item', section='blog_posts', index=loop.index0) }}" onsubmit="return confirm('Delete this post?')" style="margin:0;"><button type="submit" class="btn-delete-item"><i class="fas fa-trash"></i> Delete</button></form></div>
+                            <div class="admin-grid admin-grid-2">
+                                <div class="admin-input-group"><label>Title</label>
+                                    <input class="admin-input" name="title_{{ loop.index0 }}" value="{{ post.title }}"/></div>
+                                <div class="admin-input-group"><label>Category</label>
+                                    <input class="admin-input" name="category_{{ loop.index0 }}" value="{{ post.category }}"/></div>
+                                <div class="admin-input-group"><label>Date</label>
+                                    <input class="admin-input" name="date_{{ loop.index0 }}" value="{{ post.date }}"/></div>
+                                <div class="admin-input-group"><label>Image</label>
+                                    <div style="display:flex;gap:12px;align-items:center;">
+                                        {% if post.image %}<img src="{{ url_for('static', filename=post.image) }}" class="img-preview-thumb"/>{% endif %}
+                                        <div style="flex:1;"><input class="admin-input" name="image_{{ loop.index0 }}" value="{{ post.image }}"/>
+                                            <div class="file-upload-zone" style="margin-top:8px;padding:12px;"><input type="file" accept="image/*" onchange="uploadFile(this, 'image_{{ loop.index0 }}')"><div class="upload-text"><i class="fas fa-cloud-upload-alt"></i> <span>Upload</span></div><div class="file-name"></div></div>
+                                        </div>
+                                    </div></div>
+                            </div>
+                            <div class="admin-input-group"><label>Excerpt</label>
+                                <textarea class="admin-input" name="excerpt_{{ loop.index0 }}" rows="2">{{ post.excerpt }}</textarea></div>
+                        </div>
+                        {% endfor %}
+                        <input type="hidden" name="count" value="{{ content.blog_posts|length }}"/>
+                        <button type="submit" class="admin-btn"><i class="fas fa-save"></i> Save Blog Posts</button>
+                    </div>
+                </form>
+                <form method="POST" action="{{ url_for('admin_add_item', section='blog_posts') }}"><button type="submit" class="btn-add-new"><i class="fas fa-plus"></i> Add Blog Post</button></form>
+            </div>
+
+            <!-- CONTACT TAB -->
+            <div class="admin-tab-content" id="tab-contact">
+                <form method="POST" action="{{ url_for('admin_save', section='contact') }}">
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3><i class="fas fa-envelope"></i> Contact Info</h3></div>
+                        <div class="admin-input-group"><label>Location</label>
+                            <input class="admin-input" name="location" value="{{ content.contact.location }}"/></div>
+                        <div class="admin-input-group"><label>Phone</label>
+                            <input class="admin-input" name="phone" value="{{ content.contact.phone }}"/></div>
+                        <div class="admin-input-group"><label>Email</label>
+                            <input class="admin-input" name="email" value="{{ content.contact.email }}"/></div>
+                        <button type="submit" class="admin-btn"><i class="fas fa-save"></i> Save Contact</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- SOCIAL TAB -->
+            <div class="admin-tab-content" id="tab-social">
+                <form method="POST" action="{{ url_for('admin_save', section='social_links') }}">
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3><i class="fas fa-share-alt"></i> Social Links</h3></div>
+                        <div class="admin-grid admin-grid-2">
+                            <div class="admin-input-group"><label><i class="fab fa-github"></i> GitHub</label>
+                                <input class="admin-input" name="github" value="{{ content.social_links.github }}"/></div>
+                            <div class="admin-input-group"><label><i class="fab fa-linkedin"></i> LinkedIn</label>
+                                <input class="admin-input" name="linkedin" value="{{ content.social_links.linkedin }}"/></div>
+                            <div class="admin-input-group"><label><i class="fas fa-code"></i> LeetCode</label>
+                                <input class="admin-input" name="leetcode" value="{{ content.social_links.leetcode }}"/></div>
+                            <div class="admin-input-group"><label><i class="fab fa-instagram"></i> Instagram</label>
+                                <input class="admin-input" name="instagram" value="{{ content.social_links.instagram }}"/></div>
+                        </div>
+                        <button type="submit" class="admin-btn"><i class="fas fa-save"></i> Save Social Links</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- STATS TAB -->
+            <div class="admin-tab-content" id="tab-stats">
+                <form method="POST" action="{{ url_for('admin_save', section='stats') }}">
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3><i class="fas fa-chart-bar"></i> Stats</h3></div>
+                        <div class="admin-grid admin-grid-3">
+                            <div><div class="admin-input-group"><label>Projects Count</label>
+                                <input class="admin-input" name="projects_count" value="{{ content.stats.projects_count }}"/></div>
+                            <div class="admin-input-group"><label>Projects Label</label>
+                                <input class="admin-input" name="projects_label" value="{{ content.stats.projects_label }}"/></div></div>
+                            <div><div class="admin-input-group"><label>Experience Count</label>
+                                <input class="admin-input" name="experience_count" value="{{ content.stats.experience_count }}"/></div>
+                            <div class="admin-input-group"><label>Experience Label</label>
+                                <input class="admin-input" name="experience_label" value="{{ content.stats.experience_label }}"/></div></div>
+                            <div><div class="admin-input-group"><label>Dedication Count</label>
+                                <input class="admin-input" name="dedication_count" value="{{ content.stats.dedication_count }}"/></div>
+                            <div class="admin-input-group"><label>Dedication Label</label>
+                                <input class="admin-input" name="dedication_label" value="{{ content.stats.dedication_label }}"/></div></div>
+                        </div>
+                        <button type="submit" class="admin-btn"><i class="fas fa-save"></i> Save Stats</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- SITE META TAB -->
+            <div class="admin-tab-content" id="tab-site">
+                <form method="POST" action="{{ url_for('admin_save', section='site_meta') }}">
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3><i class="fas fa-globe"></i> Site Metadata</h3></div>
+                        <div class="admin-input-group"><label>Site Name</label>
+                            <input class="admin-input" name="site_name" value="{{ content.site_meta.site_name }}"/></div>
+                        <div class="admin-input-group"><label>Copyright Text</label>
+                            <input class="admin-input" name="copyright" value="{{ content.site_meta.copyright }}"/></div>
+                        <div class="admin-input-group"><label>Footer Title</label>
+                            <input class="admin-input" name="footer_title" value="{{ content.site_meta.footer_title }}"/></div>
+                        <button type="submit" class="admin-btn"><i class="fas fa-save"></i> Save Site Meta</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- PASSWORD TAB -->
+            <div class="admin-tab-content" id="tab-password">
+                <form method="POST" action="{{ url_for('admin_change_password') }}">
+                    <div class="admin-card" style="max-width:500px;">
+                        <div class="admin-card-header"><h3><i class="fas fa-key"></i> Change Password</h3></div>
+                        <div class="admin-input-group"><label>Current Password</label>
+                            <input type="password" class="admin-input" name="current_password" required/></div>
+                        <div class="admin-input-group"><label>New Password</label>
+                            <input type="password" class="admin-input" name="new_password" required minlength="6"/></div>
+                        <div class="admin-input-group"><label>Confirm New Password</label>
+                            <input type="password" class="admin-input" name="confirm_password" required/></div>
+                        <button type="submit" class="admin-btn"><i class="fas fa-save"></i> Update Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const tabTitles = {hero:'Hero Section',about:'About',education:'Education',experience:'Experience',skills:'Skills',projects:'Projects',mini_projects:'Mini Projects',blog:'Blog Posts',contact:'Contact Info',social:'Social Links',stats:'Stats',site:'Site Metadata',password:'Change Password'};
+function showTab(name) {
+    document.querySelectorAll('.admin-tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    document.getElementById('page-title').textContent = tabTitles[name] || 'Dashboard';
+    event.target.closest('a').classList.add('active');
+    if(window.innerWidth < 768) document.getElementById('sidebar').classList.remove('open');
+}
+function uploadFile(input, targetName) {
+    const file = input.files[0];
+    if (!file) return;
+    const fd = new FormData();
+    fd.append('file', file);
+    const zone = input.closest('.file-upload-zone');
+    zone.querySelector('.upload-text').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+    fetch('{{ url_for("admin_upload") }}', {method:'POST', body:fd})
+    .then(r => r.json()).then(data => {
+        if (data.path) {
+            document.querySelector('input[name="'+targetName+'"]').value = data.path;
+            zone.querySelector('.upload-text').innerHTML = '<i class="fas fa-check" style="color:var(--success)"></i> Uploaded!';
+            const fn = zone.querySelector('.file-name');
+            fn.textContent = data.filename; fn.style.display = 'block';
+        } else {
+            zone.querySelector('.upload-text').innerHTML = '<i class="fas fa-times" style="color:var(--danger)"></i> ' + (data.error||'Error');
+        }
+    }).catch(() => { zone.querySelector('.upload-text').innerHTML = 'Upload failed'; });
+}
+</script>
+</body>
+</html>

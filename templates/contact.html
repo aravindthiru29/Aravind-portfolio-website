@@ -22,7 +22,7 @@
                     </div>
                     <div>
                         <h4 class="mb-0">LOCATION</h4>
-                        <p class="text-gray mb-0">Odugathur, Vellore, Tamil Nadu</p>
+                        <p class="text-gray mb-0">{{ c.contact.location }}</p>
                     </div>
                 </div>
                 <div class="d-flex align-items-center mb-4">
@@ -31,7 +31,7 @@
                     </div>
                     <div>
                         <h4 class="mb-0">PHONE</h4>
-                        <p class="text-gray mb-0">+91 86102 67200</p>
+                        <p class="text-gray mb-0">{{ c.contact.phone }}</p>
                     </div>
                 </div>
                 <div class="d-flex align-items-center mb-4">
@@ -40,7 +40,7 @@
                     </div>
                     <div>
                         <h4 class="mb-0">EMAIL</h4>
-                        <p class="text-gray mb-0">aravthiru131@example.com</p>
+                        <p class="text-gray mb-0">{{ c.contact.email }}</p>
                     </div>
                 </div>
             </div>
@@ -87,8 +87,13 @@
         <h2 class="display-3 fw-black mb-4">READY TO COLLABORATE?</h2>
         <p class="fs-4 mb-5">Let's build something amazing together.</p>
         <div class="d-flex gap-4">
+            {% if c is defined and c.social_links is defined %}
+            <a href="{{ c.social_links.github }}" class="text-black fs-2"><i class="fab fa-github"></i></a>
+            <a href="{{ c.social_links.linkedin }}" class="text-black fs-2"><i class="fab fa-linkedin"></i></a>
+            {% else %}
             <a href="https://github.com/aravindthiru29" class="text-black fs-2"><i class="fab fa-github"></i></a>
             <a href="https://www.linkedin.com/in/aravind-t-b724012b4/" class="text-black fs-2"><i class="fab fa-linkedin"></i></a>
+            {% endif %}
         </div>
     </div>
 </section>
@@ -96,37 +101,8 @@
 
 {% block head %}
 <style>
-    .form-control-v2 {
-        background: #111;
-        border: 1px solid #222;
-        padding: 20px;
-        color: white;
-        width: 100%;
-        transition: all 0.3s;
-        border-radius: 0;
-        font-family: 'Poppins', sans-serif;
-    }
-    .form-control-v2:focus {
-        outline: none;
-        border-color: var(--accent-red, #ff2d2d);
-        background: #151515;
-    }
-    .v2-btn {
-        background-color: #ff2d2d;
-        color: white;
-        border: none;
-        font-weight: 800;
-        letter-spacing: 1px;
-        transition: all 0.3s;
-        text-transform: uppercase;
-    }
-    .v2-btn:hover {
-        background-color: #d21f1f;
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(255, 45, 45, 0.2);
-    }
-    .bg-darker {
-        background-color: #080808;
-    }
+    .form-control-v2 { background: #111; border: 1px solid #222; padding: 20px; color: white; width: 100%; transition: all 0.3s; border-radius: 0; font-family: 'Poppins', sans-serif; }
+    .form-control-v2:focus { outline: none; border-color: var(--accent-red, #ff2d2d); background: #151515; }
+    .bg-darker { background-color: #080808; }
 </style>
 {% endblock %}

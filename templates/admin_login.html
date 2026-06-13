@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login — Aravind Portfolio</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="admin-body">
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="admin-logo-icon">A</div>
+            <h1>Admin Panel</h1>
+            <div class="accent-bar"></div>
+            <p class="subtitle">Sign in to manage your portfolio content</p>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="admin-alert admin-alert-{{ category }}">
+                    <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %}"></i>
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="{{ url_for('admin_login') }}" autocomplete="off">
+                <div class="admin-input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" class="admin-input" placeholder="Enter username" required autofocus />
+                </div>
+                <div class="admin-input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="admin-input" placeholder="Enter password" required />
+                </div>
+                <button type="submit" class="admin-btn admin-btn-block" style="margin-top: 8px;">
+                    <i class="fas fa-lock"></i> Sign In
+                </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 24px;">
+                <a href="/" style="color: var(--text-muted); font-size: 0.8rem; text-decoration: none;">
+                    <i class="fas fa-arrow-left"></i> Back to Portfolio
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

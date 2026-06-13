@@ -15,33 +15,20 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
-                <!-- Blog Item 1 -->
+                {% for post in c.blog_posts %}
                 <article class="mb-100" data-aos="fade-up">
                     <div class="v2-blog-img mb-4 overflow-hidden rounded-4">
-                        <img src="{{ url_for('static', filename='img/gallery/img-6.png') }}" alt="Blog 1" class="img-fluid w-100" style="transition: transform 0.5s;">
+                        <img src="{{ url_for('static', filename=post.image) }}" alt="{{ post.title }}" class="img-fluid w-100" style="transition: transform 0.5s;">
                     </div>
                     <div class="d-flex gap-4 mb-3 text-red fw-bold">
-                        <span>AI ENGINEERING</span>
-                        <span>APRIL 20, 2026</span>
+                        <span>{{ post.category }}</span>
+                        <span>{{ post.date }}</span>
                     </div>
-                    <h2 class="mb-3"><a href="/blog-details.html" class="text-white text-decoration-none">THE FUTURE OF GENERATIVE AI IN 2026</a></h2>
-                    <p class="text-gray fs-5 mb-4">Exploring how transformer models are evolving to handle multimodal data more efficiently than ever before...</p>
-                    <a href="/blog-details.html" class="v2-btn py-2 px-4 shadow-sm" style="font-size: 0.8rem;">READ MORE</a>
+                    <h2 class="mb-3"><a href="{{ post.link }}" class="text-white text-decoration-none">{{ post.title }}</a></h2>
+                    <p class="text-gray fs-5 mb-4">{{ post.excerpt }}</p>
+                    <a href="{{ post.link }}" class="v2-btn py-2 px-4 shadow-sm" style="font-size: 0.8rem;">READ MORE</a>
                 </article>
-
-                <!-- Blog Item 2 -->
-                <article class="mb-100" data-aos="fade-up">
-                    <div class="v2-blog-img mb-4 overflow-hidden rounded-4">
-                        <img src="{{ url_for('static', filename='img/gallery/img-6.png') }}" alt="Blog 2" class="img-fluid w-100" style="transition: transform 0.5s;">
-                    </div>
-                    <div class="d-flex gap-4 mb-3 text-red fw-bold">
-                        <span>DEVELOPMENT</span>
-                        <span>MARCH 15, 2026</span>
-                    </div>
-                    <h2 class="mb-3"><a href="/blog-details.html" class="text-white text-decoration-none">SCALABLE ARCHITECTURES FOR PERSONAL PROJECTS</a></h2>
-                    <p class="text-gray fs-5 mb-4">Why choosing the right foundation is critical for long-term maintainability of your portfolio...</p>
-                    <a href="/blog-details.html" class="v2-btn py-2 px-4 shadow-sm" style="font-size: 0.8rem;">READ MORE</a>
-                </article>
+                {% endfor %}
             </div>
 
             <!-- Sidebar -->
@@ -67,12 +54,8 @@
 
 {% block head %}
 <style>
-    .v2-blog-img:hover img {
-        transform: scale(1.05);
-    }
-    .hover-red:hover {
-        color: var(--accent-red) !important;
-    }
+    .v2-blog-img:hover img { transform: scale(1.05); }
+    .hover-red:hover { color: var(--accent-red) !important; }
     .list-none { list-style: none; }
 </style>
 {% endblock %}
