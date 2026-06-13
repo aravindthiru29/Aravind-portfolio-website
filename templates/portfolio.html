@@ -17,7 +17,7 @@
             {% for proj in c.projects %}
             <div class="col-lg-6" data-aos="fade-up" {% if not loop.first %}data-aos-delay="{{ loop.index0 * 100 }}"{% endif %}>
                 <div class="v2-card shadow-lg bg-dark rounded-4 overflow-hidden h-100">
-                    <img src="{{ url_for('static', filename=proj.image) }}" alt="{{ proj.title }}"
+                    <img src="{{ proj.image if proj.image.startswith('/') or proj.image.startswith('http') else url_for('static', filename=proj.image.replace('img/uploads/', '../uploads/') if 'img/uploads/' in proj.image else proj.image) }}" alt="{{ proj.title }}"
                         class="img-fluid w-100" style="height: 300px; object-fit: cover;">
                     <div class="p-5">
                         <span class="text-red fw-bold">{{ proj.category }}</span>
@@ -44,7 +44,7 @@
             {% for mp in c.mini_projects %}
             <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
                 <div class="v2-card shadow-lg bg-dark rounded-4 overflow-hidden h-100">
-                    <img src="{{ url_for('static', filename=mp.image) }}" alt="{{ mp.title }}" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                    <img src="{{ mp.image if mp.image.startswith('/') or mp.image.startswith('http') else url_for('static', filename=mp.image.replace('img/uploads/', '../uploads/') if 'img/uploads/' in mp.image else mp.image) }}" alt="{{ mp.title }}" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
                     <div class="p-4">
                         <span class="text-red fw-bold small">{{ mp.category }}</span>
                         <h4 class="mt-2 mb-3 h5">{{ mp.title }}</h4>

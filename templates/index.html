@@ -18,7 +18,7 @@
             </div>
             <div class="col-lg-5" data-aos="fade-left">
                 <div class="v2-hero-img">
-                    <img src="{{ url_for('static', filename=c.hero.image) }}" alt="Aravind">
+                    <img src="{{ c.hero.image if c.hero.image.startswith('/') or c.hero.image.startswith('http') else url_for('static', filename=c.hero.image.replace('img/uploads/', '../uploads/') if 'img/uploads/' in c.hero.image else c.hero.image) }}" alt="Aravind">
                 </div>
             </div>
         </div>

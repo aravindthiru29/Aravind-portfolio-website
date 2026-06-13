@@ -12,64 +12,98 @@ import shutil
 
 DB_FILENAME = 'db.sqlite3'
 LOCAL_DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), DB_FILENAME)
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
-if os.environ.get('VERCEL') == '1':
-    # On Vercel, the root is read-only. We must copy the bundled DB to /tmp to read/write.
-    DB_PATH = os.path.join('/tmp', DB_FILENAME)
-    if not os.path.exists(DB_PATH) and os.path.exists(LOCAL_DB_PATH):
-        shutil.copy2(LOCAL_DB_PATH, DB_PATH)
-else:
-    DB_PATH = LOCAL_DB_PATH
-
+if not DATABASE_URL:
+    if os.environ.get('VERCEL') == '1':
+        DB_PATH = os.path.join('/tmp', DB_FILENAME)
+        if not os.path.exists(DB_PATH) and os.path.exists(LOCAL_DB_PATH):
+            shutil.copy2(LOCAL_DB_PATH, DB_PATH)
+    else:
+        DB_PATH = LOCAL_DB_PATH
 
 def get_db():
-    """Get a database connection with row factory."""
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
+    if DATABASE_URL:
+        import psycopg2
+        from psycopg2.extras import DictCursor
+        conn = psycopg2.connect(DATABASE_URL, cursor_factory=DictCursor)
+        return conn, '%s'
+    else:
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+        return conn, '?'
 
+def execute_query(query, params=(), commit=False, fetchone=False, fetchall=False):
+    conn, placeholder = get_db()
+    if placeholder == '%s':
+        query = query.replace('?', '%s')
+    
+    cursor = conn.cursor()
+    try:
+        cursor.execute(query, params)
+        if commit:
+            conn.commit()
+        if fetchone:
+            result = cursor.fetchone()
+            return dict(result) if result else None
+        if fetchall:
+            results = cursor.fetchall()
+            return [dict(row) for row in results]
+        return True
+    finally:
+        cursor.close()
+        conn.close()
 
 def init_db():
     """Initialize the database tables and seed default data."""
-    conn = get_db()
-    cursor = conn.cursor()
-
-    # Admin users table
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS admin_users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL,
-            salt TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
-
-    # Portfolio content table — stores each section as a JSON blob
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS portfolio_content (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            section_key TEXT UNIQUE NOT NULL,
-            content TEXT NOT NULL,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
-
-    conn.commit()
+    if DATABASE_URL:
+        # PostgreSQL syntax
+        execute_query('''
+            CREATE TABLE IF NOT EXISTS admin_users (
+                id SERIAL PRIMARY KEY,
+                username VARCHAR(255) UNIQUE NOT NULL,
+                password_hash TEXT NOT NULL,
+                salt TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''', commit=True)
+        execute_query('''
+            CREATE TABLE IF NOT EXISTS portfolio_content (
+                id SERIAL PRIMARY KEY,
+                section_key VARCHAR(255) UNIQUE NOT NULL,
+                content TEXT NOT NULL,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''', commit=True)
+    else:
+        # SQLite syntax
+        execute_query('''
+            CREATE TABLE IF NOT EXISTS admin_users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                password_hash TEXT NOT NULL,
+                salt TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''', commit=True)
+        execute_query('''
+            CREATE TABLE IF NOT EXISTS portfolio_content (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                section_key TEXT UNIQUE NOT NULL,
+                content TEXT NOT NULL,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''', commit=True)
 
     # Seed default admin if none exists
-    existing = cursor.execute('SELECT id FROM admin_users LIMIT 1').fetchone()
-    if not existing:
+    if not execute_query('SELECT id FROM admin_users LIMIT 1', fetchone=True):
         admin_user = os.environ.get('ADMIN_USERNAME', 'admin')
         admin_pass = os.environ.get('ADMIN_PASSWORD', 'admin@1234')
         create_admin(admin_user, admin_pass)
 
     # Seed default content if none exists
-    existing_content = cursor.execute('SELECT id FROM portfolio_content LIMIT 1').fetchone()
-    if not existing_content:
+    if not execute_query('SELECT id FROM portfolio_content LIMIT 1', fetchone=True):
         seed_default_content()
-
-    conn.close()
 
 
 def hash_password(password, salt=None):
@@ -82,29 +116,17 @@ def hash_password(password, salt=None):
 
 def create_admin(username, password):
     """Create a new admin user."""
-    conn = get_db()
     hashed, salt = hash_password(password)
     try:
-        conn.execute(
-            'INSERT INTO admin_users (username, password_hash, salt) VALUES (?, ?, ?)',
-            (username, hashed, salt)
-        )
-        conn.commit()
+        execute_query('INSERT INTO admin_users (username, password_hash, salt) VALUES (?, ?, ?)', (username, hashed, salt), commit=True)
         return True
-    except sqlite3.IntegrityError:
+    except Exception:
         return False
-    finally:
-        conn.close()
 
 
 def verify_admin(username, password):
     """Verify admin credentials. Returns True/False."""
-    conn = get_db()
-    user = conn.execute(
-        'SELECT password_hash, salt FROM admin_users WHERE username = ?',
-        (username,)
-    ).fetchone()
-    conn.close()
+    user = execute_query('SELECT password_hash, salt FROM admin_users WHERE username = ?', (username,), fetchone=True)
     if not user:
         return False
     hashed, _ = hash_password(password, user['salt'])
@@ -113,26 +135,15 @@ def verify_admin(username, password):
 
 def change_admin_password(username, new_password):
     """Change admin password."""
-    conn = get_db()
     hashed, salt = hash_password(new_password)
-    conn.execute(
-        'UPDATE admin_users SET password_hash = ?, salt = ? WHERE username = ?',
-        (hashed, salt, username)
-    )
-    conn.commit()
-    conn.close()
+    execute_query('UPDATE admin_users SET password_hash = ?, salt = ? WHERE username = ?', (hashed, salt, username), commit=True)
 
 
 # ─── Content CRUD ───
 
 def get_content(section_key):
     """Get content for a section as a Python dict/list."""
-    conn = get_db()
-    row = conn.execute(
-        'SELECT content FROM portfolio_content WHERE section_key = ?',
-        (section_key,)
-    ).fetchone()
-    conn.close()
+    row = execute_query('SELECT content FROM portfolio_content WHERE section_key = ?', (section_key,), fetchone=True)
     if row:
         return json.loads(row['content'])
     return None
@@ -140,22 +151,18 @@ def get_content(section_key):
 
 def set_content(section_key, data):
     """Set content for a section (upsert)."""
-    conn = get_db()
     json_data = json.dumps(data, ensure_ascii=False)
-    conn.execute('''
+    # Both SQLite (3.24+) and PostgreSQL support ON CONFLICT
+    execute_query('''
         INSERT INTO portfolio_content (section_key, content, updated_at)
         VALUES (?, ?, CURRENT_TIMESTAMP)
-        ON CONFLICT(section_key) DO UPDATE SET content = ?, updated_at = CURRENT_TIMESTAMP
-    ''', (section_key, json_data, json_data))
-    conn.commit()
-    conn.close()
+        ON CONFLICT(section_key) DO UPDATE SET content = EXCLUDED.content, updated_at = CURRENT_TIMESTAMP
+    ''', (section_key, json_data), commit=True)
 
 
 def get_all_content():
     """Get all content sections as a dictionary."""
-    conn = get_db()
-    rows = conn.execute('SELECT section_key, content FROM portfolio_content').fetchall()
-    conn.close()
+    rows = execute_query('SELECT section_key, content FROM portfolio_content', fetchall=True)
     return {row['section_key']: json.loads(row['content']) for row in rows}
 
 

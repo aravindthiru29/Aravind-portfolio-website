@@ -18,7 +18,7 @@
                 {% for post in c.blog_posts %}
                 <article class="mb-100" data-aos="fade-up">
                     <div class="v2-blog-img mb-4 overflow-hidden rounded-4">
-                        <img src="{{ url_for('static', filename=post.image) }}" alt="{{ post.title }}" class="img-fluid w-100" style="transition: transform 0.5s;">
+                        <img src="{{ post.image if post.image.startswith('/') or post.image.startswith('http') else url_for('static', filename=post.image.replace('img/uploads/', '../uploads/') if 'img/uploads/' in post.image else post.image) }}" alt="{{ post.title }}" class="img-fluid w-100" style="transition: transform 0.5s;">
                     </div>
                     <div class="d-flex gap-4 mb-3 text-red fw-bold">
                         <span>{{ post.category }}</span>

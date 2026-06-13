@@ -305,21 +305,29 @@ def admin_save(section):
 @app.route('/admin/upload', methods=['POST'])
 @admin_required
 def admin_upload():
-    """Handle image file uploads. Returns JSON with the relative path."""
     if 'file' not in request.files:
-        return jsonify({'error': 'No file selected'}), 400
+        return jsonify({'error': 'No file part'}), 400
     file = request.files['file']
     if file.filename == '':
-        return jsonify({'error': 'No file selected'}), 400
-    if not allowed_file(file.filename):
-        return jsonify({'error': 'File type not allowed. Use: png, jpg, jpeg, gif, webp, svg'}), 400
-    # Generate unique filename to avoid collisions
-    ext = file.filename.rsplit('.', 1)[1].lower()
-    unique_name = f"{uuid.uuid4().hex[:12]}.{ext}"
-    safe_name = secure_filename(unique_name)
-    file.save(os.path.join(UPLOAD_FOLDER, safe_name))
-    relative_path = f"img/uploads/{safe_name}"
-    return jsonify({'path': relative_path, 'filename': safe_name})
+        return jsonify({'error': 'No selected file'}), 400
+    if file and allowed_file(file.filename):
+        if os.environ.get('CLOUDINARY_URL'):
+            import cloudinary
+            import cloudinary.uploader
+            upload_result = cloudinary.uploader.upload(file)
+            return jsonify({'path': upload_result['secure_url'], 'filename': file.filename})
+        else:
+            ext = file.filename.rsplit('.', 1)[1].lower()
+            filename = f"{secrets.token_hex(6)}.{ext}"
+            filepath = os.path.join(UPLOAD_FOLDER, filename)
+            file.save(filepath)
+            return jsonify({'path': f"/uploads/{filename}", 'filename': filename})
+    return jsonify({'error': 'Invalid file type'}), 400
+
+@app.route('/uploads/<filename>')
+def serve_upload(filename):
+    from flask import send_from_directory
+    return send_from_directory(UPLOAD_FOLDER, filename)
 
 
 @app.route('/admin/add/<section>', methods=['POST'])
