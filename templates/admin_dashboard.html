@@ -465,6 +465,21 @@ function uploadFile(input, targetName) {
             zone.querySelector('.upload-text').innerHTML = '<i class="fas fa-check" style="color:var(--success)"></i> Uploaded!';
             const fn = zone.querySelector('.file-name');
             fn.textContent = data.filename; fn.style.display = 'block';
+            
+            // Update the preview image immediately if it exists
+            const container = input.closest('div[style*="display:flex"]');
+            if (container) {
+                const imgPreview = container.querySelector('.img-preview-thumb');
+                if (imgPreview) {
+                    imgPreview.src = data.path;
+                } else {
+                    // Create one if it didn't exist
+                    const newImg = document.createElement('img');
+                    newImg.src = data.path;
+                    newImg.className = 'img-preview-thumb';
+                    container.insertBefore(newImg, container.firstChild);
+                }
+            }
         } else {
             zone.querySelector('.upload-text').innerHTML = '<i class="fas fa-times" style="color:var(--danger)"></i> ' + (data.error||'Error');
         }
