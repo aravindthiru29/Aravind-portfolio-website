@@ -51,7 +51,7 @@
 
         <div class="project-list mt-5">
             {% for proj in c.projects %}
-            <a href="{{ proj.link }}" class="v2-project-item" data-aos="fade-up" {% if not loop.first %}data-aos-delay="{{ loop.index0 * 100 }}"{% endif %}>
+            <a href="/portfolio.html" class="v2-project-item" data-aos="fade-up" {% if not loop.first %}data-aos-delay="{{ loop.index0 * 100 }}"{% endif %}>
                 <div>
                     <span class="text-red fw-bold">{{ '%02d'|format(loop.index) }}.</span>
                     <h3>{{ proj.title }}</h3>

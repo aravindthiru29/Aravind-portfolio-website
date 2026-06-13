@@ -390,6 +390,16 @@ def admin_change_password():
     return redirect(url_for('admin_dashboard'))
 
 
+# ─── Individual Project Detail ─────────────────────────────
+@app.route('/project/<int:index>')
+def project_detail(index):
+    content = get_all_content()
+    projects = content.get('projects', [])
+    if 0 <= index < len(projects):
+        return render_template('project-details.html', c=content, project=projects[index], project_index=index)
+    return redirect(url_for('index'))
+
+
 # ─── Dynamic Page Route ────────────────────────────────────
 @app.route('/<page>')
 def admins_views(page):  
