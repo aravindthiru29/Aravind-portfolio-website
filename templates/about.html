@@ -28,14 +28,14 @@
                         class="img-fluid grayscale hover-color shadow-lg rounded-4" style="transition: all 0.5s;">
                     <div class="position-absolute bottom-0 end-0 bg-red p-4 rounded-start-4 shadow-lg d-none d-md-block"
                         style="transform: translate(20px, 20px);">
-                        <h4 class="mb-0 text-white">{{ c.about_full.years_exp }}</h4>
-                        <p class="mb-0 text-white small">{{ c.about_full.years_label }}</p>
+                        <h4 class="mb-0" style="color: #fff;">{{ c.about_full.years_exp }}</h4>
+                        <p class="mb-0 small" style="color: #fff;">{{ c.about_full.years_label }}</p>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6" data-aos="fade-left">
                 <h2 class="text-red mb-4">{{ c.about_full.section_title }}</h2>
-                <p class="fs-4 text-white mb-4">{{ c.about_full.section_subtitle }}</p>
+                <p class="fs-4 mb-4">{{ c.about_full.section_subtitle }}</p>
 
                 <div class="text-gray lh-lg mb-5">
                     {% for p in c.about_full.paragraphs %}
@@ -45,11 +45,11 @@
 
                 <div class="row pt-4 border-top border-secondary">
                     <div class="col-md-6 mb-4">
-                        <h4 class="text-white mb-2">VISION</h4>
+                        <h4 class="mb-2">VISION</h4>
                         <p class="small text-gray">{{ c.about_full.vision }}</p>
                     </div>
                     <div class="col-md-6 mb-4">
-                        <h4 class="text-white mb-2">MISSION</h4>
+                        <h4 class="mb-2">MISSION</h4>
                         <p class="small text-gray">{{ c.about_full.mission }}</p>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                         <p class="text-gray small">{{ exp.type }}</p>
                     </div>
                     <div class="col-md-9">
-                        <h3 class="text-white">{{ exp.title }}</h3>
+                        <h3>{{ exp.title }}</h3>
                         <h5 class="text-gray">{{ exp.company }}</h5>
                         <p class="text-gray">{{ exp.description }}</p>
                     </div>
@@ -89,7 +89,7 @@
                         <p class="text-gray small">{{ edu.type }}</p>
                     </div>
                     <div class="col-md-9">
-                        <h3 class="text-white">{{ edu.title }}</h3>
+                        <h3>{{ edu.title }}</h3>
                         <h5 class="text-gray">{{ edu.institution }}</h5>
                         <p class="text-gray">{{ edu.description }}</p>
                     </div>
@@ -114,7 +114,7 @@
                     {% for skill in c.skills %}
                     <div class="col-3 col-md-2">
                         <div class="p-4 bg-darker rounded-4 hover-red-border transition">
-                            <i class="{{ skill.icon }} fs-1 text-white"></i>
+                            <i class="{{ skill.icon }} fs-1"></i>
                             <p class="small text-gray mt-2 mb-0">{{ skill.name }}</p>
                         </div>
                     </div>
@@ -143,9 +143,7 @@
     .hover-color:hover { transform: scale(1.02); }
     .italic { font-style: italic; }
     .transition { transition: all 0.3s ease; }
-    .hover-red-border:hover { border-color: var(--accent-red) !important; transform: translateY(-5px); background: #1a1a1a !important; }
-    .hover-red-border { border: 1px solid transparent; }
-    .timeline-item::after { content: ''; position: absolute; left: -1px; top: 20px; bottom: 0; width: 1px; background: rgba(255, 255, 255, 0.1); }
+    .timeline-item::after { content: ''; position: absolute; left: -1px; top: 20px; bottom: 0; width: 1px; background: var(--border-subtle); }
     .timeline-item:last-child::after { display: none; }
 </style>
 {% endblock %}

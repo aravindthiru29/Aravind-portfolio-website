@@ -9,7 +9,7 @@
         <div class="row align-items-center">
             <div class="col-lg-7 v2-hero-content" data-aos="fade-right">
                 <span class="badge-red">{{ c.hero.badge }}</span>
-                <h1 class="text-white">{{ c.hero.title_line1 }} <span class="outline-text">{{ c.hero.title_highlight }}</span> {{ c.hero.title_line2 }}</h1>
+                <h1>{{ c.hero.title_line1 }} <span class="outline-text">{{ c.hero.title_highlight }}</span> {{ c.hero.title_line2 }}</h1>
                 <p class="text-gray fs-5 mb-5 mw-75">{{ c.hero.description }}</p>
                 <div class="d-flex gap-3">
                     <a href="/contact" class="v2-btn">{{ c.hero.cta_primary }}</a>
@@ -64,8 +64,8 @@
     </div>
 </section>
 
-<!-- Qualification Section (Dark Gradient) -->
-<section class="v2-section" style="background: linear-gradient(0deg, #0b0b0b 0%, #1a1a1a 100%);">
+<!-- Qualification Section -->
+<section class="v2-section" style="background: linear-gradient(0deg, var(--bg-primary) 0%, var(--bg-tertiary) 100%);">
     <div class="container">
         <div class="row">
             <div class="col-lg-6 mb-5" data-aos="fade-right">
@@ -73,7 +73,7 @@
                 {% for edu in c.education %}
                 <div class="{% if not loop.last %}mb-4{% endif %}">
                     <h4 class="text-red">{{ edu.title }}</h4>
-                    <p class="text-white mb-0">{{ edu.institution }} - {{ edu.period }}</p>
+                    <p class="mb-0">{{ edu.institution }} - {{ edu.period }}</p>
                 </div>
                 {% endfor %}
             </div>
@@ -82,7 +82,7 @@
                 {% for exp in c.experience %}
                 <div class="{% if not loop.last %}mb-4{% endif %}">
                     <h4 class="text-red">{{ exp.title }}</h4>
-                    <p class="text-white mb-0">{{ exp.company }} - {{ exp.period.split(' - ')[0] }}</p>
+                    <p class="mb-0">{{ exp.company }} - {{ exp.period.split(' - ')[0] }}</p>
                     <p class="text-gray small">{{ exp.description }}</p>
                 </div>
                 {% endfor %}
