@@ -350,13 +350,13 @@ def seed_default_content():
     set_content('contact', {
         'location': 'Odugathur, Vellore, Tamil Nadu',
         'phone': '+91 86102 67200',
-        'email': 'aravthiru131@example.com'
+        'email': 'aravthiru131@gmail.com'
     })
 
     # Social links
     set_content('social_links', {
         'github': 'https://github.com/aravindthiru29',
-        'linkedin': 'https://www.linkedin.com/in/aravind-t-b724012b4/',
+        'linkedin': 'https://www.linkedin.com/in/aravind-thirunavukkarasu29/',
         'leetcode': 'https://leetcode.com/u/aravindthiru/',
         'instagram': 'https://www.instagram.com/arav45_'
     })
