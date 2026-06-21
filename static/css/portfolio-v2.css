@@ -316,24 +316,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bg-black {
-    background-color: var(--bg-secondary) !important;
-}
+        background-color: #000 !important;
+    }
 
-.text-white {
-    color: var(--text-primary) !important;
-}
+    .text-white {
+        color: #fff !important;
+    }
 
-.text-gray {
-    color: var(--text-secondary) !important;
-}
-
-.text-red {
-    color: var(--accent-red) !important;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   FORMS (theme-aware)
-   ═══════════════════════════════════════════════════════════ */
+    .border-black {
+        border-color: #000 !important;
 .form-control-v2 {
     background: var(--bg-input);
     border: 1px solid var(--border-input);
