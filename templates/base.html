@@ -107,6 +107,10 @@
     <!-- JS here -->
     <script src="{{ url_for('static', filename='js/main-bundle.js') }}"></script>
     <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
+    <!-- Three.js CDN for 3D Background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- 3D Tilt + Particle Effects -->
+    <script src="{{ url_for('static', filename='js/3d-effects.js') }}"></script>
     {% block scripts %}{% endblock %}
 </body>
 

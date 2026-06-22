@@ -1,3 +1,4 @@
+import secrets
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_mail import Mail, Message
 from dotenv import load_dotenv
