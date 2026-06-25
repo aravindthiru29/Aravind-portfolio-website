@@ -428,7 +428,6 @@ def admin_change_username():
             flash('That username is already taken.', 'danger')
     return redirect(url_for('admin_dashboard'))
 
-
 # ─── Individual Project Detail ─────────────────────────────
 @app.route('/project/<int:index>')
 def project_detail(index):
@@ -437,6 +436,25 @@ def project_detail(index):
     if 0 <= index < len(projects):
         return render_template('project-details.html', c=content, project=projects[index], project_index=index)
     return redirect(url_for('index'))
+
+
+# ─── Admin: Export DB (Vercel persistence workaround) ──────
+@app.route('/admin/export-db')
+@admin_required
+def admin_export_db():
+    """Download the current live database file so it can be committed and redeployed."""
+    from flask import send_file
+    from models import DB_PATH
+    try:
+        return send_file(
+            DB_PATH,
+            as_attachment=True,
+            download_name='db.sqlite3',
+            mimetype='application/x-sqlite3'
+        )
+    except Exception as e:
+        flash(f'Export failed: {str(e)}', 'danger')
+        return redirect(url_for('admin_dashboard'))
 
 
 # ─── Dynamic Page Route ────────────────────────────────────
@@ -458,3 +476,4 @@ def page_not_found(e):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
