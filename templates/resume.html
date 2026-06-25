@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aravind T - Resume</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #e9ecef;
+            color: #212529;
+        }
+        .resume-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px 50px;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            color: #1a4f82;
+            margin-bottom: 5px;
+            margin-top: 0;
+            letter-spacing: 1px;
+        }
+        .contact-info {
+            text-align: center;
+            font-size: 11px;
+            color: #555;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        .contact-info a {
+            color: #555;
+            text-decoration: none;
+        }
+        .section-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #1a4f82;
+            text-transform: uppercase;
+            border-bottom: 1px solid #c9c9c9;
+            padding-bottom: 4px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+        p {
+            font-size: 12px;
+            line-height: 1.6;
+            margin: 0 0 10px 0;
+            text-align: justify;
+        }
+        ul {
+            margin: 0 0 15px 0;
+            padding-left: 20px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        li {
+            margin-bottom: 6px;
+            text-align: justify;
+        }
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        .item-title {
+            font-weight: bold;
+            font-size: 12.5px;
+        }
+        .item-subtitle {
+            font-size: 11.5px;
+            color: #555;
+        }
+        .item-date {
+            font-size: 11.5px;
+            color: #555;
+        }
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 8px 10px;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+        .skills-category {
+            font-weight: bold;
+        }
+        .project-link {
+            color: #777;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        .tech-stack {
+            font-style: italic;
+            color: #666;
+            font-size: 11px;
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .resume-container {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                max-width: 100%;
+                box-shadow: none;
+            }
+            .print-btn, .back-btn { display: none !important; }
+        }
+        .print-btn, .back-btn {
+            position: fixed;
+            z-index: 100;
+            background: #1a4f82;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: background 0.3s;
+        }
+        .print-btn {
+            bottom: 30px;
+            right: 30px;
+        }
+        .back-btn {
+            top: 30px;
+            left: 30px;
+        }
+        .print-btn:hover, .back-btn:hover {
+            background: #123659;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="/index" class="back-btn">← Back to Portfolio</a>
+    <button onclick="window.print()" class="print-btn">Print / Save PDF</button>
+
+    <div class="resume-container">
+        <h1>ARAVIND T</h1>
+        <div class="contact-info">
+            Vellore, Tamil Nadu | +91 8610267200 | <a href="mailto:aravthiru131@gmail.com">aravthiru131@gmail.com</a> | <a href="https://linkedin.com/in/aravind-thiru45">linkedin.com/in/aravind-thiru45</a><br>
+            <a href="https://github.com/aravindthiru29">github.com/aravindthiru29</a> | <a href="https://aravind-portfolio-website.vercel.app">aravind-portfolio-website.vercel.app</a> | <a href="https://leetcode.com/aravindthiru">leetcode.com/aravindthiru</a>
+        </div>
+
+        <div class="section-title">SUMMARY</div>
+        <p>An Artificial intelligence & Data Science undergraduate with hands-on experience in computer vision, Flask backend development, and full-stack web applications. Built real-time YOLOv8 object detection systems, AI-powered web apps, and solved 180+ LeetCode problems. AWS ML and Oracle Cloud AI certified. Targeting AI Web Developer internship roles.</p>
+
+        <div class="section-title">EDUCATION</div>
+        
+        <div class="flex-between">
+            <span class="item-title">B.Tech – Artificial Intelligence & Data Science</span>
+            <span class="item-date">2023 – 2027</span>
+        </div>
+        <div class="item-subtitle" style="margin-bottom: 12px;">Adhi College of Engineering and Technology | CGPA: 8.17</div>
+
+        <div class="flex-between">
+            <span class="item-title">Higher Secondary Certificate (HSC)</span>
+            <span class="item-date">2022 – 2023</span>
+        </div>
+        <div class="item-subtitle" style="margin-bottom: 12px;">Government Boys Higher Secondary School, Vellore</div>
+
+        <div class="section-title">TECHNICAL SKILLS</div>
+        <div class="skills-grid">
+            <div class="skills-category">Languages:</div>
+            <div>Python, Java, HTML5, CSS3, SQL</div>
+            
+            <div class="skills-category">AI / ML:</div>
+            <div>YOLOv8, Computer Vision, Object Detection, Prompt Engineering</div>
+            
+            <div class="skills-category">Frameworks & Libraries:</div>
+            <div>Flask, NumPy, Pandas, Matplotlib</div>
+            
+            <div class="skills-category">Tools:</div>
+            <div>Git, GitHub, VS Code, Jupyter Notebook, N8N, Docker, Vercel</div>
+            
+            <div class="skills-category">Concepts:</div>
+            <div>Data Structures & Algorithms, Backend Development</div>
+        </div>
+
+        <div class="section-title">WORK EXPERIENCE</div>
+        <div class="flex-between" style="margin-bottom: 8px;">
+            <div>
+                <span class="item-title">Full Stack Development Intern</span> | <span style="font-weight: bold;">Book Buddy Organization, Chennai</span>
+            </div>
+            <span class="item-date">Jan 2026 – Mar 2026</span>
+        </div>
+        <ul>
+            <li>Built an interactive Flipbook web app (PDF-to-page-flip reader) using HTML, CSS, JavaScript, and Flask, enabling seamless digital reading for 50+ library resources and reducing manual file access time by ~60%</li>
+            <li>Developed 5+ responsive UI components and Flask API routes for dynamic backend content handling, improving application load efficiency by ~35%</li>
+            <li>Used Git and GitHub for version control and collaborative development across the team</li>
+        </ul>
+
+        <div class="section-title">PROJECTS</div>
+        
+        <div class="flex-between" style="margin-bottom: 4px;">
+            <div>
+                <span class="item-title">YOLOv8 Object Detection System</span> | <a href="https://github.com/aravindthiru29/Object-detection" class="project-link">github.com/aravindthiru29/Object-detection</a>
+            </div>
+            <span class="tech-stack">Python, YOLOv8, OpenCV</span>
+        </div>
+        <ul>
+            <li>Built a real-time computer vision system with bounding box visualization and confidence scores on live video streams, achieving 85%+ detection accuracy across 10+ object classes</li>
+            <li>Optimized detection pipeline for multi-class object classification using YOLOv8 on custom datasets, reducing inference latency by ~30% through model configuration tuning</li>
+        </ul>
+
+        <div class="flex-between" style="margin-bottom: 4px;">
+            <div>
+                <span class="item-title">Student Score Analyzer</span> | <a href="https://github.com/aravindthiru29/student-score-analyzer" class="project-link">github.com/aravindthiru29/student-score-analyzer</a>
+            </div>
+            <span class="tech-stack">Python, Pandas, Matplotlib</span>
+        </div>
+        <ul>
+            <li>Developed a data analysis tool to classify and evaluate academic performance of 500+ student records across 8 subjects with automated grade classification logic, reducing manual reporting time by ~70%</li>
+        </ul>
+
+        <div class="flex-between" style="margin-bottom: 4px;">
+            <div>
+                <span class="item-title">Personal Portfolio Website</span> | <a href="https://aravindthiru.dev" class="project-link">aravindthiru.dev</a>
+            </div>
+            <span class="tech-stack">HTML, CSS, JavaScript</span>
+        </div>
+        <ul>
+            <li>Designed and deployed a fully responsive portfolio achieving 95+ Google Lighthouse performance score, showcasing 5+ projects, skills, and professional information</li>
+        </ul>
+
+        <div class="section-title">CERTIFICATIONS & ACHIEVEMENTS</div>
+        <ul>
+            <li>AWS – Fundamentals of Machine Learning and Artificial Intelligence</li>
+            <li>Oracle Cloud Infrastructure 2025 – AI Foundations Associate</li>
+            <li>Solved 180+ problems on LeetCode strengthening core DSA and problem-solving skills in Java</li>
+        </ul>
+    </div>
+
+</body>
+</html>
