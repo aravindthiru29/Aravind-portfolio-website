@@ -70,7 +70,7 @@
                                 <input class="admin-input" name="badge" value="{{ content.hero.badge }}"/></div>
                             <div class="admin-input-group"><label>Hero Image</label>
                                 <div style="display:flex;gap:12px;align-items:center;">
-                                    {% if content.hero.image %}<img src="{{ url_for('static', filename=content.hero.image) }}" class="img-preview-thumb"/>{% endif %}
+                                    {% if content.hero.image %}<img src="{{ content.hero.image if content.hero.image.startswith('/') or content.hero.image.startswith('http') else url_for('static', filename=content.hero.image) }}" class="img-preview-thumb"/>{% endif %}
                                     <div style="flex:1;">
                                         <input class="admin-input" name="image" value="{{ content.hero.image }}"/>
                                         <div class="file-upload-zone" style="margin-top:8px;padding:12px;"><input type="file" accept="image/*" onchange="uploadFile(this, 'image')"><div class="upload-text"><i class="fas fa-cloud-upload-alt"></i> <span>Upload image</span></div><div class="file-name"></div></div>
@@ -345,7 +345,7 @@
                                     <input class="admin-input" name="category_{{ loop.index0 }}" value="{{ mp.category }}"/></div>
                                 <div class="admin-input-group"><label>Image</label>
                                     <div style="display:flex;gap:12px;align-items:center;">
-                                        {% if mp.image %}<img src="{{ url_for('static', filename=mp.image) }}" class="img-preview-thumb"/>{% endif %}
+                                        {% if mp.image %}<img src="{{ mp.image if mp.image.startswith('/') or mp.image.startswith('http') else url_for('static', filename=mp.image) }}" class="img-preview-thumb"/>{% endif %}
                                         <div style="flex:1;"><input class="admin-input" name="image_{{ loop.index0 }}" value="{{ mp.image }}"/>
                                             <div class="file-upload-zone" style="margin-top:8px;padding:12px;"><input type="file" accept="image/*" onchange="uploadFile(this, 'image_{{ loop.index0 }}')"><div class="upload-text"><i class="fas fa-cloud-upload-alt"></i> <span>Upload</span></div><div class="file-name"></div></div>
                                         </div>
@@ -380,7 +380,7 @@
                                     <input class="admin-input" name="date_{{ loop.index0 }}" value="{{ post.date }}"/></div>
                                 <div class="admin-input-group"><label>Image</label>
                                     <div style="display:flex;gap:12px;align-items:center;">
-                                        {% if post.image %}<img src="{{ url_for('static', filename=post.image) }}" class="img-preview-thumb"/>{% endif %}
+                                        {% if post.image %}<img src="{{ post.image if post.image.startswith('/') or post.image.startswith('http') else url_for('static', filename=post.image) }}" class="img-preview-thumb"/>{% endif %}
                                         <div style="flex:1;"><input class="admin-input" name="image_{{ loop.index0 }}" value="{{ post.image }}"/>
                                             <div class="file-upload-zone" style="margin-top:8px;padding:12px;"><input type="file" accept="image/*" onchange="uploadFile(this, 'image_{{ loop.index0 }}')"><div class="upload-text"><i class="fas fa-cloud-upload-alt"></i> <span>Upload</span></div><div class="file-name"></div></div>
                                         </div>
