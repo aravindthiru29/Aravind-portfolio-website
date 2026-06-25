@@ -58,7 +58,7 @@ print(f"Pass Set: {'Yes' if MAIL_PASSWORD else 'No'}")
 print(f"------------------------")
 
 # ─── Initialize Database ───────────────────────────────────
-from models import init_db, verify_admin, change_admin_password as db_change_password
+from models import init_db, verify_admin, change_admin_password as db_change_password, change_admin_username as db_change_username
 from models import get_all_content, get_content, set_content
 
 init_db()
@@ -225,9 +225,9 @@ def admin_save(section):
         count = int(form.get('count', 0))
         items = []
         for i in range(count):
-            # Collect gallery images (up to 3)
+            # Collect gallery images (up to 4)
             gallery = []
-            for g in range(3):
+            for g in range(4):
                 img = form.get(f'gallery_{i}_{g}', '').strip()
                 if img:
                     gallery.append(img)
@@ -403,6 +403,29 @@ def admin_change_password():
     else:
         db_change_password(username, new_pw)
         flash('Password changed successfully!', 'success')
+    return redirect(url_for('admin_dashboard'))
+
+
+@app.route('/admin/username', methods=['POST'])
+@admin_required
+def admin_change_username():
+    current_password = request.form.get('current_password', '')
+    new_username = request.form.get('new_username', '').strip()
+    username = session.get('admin_user', 'admin')
+
+    if not verify_admin(username, current_password):
+        flash('Current password is incorrect.', 'danger')
+    elif not new_username:
+        flash('New username cannot be empty.', 'danger')
+    elif len(new_username) < 3:
+        flash('Username must be at least 3 characters.', 'danger')
+    else:
+        success = db_change_username(username, new_username)
+        if success:
+            session['admin_user'] = new_username
+            flash(f'Username changed to "{new_username}" successfully!', 'success')
+        else:
+            flash('That username is already taken.', 'danger')
     return redirect(url_for('admin_dashboard'))
 
 

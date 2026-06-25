@@ -298,10 +298,10 @@
                                 <textarea class="admin-input" name="solution_{{ loop.index0 }}" rows="3" placeholder="How did you approach and solve the challenge?">{{ proj.solution|default('', true) }}</textarea></div>
 
                             <!-- Gallery Images -->
-                            <div style="padding:16px 0 4px;font-weight:600;color:var(--accent);font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;border-top:1px solid rgba(255,255,255,0.08);margin-top:12px;"><i class="fas fa-images"></i> Gallery Images (up to 3)</div>
+                            <div style="padding:16px 0 4px;font-weight:600;color:var(--accent);font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;border-top:1px solid rgba(255,255,255,0.08);margin-top:12px;"><i class="fas fa-images"></i> Gallery Images (up to 4)</div>
                             {% set proj_idx = loop.index0 %}
-                            <div class="admin-grid admin-grid-3">
-                                {% for g_idx in range(3) %}
+                            <div class="admin-grid admin-grid-4">
+                                {% for g_idx in range(4) %}
                                 <div class="admin-input-group">
                                     <label>Gallery Image {{ g_idx + 1 }}</label>
                                     <div style="display:flex;gap:8px;align-items:center;flex-direction:column;">
@@ -485,6 +485,18 @@
                         <div class="admin-input-group"><label>Confirm New Password</label>
                             <input type="password" class="admin-input" name="confirm_password" required/></div>
                         <button type="submit" class="admin-btn"><i class="fas fa-save"></i> Update Password</button>
+                    </div>
+                </form>
+                <form method="POST" action="{{ url_for('admin_change_username') }}" style="margin-top:24px;">
+                    <div class="admin-card" style="max-width:500px;">
+                        <div class="admin-card-header"><h3><i class="fas fa-user-edit"></i> Change Username</h3></div>
+                        <div class="admin-input-group"><label>Current Username</label>
+                            <input class="admin-input" value="{{ session.get('admin_user', 'admin') }}" disabled style="opacity:0.6;"/></div>
+                        <div class="admin-input-group"><label>New Username</label>
+                            <input class="admin-input" name="new_username" required minlength="3" placeholder="Enter new username..."/></div>
+                        <div class="admin-input-group"><label>Confirm with Password</label>
+                            <input type="password" class="admin-input" name="current_password" required placeholder="Your current password"/></div>
+                        <button type="submit" class="admin-btn" style="background:var(--info, #3b82f6);"><i class="fas fa-user-check"></i> Update Username</button>
                     </div>
                 </form>
             </div>

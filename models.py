@@ -139,6 +139,18 @@ def change_admin_password(username, new_password):
     execute_query('UPDATE admin_users SET password_hash = ?, salt = ? WHERE username = ?', (hashed, salt, username), commit=True)
 
 
+def change_admin_username(old_username, new_username):
+    """Change admin username. Returns True on success, False if new_username is already taken."""
+    existing = execute_query('SELECT id FROM admin_users WHERE username = ?', (new_username,), fetchone=True)
+    if existing:
+        return False
+    try:
+        execute_query('UPDATE admin_users SET username = ? WHERE username = ?', (new_username, old_username), commit=True)
+        return True
+    except Exception:
+        return False
+
+
 # ─── Content CRUD ───
 
 def get_content(section_key):
