@@ -317,8 +317,8 @@
                 pu.spr.position.lerpVectors(pu.from.pos, pu.to.pos, pu.t);
                 /* Glow brightest at midpoint of travel */
                 const glow = Math.sin(pu.t * Math.PI);
-                pu.mat.opacity = 0.50 + glow * 0.50;
-                const ps = 0.22 + glow * 0.24;
+                pu.mat.opacity = 0.50 + Math.sin(pu.t * Math.PI) * 0.50;
+                const ps = 0.22 + Math.sin(pu.t * Math.PI) * 0.24;
                 pu.spr.scale.set(ps, ps, 1);
             });
 
@@ -349,53 +349,49 @@
     /* ══════════════════════════════════════════════════════════
        2.  3D TILT ON CARDS & SIDEBAR
        ══════════════════════════════════════════════════════════ */
-    function applyTilt(el, maxAngle = 14, depth = 40) {
+    function applyTilt(el, maxAngle = 14) {
         if (el.dataset.tilt3d) return;
         el.dataset.tilt3d = '1';
         el.style.transformStyle = 'preserve-3d';
         el.style.willChange     = 'transform';
+        el.style.transition     = 'transform 0.6s cubic-bezier(0.25,1,0.5,1), box-shadow 0.6s ease';
 
-        /* Elevate direct children for depth illusion */
-        el.querySelectorAll('img, h3, h4, .text-red, p, .v2-btn, .detail-label, .detail-value').forEach(child => {
-            child.style.transform     = 'translateZ(0)';
-            child.style.transition    = 'transform 0.5s cubic-bezier(0.25,1,0.5,1)';
-            child.style.willChange    = 'transform';
-        });
+        let rafId = null;
+        let inside = false;
 
         el.addEventListener('mousemove', e => {
-            const r  = el.getBoundingClientRect();
-            const x  = e.clientX - r.left;
-            const y  = e.clientY - r.top;
-            const rx = ((r.height / 2 - y) / r.height) * maxAngle;
-            const ry = ((x - r.width  / 2) / r.width)  * maxAngle;
-
-            el.style.transform  = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale3d(1.04,1.04,1.04)`;
-            el.style.transition = 'transform 0.06s linear';
-            el.style.boxShadow  = `${-ry*2}px ${rx*2}px 40px rgba(0,0,0,0.2), 0 0 20px ${palette().glow}`;
-
-            /* Push children by fraction of depth based on cursor */
-            el.querySelectorAll('img').forEach(c => { c.style.transform = `translateZ(${depth}px)`; });
-            el.querySelectorAll('h3, h4').forEach(c => { c.style.transform = `translateZ(${depth * 1.2}px)`; });
-            el.querySelectorAll('p').forEach(c => { c.style.transform = `translateZ(${depth * 0.8}px)`; });
-            el.querySelectorAll('.v2-btn').forEach(c => { c.style.transform = `translateZ(${depth * 1.4}px) scale(1.04)`; });
+            if (rafId) return;  // throttle: only one pending frame at a time
+            rafId = requestAnimationFrame(() => {
+                rafId = null;
+                if (!inside) return;
+                const r  = el.getBoundingClientRect();
+                const x  = e.clientX - r.left;
+                const y  = e.clientY - r.top;
+                const rx = ((r.height / 2 - y) / r.height) * maxAngle;
+                const ry = ((x - r.width  / 2) / r.width)  * maxAngle;
+                el.style.transition = 'transform 0.08s linear, box-shadow 0.08s linear';
+                el.style.transform  = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale3d(1.03,1.03,1.03)`;
+                el.style.boxShadow  = `${-ry*1.5}px ${rx*1.5}px 30px rgba(0,0,0,0.15), 0 0 16px ${palette().glow}`;
+            });
         });
 
+        el.addEventListener('mouseenter', () => { inside = true; });
+
         el.addEventListener('mouseleave', () => {
-            el.style.transform  = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+            inside = false;
+            if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
             el.style.transition = 'transform 0.6s cubic-bezier(0.25,1,0.5,1), box-shadow 0.6s ease';
+            el.style.transform  = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
             el.style.boxShadow  = '';
-            el.querySelectorAll('img, h3, h4, p, .v2-btn, .text-red, .detail-label, .detail-value').forEach(c => {
-                c.style.transform = 'translateZ(0)';
-            });
         });
     }
 
     function initTilt() {
-        document.querySelectorAll('.v2-card').forEach(el => applyTilt(el, 15, 45));
-        document.querySelectorAll('.detail-sidebar').forEach(el => applyTilt(el, 10, 30));
-        document.querySelectorAll('.hover-red-border').forEach(el => applyTilt(el, 12, 25));
-        document.querySelectorAll('.v2-hero-img').forEach(el => applyTilt(el, 10, 35));
-        document.querySelectorAll('.timeline-item > .row').forEach(el => applyTilt(el, 6, 20));
+        document.querySelectorAll('.v2-card').forEach(el => applyTilt(el, 12));
+        document.querySelectorAll('.detail-sidebar').forEach(el => applyTilt(el, 8));
+        document.querySelectorAll('.hover-red-border').forEach(el => applyTilt(el, 10));
+        document.querySelectorAll('.v2-hero-img').forEach(el => applyTilt(el, 8));
+        document.querySelectorAll('.timeline-item > .row').forEach(el => applyTilt(el, 5));
     }
 
 
