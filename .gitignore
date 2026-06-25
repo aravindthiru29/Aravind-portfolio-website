@@ -38,8 +38,8 @@ ENV/
 .env.production.local
 *.env*
 
-# Databases
-db.sqlite3
+# Databases (keep db.sqlite3 tracked — it's the Vercel seed database)
+# db.sqlite3  ← intentionally un-ignored so Vercel has a starting database
 *.db
 
 # Vercel
