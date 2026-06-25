@@ -17,13 +17,13 @@ DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'db.sqlite3')
 CLOUDINARY_IMAGES = {
     'mini_projects': [
         # Index 0: ARTS OF CHEMISTRY
-        '',   # e.g. 'https://res.cloudinary.com/dyyihitaz/image/upload/v.../game1.png'
+        'https://res.cloudinary.com/dyyihitaz/image/upload/v1782369946/jsjp5eqlhmbzakbsbxxa.png',
         # Index 1: MATHS QUEST
-        '',
+        'https://res.cloudinary.com/dyyihitaz/image/upload/v1782369215/boswq8pjvgjwafubqoc4.png',
         # Index 2: SCIENCE GAME
-        '',
+        'https://res.cloudinary.com/dyyihitaz/image/upload/v1782369201/snysrwuvga7j2yjdfmiw.png',
         # Index 3: BRAIN GAME
-        '',
+        'https://res.cloudinary.com/dyyihitaz/image/upload/v1782368687/bqpxruwxzttu2pmqaug0.png',
     ],
     'projects': [
         # Index 0: FLIPBOOK WEB APP
