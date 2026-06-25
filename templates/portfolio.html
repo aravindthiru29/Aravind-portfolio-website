@@ -1,29 +1,327 @@
 {% extends "base.html" %}
 
-{% block title %}Projects - Aravind{% endblock %}
+{% block title %}Projects — Aravind{% endblock %}
+
+{% block head %}
+<style>
+/* ── Mini Project Card ─────────────────────────────────── */
+.mp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 28px;
+}
+
+.mp-card {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    box-shadow: var(--shadow-card);
+    transition: transform 0.45s cubic-bezier(0.25,1,0.5,1),
+                box-shadow 0.45s ease;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+.mp-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.18), 0 0 0 1px var(--accent-red);
+}
+
+/* Image wrapper */
+.mp-img-wrap {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.mp-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.55s cubic-bezier(0.25,1,0.5,1);
+    display: block;
+}
+
+.mp-card:hover .mp-img-wrap img {
+    transform: scale(1.08);
+}
+
+/* Gradient overlay on image */
+.mp-img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        transparent 40%,
+        rgba(0,0,0,0.55) 100%
+    );
+    pointer-events: none;
+}
+
+/* Category pill on image */
+.mp-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 2;
+    background: var(--accent-red);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 50px;
+}
+
+/* Launch icon overlay */
+.mp-launch-icon {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1rem;
+    opacity: 0;
+    transform: scale(0.7);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.mp-card:hover .mp-launch-icon {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Card body */
+.mp-body {
+    padding: 22px 24px 24px;
+}
+
+.mp-title {
+    font-size: 1rem;
+    font-weight: 900;
+    letter-spacing: -0.3px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin: 0 0 12px;
+    line-height: 1.3;
+}
+
+.mp-launch-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent-red);
+    text-decoration: none;
+    transition: gap 0.3s ease;
+}
+
+.mp-launch-link:hover {
+    gap: 10px;
+    color: var(--accent-red);
+}
+
+.mp-launch-link i {
+    font-size: 0.85rem;
+    transition: transform 0.3s ease;
+}
+
+.mp-launch-link:hover i {
+    transform: translate(2px,-2px);
+}
+
+/* Number badge */
+.mp-number {
+    position: absolute;
+    bottom: 16px;
+    right: 20px;
+    font-size: 4rem;
+    font-weight: 900;
+    color: var(--accent-red);
+    opacity: 0.08;
+    line-height: 1;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.mp-card:hover .mp-number {
+    opacity: 0.18;
+}
+
+/* ── Section intro ─────────────────────────────────────── */
+.mp-section-tag {
+    display: inline-block;
+    background: var(--accent-red);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    margin-bottom: 24px;
+}
+
+.mp-count-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 50px;
+    padding: 6px 16px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-left: 12px;
+    vertical-align: middle;
+}
+
+/* ── Divider ───────────────────────────────────────────── */
+.section-divider {
+    width: 60px;
+    height: 4px;
+    background: var(--accent-red);
+    margin: 20px 0 32px;
+}
+
+/* ── Project list enhancements ─────────────────────────── */
+.proj-number {
+    font-size: 0.9rem;
+    font-weight: 900;
+    color: var(--accent-red);
+    min-width: 40px;
+    opacity: 0.7;
+}
+
+/* ── Placeholder image fallback ────────────────────────── */
+.mp-img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+    color: var(--text-muted);
+    font-size: 2.5rem;
+    gap: 8px;
+}
+
+.mp-img-placeholder span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    opacity: 0.6;
+}
+</style>
+{% endblock %}
 
 {% block content %}
-<!-- Page Header -->
+
+{# ── Image URL helper macro ─────────────────────────────── #}
+{% macro img_src(path) %}{{ path if path and (path.startswith('/') or path.startswith('http')) else url_for('static', filename=path) if path else '' }}{% endmacro %}
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE HEADER
+══════════════════════════════════════════════════════════ -->
 <section class="v2-section pt-200 bg-darker">
     <div class="container">
-        <h1 class="display-1 fw-black" data-aos="fade-up">My <span class="outline-text">PROJECTS</span></h1>
+        <p class="text-red fw-bold mb-3 small" style="letter-spacing:3px;" data-aos="fade-up">PORTFOLIO</p>
+        <h1 class="display-1 fw-black" data-aos="fade-up" data-aos-delay="100">
+            My <span class="outline-text">PROJECTS</span>
+        </h1>
+        <div class="section-divider" data-aos="fade-up" data-aos-delay="200"></div>
+        <p class="text-gray fs-5 mw-75" data-aos="fade-up" data-aos-delay="250"
+           style="max-width:600px; color:var(--text-secondary);">
+            From AI systems to full-stack web apps — a collection of work built with purpose.
+        </p>
     </div>
 </section>
 
-<!-- Portfolio Grid -->
+
+<!-- ═══════════════════════════════════════════════════════
+     MAIN PROJECTS
+══════════════════════════════════════════════════════════ -->
 <section class="v2-section">
     <div class="container">
-        <div class="row g-4">
+        <div class="d-flex align-items-center mb-5" data-aos="fade-up">
+            <h2 class="display-5 fw-black mb-0">FEATURED WORK</h2>
+            <span class="mp-count-pill"><i class="bi bi-grid-3x3-gap-fill text-red"></i>{{ c.projects|length }} Projects</span>
+        </div>
+
+        <div class="row g-5">
             {% for proj in c.projects %}
-            <div class="col-lg-6" data-aos="fade-up" {% if not loop.first %}data-aos-delay="{{ loop.index0 * 100 }}"{% endif %}>
+            {% set img = proj.image %}
+            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 120 }}">
                 <div class="v2-card shadow-lg rounded-4 overflow-hidden h-100">
-                    <img src="{{ proj.image if proj.image.startswith('/') or proj.image.startswith('http') else url_for('static', filename=proj.image.replace('img/uploads/', '../uploads/') if 'img/uploads/' in proj.image else proj.image) }}" alt="{{ proj.title }}"
-                        class="img-fluid w-100" style="height: 300px; object-fit: cover;">
+                    <!-- Cover image -->
+                    <div style="height:300px; overflow:hidden; position:relative;">
+                        {% if img %}
+                        <img src="{{ img if img.startswith('/') or img.startswith('http') else url_for('static', filename=img) }}"
+                             alt="{{ proj.title }}"
+                             class="w-100 h-100" style="object-fit:cover; transition: transform 0.5s ease;"
+                             onerror="this.parentElement.innerHTML='<div class=\'mp-img-placeholder\'><i class=\'bi bi-image\'></i><span>{{ proj.category }}</span></div>'">
+                        {% else %}
+                        <div class="mp-img-placeholder"><i class="bi bi-image"></i><span>{{ proj.category }}</span></div>
+                        {% endif %}
+                        <!-- Gradient overlay -->
+                        <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 60%);pointer-events:none;"></div>
+                        <!-- Category pill -->
+                        <span class="mp-badge">{{ proj.category }}</span>
+                    </div>
+                    <!-- Card body -->
                     <div class="p-5">
-                        <span class="text-red fw-bold">{{ proj.category }}</span>
-                        <h3 class="mt-2 mb-3">{{ proj.title }}</h3>
-                        <p class="text-gray mb-4">{{ proj.description }}</p>
-                        <a href="/project/{{ loop.index0 }}" class="v2-btn py-2 px-4 shadow-sm" style="font-size: 0.8rem;">VIEW DETAILS</a>
+                        <div class="d-flex align-items-start justify-content-between mb-3">
+                            <h3 class="mb-0" style="font-size:1.4rem;">{{ proj.title }}</h3>
+                            <span class="proj-number ms-3">{{ '%02d'|format(loop.index) }}</span>
+                        </div>
+                        <p style="color:var(--text-secondary); font-size:0.9rem; line-height:1.7; margin-bottom:24px;">
+                            {{ proj.description }}
+                        </p>
+                        <!-- Tech stack pills -->
+                        {% if proj.tech_stack %}
+                        <div class="d-flex flex-wrap gap-2 mb-4">
+                            {% for tech in proj.tech_stack.split(',') %}
+                            <span style="background:var(--bg-secondary); color:var(--text-secondary); font-size:0.65rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:4px 10px; border-radius:4px;">{{ tech.strip() }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <!-- Action row -->
+                        <div class="d-flex gap-3 align-items-center flex-wrap">
+                            <a href="/project/{{ loop.index0 }}" class="v2-btn py-2 px-4" style="font-size:0.78rem;">
+                                <i class="bi bi-eye me-2"></i>VIEW DETAILS
+                            </a>
+                            {% if proj.github_link %}
+                            <a href="{{ proj.github_link }}" target="_blank" class="v2-btn-outline v2-btn py-2 px-3" style="font-size:0.75rem;">
+                                <i class="bi bi-github me-1"></i>CODE
+                            </a>
+                            {% endif %}
+                            {% if proj.website_link %}
+                            <a href="{{ proj.website_link }}" target="_blank" class="mp-launch-link" style="font-size:0.78rem; color:var(--text-secondary);">
+                                LIVE <i class="bi bi-arrow-up-right"></i>
+                            </a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -32,48 +330,118 @@
     </div>
 </section>
 
-<!-- AI Mini Projects Section -->
-<section class="v2-section bg-darker">
+
+<!-- ═══════════════════════════════════════════════════════
+     AI MINI PROJECTS — RECONSTRUCTED
+══════════════════════════════════════════════════════════ -->
+<section class="v2-section bg-darker" id="mini-projects">
     <div class="container">
-        <h2 class="display-4 mb-5" data-aos="fade-up">AI MINI PROJECTS <span class="outline-text">(PROMPT ENG)</span>
-        </h2>
-        <p class="text-gray mb-5" data-aos="fade-up">Developed using Prompt Engineering (Vibe Coding), these interactive
-            educational games were built during my internship to help kids understand core concepts through play.</p>
 
-        <div class="row g-4">
-            {% for mp in c.mini_projects %}
-            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
-                <div class="v2-card shadow-lg rounded-4 overflow-hidden h-100">
-                    <img src="{{ mp.image if mp.image.startswith('/') or mp.image.startswith('http') else url_for('static', filename=mp.image.replace('img/uploads/', '../uploads/') if 'img/uploads/' in mp.image else mp.image) }}" alt="{{ mp.title }}" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
-                    <div class="p-4">
-                        <span class="text-red fw-bold small">{{ mp.category }}</span>
-                        <h4 class="mt-2 mb-3 h5">{{ mp.title }}</h4>
-                        <a href="{{ mp.link }}" target="_blank" class="text-decoration-none small" style="color: var(--text-primary);">LAUNCH APP <i class="bi bi-arrow-up-right ms-1"></i></a>
-                    </div>
+        <!-- Section header -->
+        <div class="row align-items-end mb-5">
+            <div class="col-lg-8" data-aos="fade-up">
+                <span class="mp-section-tag">Prompt Engineering</span>
+                <h2 class="display-4 fw-black mb-0">
+                    AI MINI <span class="outline-text">PROJECTS</span>
+                </h2>
+                <div class="section-divider"></div>
+                <p style="color:var(--text-secondary); max-width:560px; line-height:1.8; font-size:0.95rem;">
+                    Interactive educational games built using <strong style="color:var(--text-primary);">Prompt Engineering (Vibe Coding)</strong>
+                    during my internship. Each game teaches core STEM concepts through play.
+                </p>
+            </div>
+            <div class="col-lg-4 text-lg-end" data-aos="fade-up" data-aos-delay="100">
+                <div style="display:inline-flex; flex-direction:column; gap:8px; text-align:right;">
+                    <span style="font-size:3rem; font-weight:900; color:var(--accent-red); line-height:1;">
+                        {{ c.mini_projects|length }}
+                    </span>
+                    <span style="font-size:0.65rem; font-weight:800; letter-spacing:3px; text-transform:uppercase; color:var(--text-muted);">
+                        Interactive Games
+                    </span>
                 </div>
             </div>
+        </div>
+
+        <!-- Mini project cards grid -->
+        <div class="mp-grid">
+            {% for mp in c.mini_projects %}
+            {% set img = mp.image %}
+            <a href="{{ mp.link }}" target="_blank" rel="noopener noreferrer"
+               class="mp-card" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 80 }}">
+
+                <!-- Image area -->
+                <div class="mp-img-wrap">
+                    {% if img %}
+                    <img src="{{ img if img.startswith('/') or img.startswith('http') else url_for('static', filename=img) }}"
+                         alt="{{ mp.title }}"
+                         loading="lazy"
+                         onerror="this.outerHTML='<div class=\'mp-img-placeholder\'><i class=\'bi bi-controller\' style=\'font-size:2.5rem;\'></i><span>{{ mp.category }}</span></div>'">
+                    {% else %}
+                    <div class="mp-img-placeholder">
+                        <i class="bi bi-controller" style="font-size:2.5rem;"></i>
+                        <span>{{ mp.category }}</span>
+                    </div>
+                    {% endif %}
+
+                    <span class="mp-badge">{{ mp.category }}</span>
+                    <div class="mp-launch-icon"><i class="bi bi-arrow-up-right"></i></div>
+                </div>
+
+                <!-- Body -->
+                <div class="mp-body">
+                    <h4 class="mp-title">{{ mp.title }}</h4>
+                    <span class="mp-launch-link">
+                        LAUNCH APP <i class="bi bi-arrow-up-right"></i>
+                    </span>
+                </div>
+
+                <!-- Big number watermark -->
+                <span class="mp-number">{{ '%02d'|format(loop.index) }}</span>
+            </a>
             {% endfor %}
+        </div>
+
+        <!-- Bottom CTA row -->
+        {% if c.mini_projects %}
+        <div class="text-center mt-5 pt-3" data-aos="fade-up">
+            <p style="color:var(--text-muted); font-size:0.8rem; letter-spacing:2px; text-transform:uppercase; margin-bottom:16px;">
+                All games open in a new tab
+            </p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                {% for mp in c.mini_projects %}
+                <a href="{{ mp.link }}" target="_blank" rel="noopener noreferrer"
+                   class="v2-btn-outline v2-btn py-2 px-3" style="font-size:0.72rem;">
+                    {{ mp.title }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     STATS
+══════════════════════════════════════════════════════════ -->
+<section class="v2-section v2-section-red">
+    <div class="container">
+        <div class="row text-center g-4">
+            <div class="col-md-4" data-aos="zoom-in">
+                <h2 class="display-2 fw-black mb-1">{{ c.stats.projects_count }}</h2>
+                <p class="fw-bold mb-0" style="letter-spacing:2px; font-size:0.8rem; opacity:0.85;">{{ c.stats.projects_label }}</p>
+            </div>
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+                <h2 class="display-2 fw-black mb-1">{{ c.stats.experience_count }}</h2>
+                <p class="fw-bold mb-0" style="letter-spacing:2px; font-size:0.8rem; opacity:0.85;">{{ c.stats.experience_label }}</p>
+            </div>
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+                <h2 class="display-2 fw-black mb-1">{{ c.stats.dedication_count }}</h2>
+                <p class="fw-bold mb-0" style="letter-spacing:2px; font-size:0.8rem; opacity:0.85;">{{ c.stats.dedication_label }}</p>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Stats Section (Red) -->
-<section class="v2-section v2-section-red">
-    <div class="container text-center">
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <h2 class="display-3 fw-black">{{ c.stats.projects_count }}</h2>
-                <p class="fw-bold">{{ c.stats.projects_label }}</p>
-            </div>
-            <div class="col-md-4 mb-4">
-                <h2 class="display-3 fw-black">{{ c.stats.experience_count }}</h2>
-                <p class="fw-bold">{{ c.stats.experience_label }}</p>
-            </div>
-            <div class="col-md-4 mb-4">
-                <h2 class="display-3 fw-black">{{ c.stats.dedication_count }}</h2>
-                <p class="fw-bold">{{ c.stats.dedication_label }}</p>
-            </div>
-        </div>
-    </div>
-</section>
 {% endblock %}
