@@ -4,7 +4,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Aravind - AI & DS Student{% endblock %}</title>
+    <title>{% block title %}Aravind - AI Engineer & Data Scientist{% endblock %}</title>
+    
+    <!-- OpenGraph & SEO Meta Tags -->
+    <meta name="description" content="Portfolio of Aravind, an AI Engineer and Data Scientist specializing in Python, Machine Learning, and Full-Stack Development." />
+    <meta property="og:title" content="Aravind | AI Engineer & Data Scientist" />
+    <meta property="og:description" content="Portfolio of Aravind, an AI Engineer and Data Scientist specializing in Python, Machine Learning, and Full-Stack Development." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aravind-portfolio-website.vercel.app/" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}" />
@@ -25,9 +32,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/aos.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio-v2.css') }}" />
     <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Montserrat:wght@900&display=swap"
-        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Montserrat:wght@900&display=swap" rel="stylesheet">
 
     {% block head %}{% endblock %}
 </head>

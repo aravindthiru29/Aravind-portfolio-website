@@ -421,22 +421,25 @@
        BOOT
        ══════════════════════════════════════════════════════════ */
     document.addEventListener('DOMContentLoaded', () => {
-        const isPointer = window.matchMedia('(pointer:fine)').matches;
+        // Defer heavy 3D initialization to allow the browser to paint the LCP (text) first
+        setTimeout(() => {
+            const isPointer = window.matchMedia('(pointer:fine)').matches;
 
-        /* 3D hero background (Three.js) */
-        if (typeof THREE !== 'undefined') {
-            initHeroBackground();
-        } else {
-            console.warn('[3d-effects] Three.js not loaded.');
-        }
+            /* 3D hero background (Three.js) */
+            if (typeof THREE !== 'undefined') {
+                initHeroBackground();
+            } else {
+                console.warn('[3d-effects] Three.js not loaded.');
+            }
 
-        if (isPointer) {
-            initTilt();
-            initCursorOrb();
-            initTextDepth();
-        }
+            if (isPointer) {
+                initTilt();
+                initCursorOrb();
+                initTextDepth();
+            }
 
-        /* Scroll depth on all devices */
-        initScrollDepth();
+            /* Scroll depth on all devices */
+            initScrollDepth();
+        }, 150); // Small delay to prioritize text rendering
     });
 })();
