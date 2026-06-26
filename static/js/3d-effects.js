@@ -281,7 +281,8 @@
         document.querySelectorAll('.detail-sidebar').forEach(el => applyTilt(el, 8));
         document.querySelectorAll('.hover-red-border').forEach(el => applyTilt(el, 10));
         document.querySelectorAll('.v2-hero-img').forEach(el => applyTilt(el, 8));
-        document.querySelectorAll('.timeline-item > .row').forEach(el => applyTilt(el, 5));
+        document.querySelectorAll('.timeline-item > .row').forEach(el => applyTilt(el, 10));
+        document.querySelectorAll('.about-3d-img').forEach(el => applyTilt(el, 14));
     }
 
 
