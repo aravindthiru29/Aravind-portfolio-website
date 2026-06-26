@@ -105,136 +105,57 @@
         scene.add(points);
 
         /* ══════════════════════════════════════════════════
-           GLOWING AI NEURAL NETWORK
-           Layers have true Z-depth so it reads as 3D.
-           Nodes = camera-facing sprites with soft halo.
-           Edges = LineSegments with additive blending.
-           16 glowing signal pulses travel along edges.
+           AI DATA CORE (Replaces Neural Network)
+           Nested wireframe shapes and orbiting data nodes.
         ══════════════════════════════════════════════════ */
         const p = palette();
-        const nnGroup = new THREE.Group();
+        const aiGroup = new THREE.Group();
 
-        /* Layer definitions: [nodeCount, zDepth] */
-        const layerDefs = [
-            [3,  2.8],
-            [5,  1.4],
-            [7,  0.0],
-            [5, -1.4],
-            [3, -2.8],
-        ];
-        const LAYER_X_STEP = 1.55;
-        const NODE_Y_GAP   = 0.9;
-
-        /* Per-node runtime data */
-        const nodeData   = [];   // { pos, coreSpr, haloSpr, coreMat, haloMat }
-        const layerNodes = [];   // [[node,...],...]
-
-        /* Textures */
-        const nodeCoreTex = makeGlowTex(255, 60, 60, 128);
-        const nodeHaloTex = makeGlowTex(230, 28, 35, 256);
-        const pulseTex    = makeGlowTex(255, 220, 220, 64);
-
-        layerDefs.forEach(([count, zOff], li) => {
-            const x = (li - (layerDefs.length - 1) / 2) * LAYER_X_STEP;
-            const layer = [];
-            for (let j = 0; j < count; j++) {
-                const y = (j - (count - 1) / 2) * NODE_Y_GAP;
-                const z = zOff + (Math.random() - 0.5) * 0.35;
-
-                /* Core bright glow */
-                const coreMat = new THREE.SpriteMaterial({
-                    map: nodeCoreTex, transparent: true, depthWrite: false,
-                    blending: THREE.AdditiveBlending,
-                    opacity: isDark() ? 0.95 : 0.80
-                });
-                const core = new THREE.Sprite(coreMat);
-                core.scale.set(0.60, 0.60, 1);
-                core.position.set(x, y, z);
-                nnGroup.add(core);
-
-                /* Outer soft halo */
-                const haloMat = new THREE.SpriteMaterial({
-                    map: nodeHaloTex, transparent: true, depthWrite: false,
-                    blending: THREE.AdditiveBlending,
-                    opacity: isDark() ? 0.28 : 0.14
-                });
-                const halo = new THREE.Sprite(haloMat);
-                halo.scale.set(1.6, 1.6, 1);
-                halo.position.set(x, y, z);
-                nnGroup.add(halo);
-
-                const nd = {
-                    pos: new THREE.Vector3(x, y, z),
-                    coreSpr: core, haloSpr: halo,
-                    coreMat, haloMat,
-                    flash: 0   // extra brightness on pulse-arrival
-                };
-                layer.push(nd);
-                nodeData.push(nd);
-            }
-            layerNodes.push(layer);
-        });
-
-        /* Build all inter-layer edge positions into one LineSegments draw call */
-        const edgePosArr = [];
-        const edgePairs  = [];   // [fromNode, toNode] for pulse routing
-        for (let l = 0; l < layerNodes.length - 1; l++) {
-            layerNodes[l].forEach(fn => {
-                layerNodes[l + 1].forEach(tn => {
-                    edgePosArr.push(fn.pos.x, fn.pos.y, fn.pos.z,
-                                    tn.pos.x, tn.pos.y, tn.pos.z);
-                    edgePairs.push([fn, tn]);
-                });
-            });
-        }
-        const edgeGeo = new THREE.BufferGeometry();
-        edgeGeo.setAttribute('position',
-            new THREE.BufferAttribute(new Float32Array(edgePosArr), 3));
-        const edgeMat = new THREE.LineBasicMaterial({
-            color: p.accent, transparent: true,
-            opacity: isDark() ? 0.18 : 0.10,
-            blending: THREE.AdditiveBlending, depthWrite: false
-        });
-        nnGroup.add(new THREE.LineSegments(edgeGeo, edgeMat));
-
-        /* Glowing signal pulses */
-        const pulses = [];
-        function spawnPulse() {
-            const pIdx = Math.floor(Math.random() * edgePairs.length);
-            const [fn, tn] = edgePairs[pIdx];
-            const mat = new THREE.SpriteMaterial({
-                map: pulseTex, transparent: true, depthWrite: false,
-                blending: THREE.AdditiveBlending, opacity: 0.95
-            });
-            const spr = new THREE.Sprite(mat);
-            spr.scale.set(0.32, 0.32, 1);
-            nnGroup.add(spr);
-            return { spr, mat, from: fn, to: tn, t: 0,
-                     speed: 0.007 + Math.random() * 0.009 };
-        }
-        for (let i = 0; i < 16; i++) {
-            const pu = spawnPulse();
-            pu.t = Math.random();   // stagger starts
-            pulses.push(pu);
-        }
-
-        /* Wireframe sphere accent (upper-left background) */
-        const accentGeo = new THREE.IcosahedronGeometry(1.4, 2);
-        const accentMat = new THREE.MeshBasicMaterial({
+        // 1. Central Core Sphere
+        const coreGeo = new THREE.IcosahedronGeometry(1.2, 2);
+        const coreMat = new THREE.MeshBasicMaterial({
             color: p.accent, wireframe: true, transparent: true,
-            opacity: isDark() ? 0.13 : 0.07
+            opacity: isDark() ? 0.3 : 0.6
         });
-        const accentSphere = new THREE.Mesh(accentGeo, accentMat);
-        accentSphere.position.set(-5.5, 1.5, -2);
-        scene.add(accentSphere);
+        const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+        aiGroup.add(coreMesh);
 
-        scene.add(nnGroup);
+        // 2. Outer Ring / Shell
+        const shellGeo = new THREE.IcosahedronGeometry(2.0, 1);
+        const shellMat = new THREE.MeshBasicMaterial({
+            color: p.soft, wireframe: true, transparent: true,
+            opacity: isDark() ? 0.15 : 0.4
+        });
+        const shellMesh = new THREE.Mesh(shellGeo, shellMat);
+        aiGroup.add(shellMesh);
+
+        // 3. Orbiting Data Nodes (Solid)
+        const nodeGeo = new THREE.SphereGeometry(0.12, 16, 16);
+        const nodeMat = new THREE.MeshBasicMaterial({
+            color: p.accent, transparent: true,
+            opacity: isDark() ? 0.9 : 1.0
+        });
+        const nodes = [];
+        for (let i = 0; i < 8; i++) {
+            const mesh = new THREE.Mesh(nodeGeo, nodeMat);
+            // Random orbit parameters
+            nodes.push({
+                mesh,
+                angle: Math.random() * Math.PI * 2,
+                speed: 0.01 + Math.random() * 0.015,
+                radius: 2.2 + Math.random() * 1.5,
+                yOff: (Math.random() - 0.5) * 3
+            });
+            aiGroup.add(mesh);
+        }
+
+        scene.add(aiGroup);
 
         /* ── Position helper ─────────────────────────────── */
-        function positionNN() {
-            nnGroup.position.x = W > 992 ? 3.4 : 0;
+        function positionAI() {
+            aiGroup.position.x = W > 992 ? 3.4 : 0;
         }
-        positionNN();
+        positionAI();
 
         /* ── Mouse parallax ─────────────────────────────── */
         let mx = 0, my = 0, tx = 0, ty = 0;
@@ -250,21 +171,19 @@
             camera.aspect = W / H;
             camera.updateProjectionMatrix();
             renderer.setSize(W, H);
-            positionNN();
+            positionAI();
         });
         ro.observe(section);
 
         /* ── Theme reactivity ────────────────────────────── */
         document.addEventListener('themechange', e => {
             const np = e.detail;
-            edgeMat.color.set(np.accent);
-            edgeMat.opacity = isDark() ? 0.18 : 0.10;
-            accentMat.color.set(np.accent);
-            accentMat.opacity = isDark() ? 0.13 : 0.07;
-            nodeData.forEach(n => {
-                n.coreMat.opacity = isDark() ? 0.95 : 0.80;
-                n.haloMat.opacity = isDark() ? 0.28 : 0.14;
-            });
+            coreMat.color.set(np.accent);
+            coreMat.opacity = isDark() ? 0.3 : 0.6;
+            shellMat.color.set(np.soft);
+            shellMat.opacity = isDark() ? 0.15 : 0.4;
+            nodeMat.color.set(np.accent);
+            nodeMat.opacity = isDark() ? 0.9 : 1.0;
             buildParticleColors(np);
             geo.attributes.color.needsUpdate = true;
         });
@@ -277,54 +196,25 @@
             tx += (mx - tx) * 0.04;
             ty += (my - ty) * 0.04;
 
-            /* Neural network sway + mouse parallax */
-            nnGroup.rotation.y = tx * 0.06 + Math.sin(frame * 0.008) * 0.10;
-            nnGroup.rotation.x = -ty * 0.04 + Math.sin(frame * 0.005) * 0.05;
-            nnGroup.position.x = (W > 992 ? 3.4 : 0) + tx * 0.22;
-            nnGroup.position.y = -ty * 0.15;
+            /* AI Data Core sway + mouse parallax */
+            aiGroup.rotation.y = tx * 0.06 + frame * 0.002;
+            aiGroup.rotation.x = -ty * 0.04 + Math.sin(frame * 0.005) * 0.05;
+            aiGroup.position.x = (W > 992 ? 3.4 : 0) + tx * 0.22;
+            aiGroup.position.y = -ty * 0.15;
 
-            /* Node breathing: core & halo scale together */
-            nodeData.forEach((nd, i) => {
-                const breath = 0.75 + Math.sin(frame * 0.042 + i * 0.72) * 0.25;
-                // core
-                const cs = 0.48 + breath * 0.22;
-                nd.coreSpr.scale.set(cs, cs, 1);
-                nd.coreMat.opacity = Math.min(1,
-                    (isDark() ? 0.70 : 0.55) + breath * (isDark() ? 0.30 : 0.25)
-                    + nd.flash * 0.5);
-                // halo
-                const hs = cs * 2.6;
-                nd.haloSpr.scale.set(hs, hs, 1);
-                nd.haloMat.opacity = Math.min(0.8,
-                    (isDark() ? 0.12 : 0.07) + breath * 0.10
-                    + nd.flash * 0.35);
-                // decay flash
-                nd.flash = Math.max(0, nd.flash - 0.04);
+            // Rotate core and shell
+            coreMesh.rotation.y -= 0.005;
+            coreMesh.rotation.x += 0.003;
+            shellMesh.rotation.y += 0.004;
+            shellMesh.rotation.z -= 0.002;
+
+            // Orbit nodes
+            nodes.forEach(nd => {
+                nd.angle += nd.speed;
+                nd.mesh.position.x = Math.cos(nd.angle) * nd.radius;
+                nd.mesh.position.z = Math.sin(nd.angle) * nd.radius;
+                nd.mesh.position.y = nd.yOff + Math.sin(frame * 0.02 + nd.angle) * 0.5;
             });
-
-            /* Signal pulses travel along edges */
-            pulses.forEach(pu => {
-                pu.t += pu.speed;
-                if (pu.t >= 1) {
-                    /* Flash destination node */
-                    pu.to.flash = 1.0;
-                    /* Re-assign to a new random edge */
-                    const pIdx = Math.floor(Math.random() * edgePairs.length);
-                    [pu.from, pu.to] = edgePairs[pIdx];
-                    pu.t     = 0;
-                    pu.speed = 0.007 + Math.random() * 0.009;
-                }
-                pu.spr.position.lerpVectors(pu.from.pos, pu.to.pos, pu.t);
-                /* Glow brightest at midpoint of travel */
-                const glow = Math.sin(pu.t * Math.PI);
-                pu.mat.opacity = 0.50 + Math.sin(pu.t * Math.PI) * 0.50;
-                const ps = 0.22 + Math.sin(pu.t * Math.PI) * 0.24;
-                pu.spr.scale.set(ps, ps, 1);
-            });
-
-            /* Wireframe sphere accent spins */
-            accentSphere.rotation.y += 0.004;
-            accentSphere.rotation.x += 0.002;
 
             /* Drift background particles */
             const posArr = geo.attributes.position.array;
