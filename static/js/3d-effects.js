@@ -249,31 +249,40 @@
         let rafId = null;
         let inside = false;
 
-        el.addEventListener('mousemove', e => {
+        const handleMove = (e) => {
             if (rafId) return;  // throttle: only one pending frame at a time
             rafId = requestAnimationFrame(() => {
                 rafId = null;
                 if (!inside) return;
                 const r  = el.getBoundingClientRect();
-                const x  = e.clientX - r.left;
-                const y  = e.clientY - r.top;
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                const x  = clientX - r.left;
+                const y  = clientY - r.top;
                 const rx = ((r.height / 2 - y) / r.height) * maxAngle;
                 const ry = ((x - r.width  / 2) / r.width)  * maxAngle;
                 el.style.transition = 'transform 0.08s linear, box-shadow 0.08s linear';
                 el.style.transform  = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale3d(1.03,1.03,1.03)`;
                 el.style.boxShadow  = `${-ry*1.5}px ${rx*1.5}px 30px rgba(0,0,0,0.15), 0 0 16px ${palette().glow}`;
             });
-        });
+        };
+
+        el.addEventListener('mousemove', handleMove);
+        el.addEventListener('touchmove', handleMove, {passive: true});
 
         el.addEventListener('mouseenter', () => { inside = true; });
+        el.addEventListener('touchstart', () => { inside = true; }, {passive: true});
 
-        el.addEventListener('mouseleave', () => {
+        const reset = () => {
             inside = false;
             if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
             el.style.transition = 'transform 0.6s cubic-bezier(0.25,1,0.5,1), box-shadow 0.6s ease';
             el.style.transform  = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
             el.style.boxShadow  = '';
-        });
+        };
+
+        el.addEventListener('mouseleave', reset);
+        el.addEventListener('touchend', reset);
     }
 
     function initTilt() {
@@ -405,15 +414,22 @@
        ══════════════════════════════════════════════════════════ */
     function initTextDepth() {
         document.querySelectorAll('h1, h2').forEach(h => {
-            h.addEventListener('mousemove', e => {
+            const handleTextMove = (e) => {
                 const r = h.getBoundingClientRect();
-                const x = (e.clientX - r.left - r.width  / 2) / 18;
-                const y = (e.clientY - r.top  - r.height / 2) / 18;
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                const x = (clientX - r.left - r.width  / 2) / 18;
+                const y = (clientY - r.top  - r.height / 2) / 18;
                 h.style.textShadow = `${-x*2}px ${-y*2}px 0 ${palette().accent}55,
                                       ${-x*4}px ${-y*4}px 0 ${palette().accent}30,
                                       ${-x*6}px ${-y*6}px 0 ${palette().accent}15`;
-            });
-            h.addEventListener('mouseleave', () => { h.style.textShadow = ''; });
+            };
+            h.addEventListener('mousemove', handleTextMove);
+            h.addEventListener('touchmove', handleTextMove, {passive: true});
+            
+            const resetText = () => { h.style.textShadow = ''; };
+            h.addEventListener('mouseleave', resetText);
+            h.addEventListener('touchend', resetText);
         });
     }
 
@@ -434,10 +450,11 @@
             }
 
             if (isPointer) {
-                initTilt();
                 initCursorOrb();
-                initTextDepth();
             }
+            
+            initTilt();
+            initTextDepth();
 
             /* Scroll depth on all devices */
             initScrollDepth();
