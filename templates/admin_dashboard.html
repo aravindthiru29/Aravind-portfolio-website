@@ -379,16 +379,25 @@
                                     <input class="admin-input" name="category_{{ loop.index0 }}" value="{{ post.category }}"/></div>
                                 <div class="admin-input-group"><label>Date</label>
                                     <input class="admin-input" name="date_{{ loop.index0 }}" value="{{ post.date }}"/></div>
-                                <div class="admin-input-group"><label>Image</label>
+                                <div class="admin-input-group"><label>Image 1</label>
                                     <div style="display:flex;gap:12px;align-items:center;">
                                         {% if post.image %}<img src="{{ post.image if post.image.startswith('/') or post.image.startswith('http') else url_for('static', filename=post.image) }}" class="img-preview-thumb"/>{% endif %}
                                         <div style="flex:1;"><input class="admin-input" name="image_{{ loop.index0 }}" value="{{ post.image }}"/>
                                             <div class="file-upload-zone" style="margin-top:8px;padding:12px;"><input type="file" accept="image/*" onchange="uploadFile(this, 'image_{{ loop.index0 }}')"><div class="upload-text"><i class="fas fa-cloud-upload-alt"></i> <span>Upload</span></div><div class="file-name"></div></div>
                                         </div>
                                     </div></div>
+                                <div class="admin-input-group"><label>Image 2</label>
+                                    <div style="display:flex;gap:12px;align-items:center;">
+                                        {% if post.image2 %}<img src="{{ post.image2 if post.image2.startswith('/') or post.image2.startswith('http') else url_for('static', filename=post.image2) }}" class="img-preview-thumb"/>{% endif %}
+                                        <div style="flex:1;"><input class="admin-input" name="image2_{{ loop.index0 }}" value="{{ post.image2 }}"/>
+                                            <div class="file-upload-zone" style="margin-top:8px;padding:12px;"><input type="file" accept="image/*" onchange="uploadFile(this, 'image2_{{ loop.index0 }}')"><div class="upload-text"><i class="fas fa-cloud-upload-alt"></i> <span>Upload</span></div><div class="file-name"></div></div>
+                                        </div>
+                                    </div></div>
                             </div>
                             <div class="admin-input-group"><label>Excerpt</label>
                                 <textarea class="admin-input" name="excerpt_{{ loop.index0 }}" rows="2">{{ post.excerpt }}</textarea></div>
+                            <div class="admin-input-group"><label>Body</label>
+                                <textarea class="admin-input" name="body_{{ loop.index0 }}" rows="5">{{ post.body }}</textarea></div>
                         </div>
                         {% endfor %}
                         <input type="hidden" name="count" value="{{ content.blog_posts|length }}"/>

@@ -271,7 +271,9 @@ def admin_save(section):
                 'category': form.get(f'category_{i}', ''),
                 'date': form.get(f'date_{i}', ''),
                 'excerpt': form.get(f'excerpt_{i}', ''),
+                'body': form.get(f'body_{i}', ''),
                 'image': form.get(f'image_{i}', ''),
+                'image2': form.get(f'image2_{i}', ''),
                 'link': '/blog-details.html'
             })
         set_content('blog_posts', items)
@@ -360,7 +362,7 @@ def admin_add_item(section):
         'education': {'period': '2024 - 2025', 'type': 'DEGREE', 'title': 'NEW DEGREE', 'institution': 'Institution Name', 'description': 'Description...'},
         'experience': {'period': '2024 - PRESENT', 'type': 'JOB', 'title': 'NEW ROLE', 'company': 'Company Name', 'description': 'Description...'},
         'skills': {'name': 'NEW SKILL', 'icon': 'fas fa-star'},
-        'blog_posts': {'title': 'NEW BLOG POST', 'category': 'CATEGORY', 'date': 'JUNE 2026', 'excerpt': 'Blog excerpt...', 'image': 'img/gallery/img-6.png', 'link': '/blog-details.html'},
+        'blog_posts': {'title': 'NEW BLOG POST', 'category': 'CATEGORY', 'date': 'JUNE 2026', 'excerpt': 'Blog excerpt...', 'body': 'Blog body content...', 'image': 'img/gallery/img-6.png', 'image2': '', 'link': '/blog-details.html'},
     }
 
     if section in templates:
