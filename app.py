@@ -448,7 +448,7 @@ def blog_detail(index):
         return render_template('blog-details.html', c=content, post=posts[index], post_index=index)
     return redirect(url_for('admins_views', page='blog-list'))
 
-# ─── Admin: Export DB (Vercel persistence workaround) ──────
+# ─── Admin: Export DB ──────
 @app.route('/admin/export-db')
 @admin_required
 def admin_export_db():
