@@ -274,7 +274,7 @@ def admin_save(section):
                 'body': form.get(f'body_{i}', ''),
                 'image': form.get(f'image_{i}', ''),
                 'image2': form.get(f'image2_{i}', ''),
-                'link': '/blog-details.html'
+                'link': f'/blog/{i}'
             })
         set_content('blog_posts', items)
 
@@ -439,6 +439,14 @@ def project_detail(index):
         return render_template('project-details.html', c=content, project=projects[index], project_index=index)
     return redirect(url_for('index'))
 
+# ─── Individual Blog Detail ─────────────────────────────
+@app.route('/blog/<int:index>')
+def blog_detail(index):
+    content = get_all_content()
+    posts = content.get('blog_posts', [])
+    if 0 <= index < len(posts):
+        return render_template('blog-details.html', c=content, post=posts[index], post_index=index)
+    return redirect(url_for('admins_views', page='blog-list'))
 
 # ─── Admin: Export DB (Vercel persistence workaround) ──────
 @app.route('/admin/export-db')
