@@ -14,9 +14,9 @@
 <section class="v2-section">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-8" id="blog-posts-container">
                 {% for post in c.blog_posts %}
-                <article class="mb-100" data-aos="fade-up">
+                <article class="mb-100 blog-post-item" data-aos="fade-up" data-title="{{ post.title|lower }}" data-category="{{ post.category|lower }}">
                     <div class="v2-blog-img mb-4 overflow-hidden rounded-4">
                         <img src="{{ post.image if post.image.startswith('/') or post.image.startswith('http') else url_for('static', filename=post.image.replace('img/uploads/', '../uploads/') if 'img/uploads/' in post.image else post.image) }}" alt="{{ post.title }}" class="img-fluid w-100" style="transition: transform 0.5s;">
                     </div>
@@ -29,6 +29,9 @@
                     <a href="/blog/{{ loop.index0 }}" class="v2-btn py-2 px-4 shadow-sm" style="font-size: 0.8rem;">READ MORE</a>
                 </article>
                 {% endfor %}
+                <div id="no-results-msg" class="d-none text-center p-5">
+                    <h3 class="text-gray">NO POSTS FOUND</h3>
+                </div>
             </div>
 
             <!-- Sidebar -->
@@ -36,14 +39,21 @@
                 <div class="v2-sidebar p-5 rounded-4" data-aos="fade-left">
                     <h4 class="mb-4">SEARCH</h4>
                     <div class="mb-5">
-                        <input type="text" class="form-control-v2" placeholder="KEYWORD...">
+                        <input type="text" id="blog-search-input" class="form-control-v2" placeholder="KEYWORD...">
                     </div>
                     
                     <h4 class="mb-4">CATEGORIES</h4>
                     <ul class="list-none p-0 text-gray">
-                        <li class="mb-2"><a href="#" class="text-decoration-none text-gray hover-red">AI & ML (12)</a></li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none text-gray hover-red">DATA SCIENCE (8)</a></li>
-                        <li class="mb-2"><a href="#" class="text-decoration-none text-gray hover-red">WEB DEV (15)</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-gray hover-red category-filter active" data-filter="all">ALL POSTS</a></li>
+                        {% set ns = namespace(categories=[]) %}
+                        {% for post in c.blog_posts %}
+                            {% if post.category not in ns.categories and post.category.strip() %}
+                                {% set _ = ns.categories.append(post.category) %}
+                            {% endif %}
+                        {% endfor %}
+                        {% for cat in ns.categories %}
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-gray hover-red category-filter" data-filter="{{ cat|lower }}">{{ cat }}</a></li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
@@ -55,5 +65,57 @@
 {% block head %}
 <style>
     .v2-blog-img:hover img { transform: scale(1.05); }
+    .category-filter.active { color: var(--accent, #e53e3e) !important; font-weight: bold; }
 </style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('blog-search-input');
+    const categoryFilters = document.querySelectorAll('.category-filter');
+    const posts = document.querySelectorAll('.blog-post-item');
+    const noResults = document.getElementById('no-results-msg');
+    let currentCategory = 'all';
+
+    function filterPosts() {
+        const query = searchInput.value.toLowerCase().trim();
+        let visibleCount = 0;
+
+        posts.forEach(post => {
+            const title = post.getAttribute('data-title') || '';
+            const category = post.getAttribute('data-category') || '';
+            
+            const matchesSearch = title.includes(query);
+            const matchesCategory = (currentCategory === 'all' || category === currentCategory);
+
+            if (matchesSearch && matchesCategory) {
+                post.style.display = 'block';
+                visibleCount++;
+            } else {
+                post.style.display = 'none';
+            }
+        });
+
+        if (noResults) {
+            if (visibleCount === 0) {
+                noResults.classList.remove('d-none');
+            } else {
+                noResults.classList.add('d-none');
+            }
+        }
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', filterPosts);
+    }
+
+    categoryFilters.forEach(filter => {
+        filter.addEventListener('click', function(e) {
+            e.preventDefault();
+            categoryFilters.forEach(f => f.classList.remove('active'));
+            this.classList.add('active');
+            currentCategory = this.getAttribute('data-filter');
+            filterPosts();
+        });
+    });
+});
+</script>
 {% endblock %}
