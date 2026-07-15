@@ -91,7 +91,10 @@
                     <div class="col-md-9">
                         <h3>{{ edu.title }}</h3>
                         <h5 class="text-gray">{{ edu.institution }}</h5>
-                        <p class="text-gray">{{ edu.description }}</p>
+                        <p class="text-gray mb-2">{{ edu.description }}</p>
+                        {% if edu.marks %}
+                        <span class="badge bg-red bg-opacity-10 text-red border border-red px-3 py-2 mt-2" style="font-size: 0.85rem;"><i class="fas fa-award me-2"></i>{{ edu.marks }}</span>
+                        {% endif %}
                     </div>
                 </div>
             </div>

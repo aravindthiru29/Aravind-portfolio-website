@@ -167,6 +167,8 @@
                                     <input class="admin-input" name="title_{{ loop.index0 }}" value="{{ edu.title }}"/></div>
                                 <div class="admin-input-group"><label>Institution</label>
                                     <input class="admin-input" name="institution_{{ loop.index0 }}" value="{{ edu.institution }}"/></div>
+                                <div class="admin-input-group"><label>Marks (CGPA/Percentage)</label>
+                                    <input class="admin-input" name="marks_{{ loop.index0 }}" value="{{ edu.marks|default('', true) }}" placeholder="e.g. 8.5 CGPA or 95%"/></div>
                             </div>
                             <div class="admin-input-group"><label>Description</label>
                                 <textarea class="admin-input" name="description_{{ loop.index0 }}" rows="2">{{ edu.description }}</textarea></div>

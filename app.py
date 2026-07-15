@@ -194,7 +194,8 @@ def admin_save(section):
                 'type': form.get(f'type_{i}', ''),
                 'title': form.get(f'title_{i}', ''),
                 'institution': form.get(f'institution_{i}', ''),
-                'description': form.get(f'description_{i}', '')
+                'description': form.get(f'description_{i}', ''),
+                'marks': form.get(f'marks_{i}', '')
             })
         set_content('education', items)
 
@@ -370,7 +371,7 @@ def admin_add_item(section):
     templates = {
         'projects': {'title': 'NEW PROJECT', 'category': 'CATEGORY', 'description': 'Project description...', 'image': 'img/gallery/img-6.png', 'link': '#', 'homepage_desc': 'SHORT DESCRIPTION', 'github_link': '', 'website_link': '', 'tech_stack': '', 'date': '', 'client': 'PERSONAL PROJECT', 'overview': '', 'challenge': '', 'solution': '', 'gallery_images': []},
         'mini_projects': {'title': 'NEW MINI PROJECT', 'category': 'AI GAME', 'image': 'img/gallery/img-6.png', 'link': '#'},
-        'education': {'period': '2024 - 2025', 'type': 'DEGREE', 'title': 'NEW DEGREE', 'institution': 'Institution Name', 'description': 'Description...'},
+        'education': {'period': '2024 - 2025', 'type': 'DEGREE', 'title': 'NEW DEGREE', 'institution': 'Institution Name', 'description': 'Description...', 'marks': ''},
         'experience': {'period': '2024 - PRESENT', 'type': 'JOB', 'title': 'NEW ROLE', 'company': 'Company Name', 'description': 'Description...'},
         'skills': {'name': 'NEW SKILL', 'icon': 'fas fa-star'},
         'certifications': {'title': 'NEW CERTIFICATION', 'image': '', 'link': '#'},
