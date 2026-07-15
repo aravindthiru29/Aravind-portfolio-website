@@ -278,6 +278,17 @@ def admin_save(section):
             })
         set_content('blog_posts', items)
 
+    elif section == 'certifications':
+        count = int(form.get('count', 0))
+        items = []
+        for i in range(count):
+            items.append({
+                'title': form.get(f'title_{i}', ''),
+                'image': form.get(f'image_{i}', ''),
+                'link': form.get(f'link_{i}', '')
+            })
+        set_content('certifications', items)
+
     elif section == 'contact':
         set_content('contact', {
             'location': form.get('location', ''),
@@ -362,6 +373,7 @@ def admin_add_item(section):
         'education': {'period': '2024 - 2025', 'type': 'DEGREE', 'title': 'NEW DEGREE', 'institution': 'Institution Name', 'description': 'Description...'},
         'experience': {'period': '2024 - PRESENT', 'type': 'JOB', 'title': 'NEW ROLE', 'company': 'Company Name', 'description': 'Description...'},
         'skills': {'name': 'NEW SKILL', 'icon': 'fas fa-star'},
+        'certifications': {'title': 'NEW CERTIFICATION', 'image': '', 'link': '#'},
         'blog_posts': {'title': 'NEW BLOG POST', 'category': 'CATEGORY', 'date': 'JUNE 2026', 'excerpt': 'Blog excerpt...', 'body': 'Blog body content...', 'image': 'img/gallery/img-6.png', 'image2': '', 'link': '/blog-details.html'},
     }
 
@@ -467,7 +479,7 @@ def admin_export_db():
         return redirect(url_for('admin_dashboard'))
 
 
-# ─── Dynamic Page Route ────────────────────────────────────
+# ─── Dynamic Page Route ─────
 @app.route('/<page>')
 def admins_views(page):  
     try:

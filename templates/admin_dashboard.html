@@ -24,6 +24,7 @@
             <li><a href="#" onclick="showTab('education')"><i class="fas fa-graduation-cap"></i> Education</a></li>
             <li><a href="#" onclick="showTab('experience')"><i class="fas fa-briefcase"></i> Experience</a></li>
             <li><a href="#" onclick="showTab('skills')"><i class="fas fa-code"></i> Skills</a></li>
+            <li><a href="#" onclick="showTab('certifications')"><i class="fas fa-certificate"></i> Certifications</a></li>
             <li><a href="#" onclick="showTab('projects')"><i class="fas fa-rocket"></i> Projects</a></li>
             <li><a href="#" onclick="showTab('mini_projects')"><i class="fas fa-gamepad"></i> Mini Projects</a></li>
             <li><a href="#" onclick="showTab('blog')"><i class="fas fa-blog"></i> Blog Posts</a></li>
@@ -228,6 +229,38 @@
                     </div>
                 </form>
                 <form method="POST" action="{{ url_for('admin_add_item', section='skills') }}"><button type="submit" class="btn-add-new"><i class="fas fa-plus"></i> Add Skill</button></form>
+            </div>
+
+            <!-- CERTIFICATIONS TAB -->
+            <div class="admin-tab-content" id="tab-certifications">
+                <form method="POST" action="{{ url_for('admin_save', section='certifications') }}">
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3><i class="fas fa-certificate"></i> Certifications & Awards</h3></div>
+                        {% for cert in content.certifications %}
+                        <div class="admin-card" style="background:var(--admin-bg);">
+                            <div class="item-header"><span class="item-label">CERTIFICATION {{ loop.index }}</span>
+                                <form method="POST" action="{{ url_for('admin_delete_item', section='certifications', index=loop.index0) }}" onsubmit="return confirm('Delete?')" style="margin:0;"><button type="submit" class="btn-delete-item"><i class="fas fa-trash"></i> Delete</button></form></div>
+                            <div class="admin-grid admin-grid-2">
+                                <div class="admin-input-group"><label>Title</label>
+                                    <input class="admin-input" name="title_{{ loop.index0 }}" value="{{ cert.title }}"/></div>
+                                <div class="admin-input-group"><label>Link</label>
+                                    <input class="admin-input" name="link_{{ loop.index0 }}" value="{{ cert.link }}"/></div>
+                            </div>
+                            <div class="admin-input-group"><label>Image</label>
+                                <div style="display:flex;gap:12px;align-items:center;">
+                                    {% if cert.image %}<img src="{{ cert.image if cert.image.startswith('/') or cert.image.startswith('http') else url_for('static', filename=cert.image) }}" class="img-preview-thumb"/>{% endif %}
+                                    <div style="flex:1;"><input class="admin-input" name="image_{{ loop.index0 }}" value="{{ cert.image }}"/>
+                                        <div class="file-upload-zone" style="margin-top:8px;padding:12px;"><input type="file" accept="image/*" onchange="uploadFile(this, 'image_{{ loop.index0 }}')"><div class="upload-text"><i class="fas fa-cloud-upload-alt"></i> <span>Upload</span></div><div class="file-name"></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <input type="hidden" name="count" value="{{ content.certifications|length }}"/>
+                        <button type="submit" class="admin-btn" style="margin-top:16px;"><i class="fas fa-save"></i> Save Certifications</button>
+                    </div>
+                </form>
+                <form method="POST" action="{{ url_for('admin_add_item', section='certifications') }}"><button type="submit" class="btn-add-new"><i class="fas fa-plus"></i> Add Certification</button></form>
             </div>
 
             <!-- PROJECTS TAB -->
@@ -531,7 +564,7 @@
 </div>
 
 <script>
-const tabTitles = {hero:'Hero Section',about:'About',education:'Education',experience:'Experience',skills:'Skills',projects:'Projects',mini_projects:'Mini Projects',blog:'Blog Posts',contact:'Contact Info',social:'Social Links',stats:'Stats',site:'Site Metadata',password:'Change Password'};
+const tabTitles = {hero:'Hero Section',about:'About',education:'Education',experience:'Experience',skills:'Skills',certifications:'Certifications',projects:'Projects',mini_projects:'Mini Projects',blog:'Blog Posts',contact:'Contact Info',social:'Social Links',stats:'Stats',site:'Site Metadata',password:'Change Password'};
 function showTab(name) {
     document.querySelectorAll('.admin-tab-content').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));

@@ -125,6 +125,78 @@
     </div>
 </section>
 
+<!-- Certifications & Awards -->
+<section class="v2-section bg-darker">
+    <div class="container">
+        <h2 class="display-4 fw-black mb-5 text-center" data-aos="fade-up">CERTIFICATIONS <span class="text-red">& AWARDS</span></h2>
+        
+        <div class="marquee-wrapper mt-5 overflow-hidden position-relative">
+            <div class="marquee-content d-flex">
+                {% if c.certifications %}
+                    {% for cert in c.certifications %}
+                        <div class="px-4">
+                            <a href="{{ cert.link }}" target="_blank">
+                                <img src="{{ cert.image if cert.image.startswith('/') or cert.image.startswith('http') else url_for('static', filename=cert.image) }}" alt="{{ cert.title }}" style="max-height: 250px; border-radius: 12px; box-shadow: var(--shadow-card);" class="hover-red-border transition">
+                            </a>
+                            <h5 class="text-center mt-3 text-white">{{ cert.title }}</h5>
+                        </div>
+                    {% endfor %}
+                    <!-- Duplicate for infinite scroll loop -->
+                    {% for cert in c.certifications %}
+                        <div class="px-4">
+                            <a href="{{ cert.link }}" target="_blank">
+                                <img src="{{ cert.image if cert.image.startswith('/') or cert.image.startswith('http') else url_for('static', filename=cert.image) }}" alt="{{ cert.title }}" style="max-height: 250px; border-radius: 12px; box-shadow: var(--shadow-card);" class="hover-red-border transition">
+                            </a>
+                            <h5 class="text-center mt-3 text-white">{{ cert.title }}</h5>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-gray text-center w-100">No certifications uploaded yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- What I'm Doing Now -->
+<section class="v2-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5 mb-5 mb-lg-0" data-aos="fade-right">
+                <h2 class="display-4 fw-black mb-4">WHAT I'M <span class="text-red">DOING NOW.</span></h2>
+                <p class="text-gray fs-5">A quick snapshot of what my life looks like right now and what I am currently focused on.</p>
+            </div>
+            <div class="col-lg-7" data-aos="fade-left">
+                <div class="p-5 bg-darker rounded-4 shadow-sm border-start border-red border-4">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-4 d-flex">
+                            <i class="fas fa-laptop-code text-red fs-4 me-4 mt-1"></i>
+                            <div>
+                                <h4 class="mb-1">Building</h4>
+                                <p class="text-gray mb-0">Exploring Next.js 14 server actions and building a new AI-powered side project.</p>
+                            </div>
+                        </li>
+                        <li class="mb-4 d-flex">
+                            <i class="fas fa-book-open text-red fs-4 me-4 mt-1"></i>
+                            <div>
+                                <h4 class="mb-1">Reading</h4>
+                                <p class="text-gray mb-0">"Clean Architecture" by Robert C. Martin to level up my system design skills.</p>
+                            </div>
+                        </li>
+                        <li class="d-flex">
+                            <i class="fas fa-dumbbell text-red fs-4 me-4 mt-1"></i>
+                            <div>
+                                <h4 class="mb-1">Personal Goal</h4>
+                                <p class="text-gray mb-0">Training for my first half-marathon and trying to hit 10,000 steps daily.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Quote Section -->
 <section class="v2-section v2-section-red">
     <div class="container text-center" data-aos="zoom-in">
@@ -145,5 +217,24 @@
     .transition { transition: all 0.3s ease; }
     .timeline-item::after { content: ''; position: absolute; left: -1px; top: 20px; bottom: 0; width: 1px; background: var(--border-subtle); }
     .timeline-item:last-child::after { display: none; }
+    
+    @keyframes marquee {
+        0% { transform: translateX(0%); }
+        100% { transform: translateX(-50%); }
+    }
+    .marquee-wrapper {
+        white-space: nowrap;
+        width: 100%;
+        mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    }
+    .marquee-content {
+        display: inline-flex;
+        animation: marquee 20s linear infinite;
+        width: max-content;
+    }
+    .marquee-content:hover {
+        animation-play-state: paused;
+    }
 </style>
 {% endblock %}
