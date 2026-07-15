@@ -26,13 +26,14 @@
                 <img src="{{ post.image2 if post.image2.startswith('/') or post.image2.startswith('http') else url_for('static', filename=post.image2.replace('img/uploads/', '../uploads/') if 'img/uploads/' in post.image2 else post.image2) }}" alt="{{ post.title }} - Image 2" class="img-fluid rounded-4 shadow-lg mt-5 mb-5 w-100">
                 {% endif %}
                 
-                <!-- Comments Placeholder -->
-                <div class="mt-100 p-5 bg-darker rounded-4">
-                    <h4 class="mb-4">LEAVE A REPLY</h4>
-                    <form>
-                        <textarea class="form-control-v2 mb-4" rows="4" placeholder="YOUR COMMENT"></textarea>
-                        <button class="v2-btn py-2 px-5 shadow-sm">POST COMMENT</button>
-                    </form>
+                <!-- Interaction Section -->
+                <div class="mt-100 p-5 bg-darker rounded-4 text-center">
+                    <h4 class="mb-4">ENJOYED THIS POST?</h4>
+                    <p class="text-gray mb-4">Let's discuss it! Feel free to reach out or connect with me.</p>
+                    <div class="d-flex justify-content-center gap-3 mt-4">
+                        <a href="/contact" class="v2-btn py-2 px-4 shadow-sm">GET IN TOUCH</a>
+                        <a href="/blog-list" class="v2-btn v2-btn-outline py-2 px-4 shadow-sm">BACK TO BLOG</a>
+                    </div>
                 </div>
             </div>
         </div>

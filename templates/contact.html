@@ -86,15 +86,6 @@
     <div class="container h-100 d-flex flex-column justify-content-center align-items-center">
         <h2 class="display-3 fw-black mb-4">READY TO COLLABORATE?</h2>
         <p class="fs-4 mb-5">Let's build something amazing together.</p>
-        <div class="d-flex gap-4">
-            {% if c is defined and c.social_links is defined %}
-            <a href="{{ c.social_links.github }}" class="fs-2" style="color:#fff;"><i class="fab fa-github"></i></a>
-            <a href="{{ c.social_links.linkedin }}" class="fs-2" style="color:#fff;"><i class="fab fa-linkedin"></i></a>
-            {% else %}
-            <a href="https://github.com/aravindthiru29" class="fs-2" style="color:#fff;"><i class="fab fa-github"></i></a>
-            <a href="https://www.linkedin.com/in/aravind-t-b724012b4/" class="fs-2" style="color:#fff;"><i class="fab fa-linkedin"></i></a>
-            {% endif %}
-        </div>
     </div>
 </section>
 {% endblock %}
