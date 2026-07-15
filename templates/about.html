@@ -138,7 +138,7 @@
                             <a href="{{ cert.link }}" target="_blank">
                                 <img src="{{ cert.image if cert.image.startswith('/') or cert.image.startswith('http') else url_for('static', filename=cert.image) }}" alt="{{ cert.title }}" style="max-height: 250px; border-radius: 12px; box-shadow: var(--shadow-card);" class="hover-red-border transition">
                             </a>
-                            <h5 class="text-center mt-3 text-white">{{ cert.title }}</h5>
+                            <h5 class="text-center mt-3 fw-bold" style="color: var(--text-primary);">{{ cert.title }}</h5>
                         </div>
                     {% endfor %}
                     <!-- Duplicate for infinite scroll loop -->
@@ -147,7 +147,7 @@
                             <a href="{{ cert.link }}" target="_blank">
                                 <img src="{{ cert.image if cert.image.startswith('/') or cert.image.startswith('http') else url_for('static', filename=cert.image) }}" alt="{{ cert.title }}" style="max-height: 250px; border-radius: 12px; box-shadow: var(--shadow-card);" class="hover-red-border transition">
                             </a>
-                            <h5 class="text-center mt-3 text-white">{{ cert.title }}</h5>
+                            <h5 class="text-center mt-3 fw-bold" style="color: var(--text-primary);">{{ cert.title }}</h5>
                         </div>
                     {% endfor %}
                 {% else %}
