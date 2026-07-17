@@ -52,3 +52,7 @@ ENV/
 # OS junk
 .DS_Store
 Thumbs.db
+
+
+env
+__pycache__

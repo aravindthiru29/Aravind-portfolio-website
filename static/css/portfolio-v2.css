@@ -89,7 +89,12 @@ body {
 }
 
 /* Typography Overrides */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: -1px;
@@ -114,7 +119,7 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
 }
 
-.v2-hero > .container {
+.v2-hero>.container {
     position: relative;
     z-index: 4;
 }
@@ -132,8 +137,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes canvasFadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .v2-hero .badge-red {
@@ -167,7 +177,8 @@ h1, h2, h3, h4, h5, h6 {
 .v2-hero-img img {
     max-width: 100%;
     height: auto;
-    filter: drop-shadow(var(--shadow-hero-img));
+    border-radius: 50%;
+    box-shadow: var(--shadow-hero-img);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -179,7 +190,7 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 1;
 }
 
-.v2-section > .container {
+.v2-section>.container {
     position: relative;
     z-index: 2;
 }
@@ -216,7 +227,7 @@ h1, h2, h3, h4, h5, h6 {
     -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
     padding: 15px 0;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 [data-theme="dark"] .v2-nav.scrolled {
@@ -224,7 +235,7 @@ h1, h2, h3, h4, h5, h6 {
     backdrop-filter: blur(20px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
-    border-bottom: 1px solid rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .v2-logo {
@@ -396,43 +407,43 @@ h1, h2, h3, h4, h5, h6 {
    CARDS (3D Glassmorphism)
    ═══════════════════════════════════════════════════════════ */
 .v2-card {
-    transition: transform 0.55s cubic-bezier(0.25,1,0.5,1), box-shadow 0.55s ease;
-    border: 1px solid rgba(255,255,255,0.4) !important;
+    transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.55s ease;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
     background: rgba(255, 255, 255, 0.72) !important;
     backdrop-filter: blur(14px) saturate(140%) !important;
     -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
-    box-shadow: 0 12px 35px rgba(0,0,0,0.07), 0 2px 8px rgba(0,0,0,0.04) !important;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.07), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
     transform-style: preserve-3d;
     will-change: transform;
 }
 
 [data-theme="dark"] .v2-card {
     background: rgba(24, 24, 24, 0.82) !important;
-    border: 1px solid rgba(255,255,255,0.07) !important;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.07) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
    SIDEBAR (project details, blog)
    ═══════════════════════════════════════════════════════════ */
 .detail-sidebar {
-    background: rgba(255,255,255,0.58) !important;
-    border: 1px solid rgba(255,255,255,0.3) !important;
+    background: rgba(255, 255, 255, 0.58) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
     border-radius: 16px;
     padding: 32px;
     position: sticky;
     top: 100px;
     backdrop-filter: blur(16px) !important;
     -webkit-backdrop-filter: blur(16px) !important;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.06) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06) !important;
     transform-style: preserve-3d;
     will-change: transform;
 }
 
 [data-theme="dark"] .detail-sidebar {
     background: rgba(18, 18, 18, 0.80) !important;
-    border: 1px solid rgba(255,255,255,0.06) !important;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4) !important;
 }
 
 .detail-label {
@@ -757,6 +768,7 @@ footer a:hover {
 }
 
 @media (pointer: fine) {
+
     #cursor-orb,
     #cursor-trail {
         display: block;
@@ -766,9 +778,52 @@ footer a:hover {
 /* ═══════════════════════════════════════════════════════════
    3D — INTERACTIVE TEXT DEPTH SHADOWS
    ═══════════════════════════════════════════════════════════ */
-h1, h2 {
+h1,
+h2 {
     transition: text-shadow 0.12s ease;
 }
 
-/* ── EOF ── */. h e r o - a n i m a t e - i n   {   a n i m a t i o n :   f a d e R i g h t   0 . 8 s   e a s e - o u t   f o r w a r d s ;   }   . h e r o - a n i m a t e - i n - d e l a y   {   a n i m a t i o n :   f a d e L e f t   0 . 8 s   e a s e - o u t   0 . 2 s   f o r w a r d s ;   o p a c i t y :   0 ;   }   @ k e y f r a m e s   f a d e R i g h t   {   f r o m   {   o p a c i t y :   0 ;   t r a n s f o r m :   t r a n s l a t e X ( - 3 0 p x ) ;   }   t o   {   o p a c i t y :   1 ;   t r a n s f o r m :   t r a n s l a t e X ( 0 ) ;   }   }   @ k e y f r a m e s   f a d e L e f t   {   f r o m   {   o p a c i t y :   0 ;   t r a n s f o r m :   t r a n s l a t e X ( 3 0 p x ) ;   }   t o   {   o p a c i t y :   1 ;   t r a n s f o r m :   t r a n s l a t e X ( 0 ) ;   }   }  
- 
+/* ── EOF ── */
+.hero-animate-in  {
+     animation:  fadeRight 0.8s ease-out forwards;
+     
+}
+
+ .hero-animate-in-delay  {
+     animation:  fadeLeft 0.8s ease-out 0.2s forwards;
+     opacity:  0;
+     
+}
+
+ @keyframes fadeRight  {
+     from  {
+         opacity:  0;
+         transform:  translateX(-30px);
+         
+    }
+
+     to  {
+         opacity:  1;
+         transform:  translateX(0);
+         
+    }
+
+     
+}
+
+ @keyframes fadeLeft  {
+     from  {
+         opacity:  0;
+         transform:  translateX(30px);
+         
+    }
+
+     to  {
+         opacity:  1;
+         transform:  translateX(0);
+         
+    }
+     
+}
+
+  
