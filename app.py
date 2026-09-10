@@ -49,7 +49,7 @@ app.config.update(
 )
 mail = Mail(app)
 
-# Diagnostic Logging (Safe for Production)
+# Diagnostic Logging 
 print(f"--- MAIL INITIALIZED ---")
 print(f"Server: {MAIL_SERVER}:{MAIL_PORT}")
 print(f"Security: TLS={MAIL_USE_TLS}, SSL={MAIL_USE_SSL}")
@@ -57,7 +57,7 @@ print(f"User Set: {'Yes' if MAIL_USERNAME else 'No'}")
 print(f"Pass Set: {'Yes' if MAIL_PASSWORD else 'No'}")
 print(f"------------------------")
 
-# ─── Initialize Database ───────────────────────────────────
+# ─── Initialize Database ──────────
 from models import init_db, verify_admin, change_admin_password as db_change_password, change_admin_username as db_change_username
 from models import get_all_content, get_content, set_content
 
@@ -65,7 +65,7 @@ init_db()
 print("--- DATABASE INITIALIZED ---")
 
 
-# ─── Auth Decorator ────────────────────────────────────────
+# ─── Auth Decorator ────────── 
 def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -222,6 +222,17 @@ def admin_save(section):
             })
         set_content('skills', items)
 
+    elif section == 'doing_now':
+        count = int(form.get('count', 0))
+        items = []
+        for i in range(count):
+            items.append({
+                'title': form.get(f'title_{i}', ''),
+                'icon': form.get(f'icon_{i}', 'fas fa-star'),
+                'text': form.get(f'text_{i}', '')
+            })
+        set_content('doing_now', items)
+
     elif section == 'projects':
         count = int(form.get('count', 0))
         items = []
@@ -374,6 +385,7 @@ def admin_add_item(section):
         'education': {'period': '2024 - 2025', 'type': 'DEGREE', 'title': 'NEW DEGREE', 'institution': 'Institution Name', 'description': 'Description...', 'marks': ''},
         'experience': {'period': '2024 - PRESENT', 'type': 'JOB', 'title': 'NEW ROLE', 'company': 'Company Name', 'description': 'Description...'},
         'skills': {'name': 'NEW SKILL', 'icon': 'fas fa-star'},
+        'doing_now': {'title': 'NEW FOCUS', 'icon': 'fas fa-rocket', 'text': 'Describe what you are doing right now.'},
         'certifications': {'title': 'NEW CERTIFICATION', 'image': '', 'link': '#'},
         'blog_posts': {'title': 'NEW BLOG POST', 'category': 'CATEGORY', 'date': 'JUNE 2026', 'excerpt': 'Blog excerpt...', 'body': 'Blog body content...', 'image': 'img/gallery/img-6.png', 'image2': '', 'link': '/blog-details.html'},
     }

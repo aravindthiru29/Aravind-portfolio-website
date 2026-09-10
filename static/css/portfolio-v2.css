@@ -80,12 +80,47 @@
 /* ═══════════════════════════════════════════════════════════
    BASE
    ═══════════════════════════════════════════════════════════ */
+html, body {
+    overflow-x: clip;
+    max-width: 100%;
+}
+
 body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
     font-family: 'Montserrat', sans-serif;
-    overflow-x: hidden;
+    overflow-x: clip;
     transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+img,
+svg,
+video,
+iframe,
+canvas {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.container,
+.container-fluid,
+.row,
+.col,
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-10,
+.col-11,
+.col-12,
+[class*="col-"] {
+    max-width: 100%;
 }
 
 /* Typography Overrides */
@@ -161,11 +196,69 @@ h6 {
     line-height: 0.9;
     margin-bottom: 30px;
     color: var(--text-primary);
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: normal;
 }
 
 .v2-hero .outline-text {
     color: transparent;
     -webkit-text-stroke: 2px var(--stroke-color);
+}
+
+@media (max-width: 767.98px) {
+    html, body {
+        overflow-x: clip;
+    }
+
+    .v2-hero {
+        padding-top: 120px;
+        padding-bottom: 80px;
+        overflow: hidden;
+    }
+
+    .v2-hero h1 {
+        font-size: clamp(2.5rem, 17vw, 4.2rem);
+        line-height: 0.92;
+        letter-spacing: -0.05em;
+        margin-bottom: 20px;
+        max-width: 100%;
+    }
+
+    .v2-hero .badge-red {
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
+    }
+
+    .v2-hero p {
+        max-width: 100% !important;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    .v2-hero .d-flex {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.75rem !important;
+    }
+
+    .v2-hero .v2-btn,
+    .v2-hero .v2-btn-outline {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .v2-hero .v2-hero-img {
+        margin-top: 2rem;
+    }
+
+    .v2-hero-img img {
+        max-width: 85%;
+        display: block;
+        margin: 0 auto;
+    }
 }
 
 .v2-hero-img {

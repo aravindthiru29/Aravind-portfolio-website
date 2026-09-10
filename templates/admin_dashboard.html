@@ -21,6 +21,7 @@
         <ul class="sidebar-nav">
             <li><a href="#" class="active" onclick="showTab('hero')"><i class="fas fa-home"></i> Hero</a></li>
             <li><a href="#" onclick="showTab('about')"><i class="fas fa-user"></i> About</a></li>
+            <li><a href="#" onclick="showTab('doing_now')"><i class="fas fa-clock"></i> Doing Now</a></li>
             <li><a href="#" onclick="showTab('education')"><i class="fas fa-graduation-cap"></i> Education</a></li>
             <li><a href="#" onclick="showTab('experience')"><i class="fas fa-briefcase"></i> Experience</a></li>
             <li><a href="#" onclick="showTab('skills')"><i class="fas fa-code"></i> Skills</a></li>
@@ -146,6 +147,32 @@
                         <button type="submit" class="admin-btn"><i class="fas fa-save"></i> Save About Page</button>
                     </div>
                 </form>
+            </div>
+
+            <!-- DOING NOW TAB -->
+            <div class="admin-tab-content" id="tab-doing_now">
+                <form method="POST" action="{{ url_for('admin_save', section='doing_now') }}">
+                    <div class="admin-card">
+                        <div class="admin-card-header"><h3><i class="fas fa-clock"></i> What I'm Doing Now</h3></div>
+                        {% for item in content.doing_now|default([]) %}
+                        <div class="admin-card" style="background:var(--admin-bg);">
+                            <div class="item-header"><span class="item-label">ITEM {{ loop.index }}</span>
+                                <form method="POST" action="{{ url_for('admin_delete_item', section='doing_now', index=loop.index0) }}" onsubmit="return confirm('Delete?')" style="margin:0;"><button type="submit" class="btn-delete-item"><i class="fas fa-trash"></i> Delete</button></form></div>
+                            <div class="admin-grid admin-grid-2">
+                                <div class="admin-input-group"><label>Title</label>
+                                    <input class="admin-input" name="title_{{ loop.index0 }}" value="{{ item.title }}"/></div>
+                                <div class="admin-input-group"><label>Icon Class</label>
+                                    <input class="admin-input" name="icon_{{ loop.index0 }}" value="{{ item.icon }}"/></div>
+                            </div>
+                            <div class="admin-input-group"><label>Text</label>
+                                <textarea class="admin-input" name="text_{{ loop.index0 }}" rows="3">{{ item.text }}</textarea></div>
+                        </div>
+                        {% endfor %}
+                        <input type="hidden" name="count" value="{{ content.doing_now|default([])|length }}"/>
+                        <button type="submit" class="admin-btn"><i class="fas fa-save"></i> Save Doing Now</button>
+                    </div>
+                </form>
+                <form method="POST" action="{{ url_for('admin_add_item', section='doing_now') }}"><button type="submit" class="btn-add-new"><i class="fas fa-plus"></i> Add Item</button></form>
             </div>
 
             <!-- EDUCATION TAB -->

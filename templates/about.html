@@ -170,30 +170,22 @@
                 <p class="text-gray fs-5">A quick snapshot of what my life looks like right now and what I am currently focused on.</p>
             </div>
             <div class="col-lg-7" data-aos="fade-left">
-                <div class="p-5 bg-darker rounded-4 shadow-sm border-start border-red border-4">
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-4 d-flex">
-                            <i class="fas fa-laptop-code text-red fs-4 me-4 mt-1"></i>
-                            <div>
-                                <h4 class="mb-1">Building</h4>
-                                <p class="text-gray mb-0">Exploring Next.js 14 server actions and building a new AI-powered side project.</p>
-                            </div>
-                        </li>
-                        <li class="mb-4 d-flex">
-                            <i class="fas fa-book-open text-red fs-4 me-4 mt-1"></i>
-                            <div>
-                                <h4 class="mb-1">Reading</h4>
-                                <p class="text-gray mb-0">"Clean Architecture" by Robert C. Martin to level up my system design skills.</p>
-                            </div>
-                        </li>
-                        <li class="d-flex">
-                            <i class="fas fa-dumbbell text-red fs-4 me-4 mt-1"></i>
-                            <div>
-                                <h4 class="mb-1">Personal Goal</h4>
-                                <p class="text-gray mb-0">Training for my first half-marathon and trying to hit 10,000 steps daily.</p>
-                            </div>
-                        </li>
-                    </ul>
+                <div class="p-5 bg-darker rounded-4 shadow-sm border-start border-red border-4 doing-now-panel">
+                    {% if c.doing_now %}
+                        <ul class="list-unstyled mb-0 doing-now-list">
+                            {% for item in c.doing_now %}
+                            <li class="doing-now-item mb-4 d-flex">
+                                <i class="{{ item.icon|default('fas fa-star') }} text-red fs-4 me-4 mt-1 doing-now-icon"></i>
+                                <div class="doing-now-content">
+                                    <h4 class="mb-1">{{ item.title }}</h4>
+                                    <p class="text-gray mb-0">{{ item.text }}</p>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-gray mb-0">No items added yet.</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -220,6 +212,37 @@
     .transition { transition: all 0.3s ease; }
     .timeline-item::after { content: ''; position: absolute; left: -1px; top: 20px; bottom: 0; width: 1px; background: var(--border-subtle); }
     .timeline-item:last-child::after { display: none; }
+    .doing-now-panel { overflow-wrap: anywhere; word-break: break-word; }
+    .doing-now-list { width: 100%; }
+    .doing-now-item { align-items: flex-start; min-width: 0; }
+    .doing-now-icon { flex-shrink: 0; }
+    .doing-now-content { min-width: 0; flex: 1; }
+    .doing-now-content h4,
+    .doing-now-content p { overflow-wrap: anywhere; word-break: break-word; white-space: normal; }
+
+    @media (max-width: 767.98px) {
+        .doing-now-panel { padding: 1.5rem !important; }
+        .doing-now-item {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .doing-now-icon {
+            margin-right: 0 !important;
+            margin-top: 0.15rem !important;
+        }
+        .doing-now-content {
+            width: calc(100% - 2.5rem);
+        }
+        .doing-now-content h4 {
+            font-size: 1.05rem;
+            line-height: 1.4;
+        }
+        .doing-now-content p {
+            font-size: 0.96rem;
+            line-height: 1.6;
+        }
+    }
     
     @keyframes marquee {
         0% { transform: translateX(0%); }

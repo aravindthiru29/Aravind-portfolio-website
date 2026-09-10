@@ -223,6 +223,25 @@ def seed_default_content():
         'quote_author': '— PETER DRUCKER'
     })
 
+    # What I'm Doing Now
+    set_content('doing_now', [
+        {
+            'title': 'Building',
+            'icon': 'fas fa-laptop-code',
+            'text': 'Exploring Next.js 14 server actions and building a new AI-powered side project.'
+        },
+        {
+            'title': 'Reading',
+            'icon': 'fas fa-book-open',
+            'text': '"Clean Architecture" by Robert C. Martin to level up my system design skills.'
+        },
+        {
+            'title': 'Personal Goal',
+            'icon': 'fas fa-dumbbell',
+            'text': 'Training for my first half-marathon and trying to hit 10,000 steps daily.'
+        }
+    ])
+
     # Education
     set_content('education', [
         {
