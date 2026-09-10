@@ -371,6 +371,11 @@ def serve_upload(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
 
 
+@app.route('/google856e7774095f06b2.html')
+def google_verification_file():
+    return 'google-site-verification: google856e7774095f06b2.html', 200, {'Content-Type': 'text/html; charset=utf-8'}
+
+
 @app.route('/admin/add/<section>', methods=['POST'])
 @admin_required
 def admin_add_item(section):
