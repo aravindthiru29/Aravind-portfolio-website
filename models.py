@@ -95,11 +95,24 @@ def init_db():
             )
         ''', commit=True)
 
-    # Seed default admin if none exists
-    if not execute_query('SELECT id FROM admin_users LIMIT 1', fetchone=True):
-        admin_user = os.environ.get('ADMIN_USERNAME', 'admin')
-        admin_pass = os.environ.get('ADMIN_PASSWORD', 'admin@1234')
-        create_admin(admin_user, admin_pass)
+    # Seed default admin if none exists, or align it with the configured environment values.
+    desired_username = os.environ.get('ADMIN_USERNAME', 'admin').strip() or 'admin'
+    desired_password = os.environ.get('ADMIN_PASSWORD', 'admin@1234').strip() or 'admin@1234'
+
+    existing_admin = execute_query('SELECT id, username FROM admin_users ORDER BY id LIMIT 1', fetchone=True)
+    if not existing_admin:
+        create_admin(desired_username, desired_password)
+    else:
+        # Enforce the configured credentials so .env changes take effect even when the DB already exists.
+        target_username = desired_username
+        target_user = execute_query('SELECT id FROM admin_users WHERE username = ?', (target_username,), fetchone=True)
+        if target_user and target_user['id'] != existing_admin['id']:
+            # A different admin row is already using the desired username; keep the current record and update it.
+            pass
+        elif existing_admin['username'] != target_username:
+            execute_query('UPDATE admin_users SET username = ? WHERE id = ?', (target_username, existing_admin['id']), commit=True)
+        hashed, salt = hash_password(desired_password)
+        execute_query('UPDATE admin_users SET password_hash = ?, salt = ? WHERE username = ?', (hashed, salt, target_username), commit=True)
 
     # Seed default content if none exists
     if not execute_query('SELECT id FROM portfolio_content LIMIT 1', fetchone=True):
