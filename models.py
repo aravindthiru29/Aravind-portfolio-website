@@ -185,11 +185,11 @@ def seed_default_content():
 
     # Hero section
     set_content('hero', {
-        'badge': 'FINAL YEAR STUDENT',
-        'title_line1': 'ENGINEERING THE',
-        'title_highlight': 'FUTURE',
-        'title_line2': 'WITH AI',
-        'description': 'I am an Artificial Intelligence and Data Science student focusing on building a solid foundation in data-driven decision-making and computational techniques.',
+        'badge': 'ARAVIND PORTFOLIO WEBSITE',
+        'title_line1': 'ARAVIND',
+        'title_highlight': 'PORTFOLIO',
+        'title_line2': 'WEBSITE',
+        'description': 'This Aravind portfolio website showcases AI engineering, data science projects, software development, and practical work as an AI Engineer and Data Scientist.',
         'cta_primary': 'BOOK A CALL',
         'cta_secondary': 'VIEW WORK',
         'image': 'img/hero/author-thumb-2.jpg'
@@ -197,9 +197,9 @@ def seed_default_content():
 
     # About section (on homepage)
     set_content('about_brief', {
-        'title': 'ABOUT ME.',
-        'subtitle': "Hello, I'm Aravind. I focus on building a solid foundation in data-driven decision-making, logical reasoning, and computational techniques.",
-        'description': 'Currently pursuing B.Tech in AI & Data Science. I bridge the gap between complex algorithms and real-world applications.',
+        'title': 'ABOUT ARAVIND.',
+        'subtitle': "Hello, I'm Aravind. This Aravind portfolio website highlights my work in AI engineering, data science, and software development.",
+        'description': 'Currently pursuing B.Tech in AI & Data Science. I bridge the gap between complex algorithms and real-world applications with practical, data-driven solutions.',
         'cta_text': 'READ MORE'
     })
 
