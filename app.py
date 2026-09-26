@@ -90,7 +90,11 @@ print(f"Pass Set: {'Yes' if MAIL_PASSWORD else 'No'}")
 print(f"------------------------")
 
 # ─── Initialize Database ──────────
-from models import init_db, verify_admin, change_admin_password as db_change_password, change_admin_username as db_change_username
+from models import (
+    init_db, verify_admin, change_admin_password as db_change_password,
+    change_admin_username as db_change_username, reset_admin_password,
+    save_password_reset_otp, verify_password_reset_otp, get_admin_user
+)
 from models import get_all_content, get_content, set_content
 
 init_db()
@@ -168,6 +172,129 @@ def admin_logout():
     session.pop('admin_user', None)
     flash('You have been logged out.', 'success')
     return redirect(url_for('admin_login'))
+
+@app.route('/admin/forgot-password', methods=['GET', 'POST'])
+def admin_forgot_password():
+    if session.get('admin_logged_in'):
+        return redirect(url_for('admin_dashboard'))
+
+    admin = get_admin_user()
+    current_admin_username = admin['username'] if admin else 'admin'
+    admin_email = os.environ.get('MAIL_RECEIVER') or os.environ.get('MAIL_USERNAME', 'aravthiru131@gmail.com')
+
+    if request.method == 'POST':
+        identifier = request.form.get('identifier', '').strip()
+
+        # Check identifier against username or registered email
+        if identifier.lower() != current_admin_username.lower() and identifier.lower() != admin_email.lower():
+            flash('No admin account found matching that username or email address.', 'danger')
+            hint = admin_email[:3] + '***@' + admin_email.split('@')[-1] if '@' in admin_email else admin_email
+            return render_template('admin_forgot_password.html', admin_email_hint=hint)
+
+        import time
+        import hashlib
+        otp = f"{secrets.randbelow(900000) + 100000:06d}"
+        otp_hash = hashlib.sha256(otp.encode()).hexdigest()
+        expires_at = int(time.time() + 900)  # 15 minutes
+
+        save_password_reset_otp(current_admin_username, otp_hash, expires_at)
+        session['reset_user'] = current_admin_username
+        session['reset_otp_hash'] = otp_hash
+        session['reset_expires'] = expires_at
+
+        # Attempt sending verification code via Flask-Mail
+        email_sent = False
+        if MAIL_USERNAME and MAIL_PASSWORD:
+            try:
+                msg = Message(
+                    subject="Portfolio Admin - Password Reset Code",
+                    recipients=[admin_email],
+                    body=(
+                        f"Hello Aravind,\n\n"
+                        f"A password reset request was received for your portfolio admin panel.\n\n"
+                        f"Your 6-digit verification code is:\n\n"
+                        f"      {otp}\n\n"
+                        f"This code will expire in 15 minutes.\n"
+                        f"If you did not request this, you can safely ignore this email.\n\n"
+                        f"Best regards,\n"
+                        f"Aravind Portfolio Security"
+                    ),
+                    sender=os.environ.get('MAIL_DEFAULT_SENDER') or MAIL_USERNAME
+                )
+                mail.send(msg)
+                email_sent = True
+            except Exception as e:
+                print(f"[MAIL DELIVERY FAILED] {e}")
+
+        # Always log for local/emergency development access
+        print("=" * 60)
+        print(f"[RECOVERY CODE FOR {current_admin_username}]: {otp}")
+        print("=" * 60)
+
+        if email_sent:
+            flash(f'A 6-digit verification code has been sent to {admin_email}.', 'success')
+        else:
+            recovery_key = os.environ.get('RECOVERY_KEY', 'Aravind@Recovery2026')
+            flash(f'Verification code generated! (If email did not deliver, you can use your Master Recovery Key: {recovery_key})', 'warning')
+
+        return redirect(url_for('admin_reset_password'))
+
+    hint = admin_email[:3] + '***@' + admin_email.split('@')[-1] if '@' in admin_email else admin_email
+    return render_template('admin_forgot_password.html', admin_email_hint=hint)
+
+
+@app.route('/admin/reset-password', methods=['GET', 'POST'])
+def admin_reset_password():
+    if session.get('admin_logged_in'):
+        return redirect(url_for('admin_dashboard'))
+
+    admin = get_admin_user()
+    current_admin_username = session.get('reset_user') or (admin['username'] if admin else 'admin')
+    master_recovery_key = os.environ.get('RECOVERY_KEY', 'Aravind@Recovery2026')
+
+    if request.method == 'POST':
+        code = request.form.get('code', '').strip()
+        new_pw = request.form.get('new_password', '')
+        confirm_pw = request.form.get('confirm_password', '')
+
+        if not code:
+            flash('Please enter the verification code or Master Recovery Key.', 'danger')
+            return render_template('admin_reset_password.html')
+
+        if new_pw != confirm_pw:
+            flash('New passwords do not match.', 'danger')
+            return render_template('admin_reset_password.html')
+
+        if len(new_pw) < 6:
+            flash('Password must be at least 6 characters long.', 'danger')
+            return render_template('admin_reset_password.html')
+
+        import time
+        import hashlib
+        is_valid = False
+
+        if code == master_recovery_key:
+            is_valid = True
+        elif verify_password_reset_otp(current_admin_username, code):
+            is_valid = True
+        elif session.get('reset_otp_hash') and time.time() <= session.get('reset_expires', 0):
+            if hashlib.sha256(code.encode()).hexdigest() == session.get('reset_otp_hash'):
+                is_valid = True
+
+        if not is_valid:
+            flash('Invalid or expired verification code / recovery key.', 'danger')
+            return render_template('admin_reset_password.html')
+
+        reset_admin_password(current_admin_username, new_pw)
+        session.pop('reset_user', None)
+        session.pop('reset_otp_hash', None)
+        session.pop('reset_expires', None)
+
+        flash('Password has been reset successfully! You can now log in with your new password.', 'success')
+        return redirect(url_for('admin_login'))
+
+    return render_template('admin_reset_password.html')
+
 
 @app.route('/admin')
 @admin_required

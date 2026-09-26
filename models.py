@@ -75,6 +75,15 @@ def init_db():
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         ''', commit=True)
+        execute_query('''
+            CREATE TABLE IF NOT EXISTS password_resets (
+                id SERIAL PRIMARY KEY,
+                username VARCHAR(255) NOT NULL,
+                otp_hash VARCHAR(255) NOT NULL,
+                expires_at BIGINT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''', commit=True)
     else:
         # SQLite syntax
         execute_query('''
@@ -94,25 +103,28 @@ def init_db():
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         ''', commit=True)
+        execute_query('''
+            CREATE TABLE IF NOT EXISTS password_resets (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL,
+                otp_hash TEXT NOT NULL,
+                expires_at INTEGER NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''', commit=True)
 
-    # Seed default admin if none exists, or align it with the configured environment values.
+    # Seed default admin if none exists, or align it if FORCE_ADMIN_RESET is set.
     desired_username = os.environ.get('ADMIN_USERNAME', 'admin').strip() or 'admin'
     desired_password = os.environ.get('ADMIN_PASSWORD', 'admin@1234').strip() or 'admin@1234'
+    force_reset = os.environ.get('FORCE_ADMIN_RESET', '0') == '1'
 
     existing_admin = execute_query('SELECT id, username FROM admin_users ORDER BY id LIMIT 1', fetchone=True)
     if not existing_admin:
         create_admin(desired_username, desired_password)
-    else:
-        # Enforce the configured credentials so .env changes take effect even when the DB already exists.
-        target_username = desired_username
-        target_user = execute_query('SELECT id FROM admin_users WHERE username = ?', (target_username,), fetchone=True)
-        if target_user and target_user['id'] != existing_admin['id']:
-            # A different admin row is already using the desired username; keep the current record and update it.
-            pass
-        elif existing_admin['username'] != target_username:
-            execute_query('UPDATE admin_users SET username = ? WHERE id = ?', (target_username, existing_admin['id']), commit=True)
+    elif force_reset:
         hashed, salt = hash_password(desired_password)
-        execute_query('UPDATE admin_users SET password_hash = ?, salt = ? WHERE username = ?', (hashed, salt, target_username), commit=True)
+        execute_query('UPDATE admin_users SET username = ?, password_hash = ?, salt = ? WHERE id = ?',
+                      (desired_username, hashed, salt, existing_admin['id']), commit=True)
 
     # Seed default content if none exists
     if not execute_query('SELECT id FROM portfolio_content LIMIT 1', fetchone=True):
@@ -150,6 +162,39 @@ def change_admin_password(username, new_password):
     """Change admin password."""
     hashed, salt = hash_password(new_password)
     execute_query('UPDATE admin_users SET password_hash = ?, salt = ? WHERE username = ?', (hashed, salt, username), commit=True)
+
+
+def reset_admin_password(username, new_password):
+    """Reset admin password unconditionally."""
+    hashed, salt = hash_password(new_password)
+    execute_query('UPDATE admin_users SET password_hash = ?, salt = ? WHERE username = ?', (hashed, salt, username), commit=True)
+    return True
+
+
+def get_admin_user():
+    """Get primary admin user record."""
+    return execute_query('SELECT id, username FROM admin_users ORDER BY id LIMIT 1', fetchone=True)
+
+
+def save_password_reset_otp(username, otp_hash, expires_at):
+    """Store OTP hash for password reset."""
+    execute_query('DELETE FROM password_resets WHERE username = ?', (username,), commit=True)
+    execute_query('INSERT INTO password_resets (username, otp_hash, expires_at) VALUES (?, ?, ?)',
+                  (username, otp_hash, expires_at), commit=True)
+
+
+def verify_password_reset_otp(username, otp):
+    """Verify submitted OTP for username against unexpired records."""
+    import time
+    now = int(time.time())
+    row = execute_query('SELECT otp_hash, expires_at FROM password_resets WHERE username = ? ORDER BY id DESC LIMIT 1',
+                        (username,), fetchone=True)
+    if not row:
+        return False
+    if now > int(row['expires_at']):
+        return False
+    submitted_hash = hashlib.sha256(str(otp).strip().encode()).hexdigest()
+    return submitted_hash == row['otp_hash']
 
 
 def change_admin_username(old_username, new_username):
