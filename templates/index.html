@@ -22,8 +22,15 @@
                 </div>
             </div>
             <div class="col-lg-5 hero-animate-in-delay">
-                <div class="v2-hero-img">
-                    <img src="{{ c.hero.image if c.hero.image.startswith('/') or c.hero.image.startswith('http') else url_for('static', filename=c.hero.image.replace('img/uploads/', '../uploads/') if 'img/uploads/' in c.hero.image else c.hero.image) }}" alt="Aravind">
+                <div class="v2-hero-img skeleton-img-wrap skeleton-hero-avatar">
+                    <picture>
+                        {% if 'author-thumb-2' in c.hero.image %}
+                        <source type="image/webp" srcset="{{ url_for('static', filename='img/hero/author-thumb-2.webp') }}">
+                        {% elif c.hero.image.startswith('http') and 'cloudinary' in c.hero.image %}
+                        <source type="image/webp" srcset="{{ c.hero.image|cloudinary_opt }}">
+                        {% endif %}
+                        <img src="{{ c.hero.image if c.hero.image.startswith('/') or c.hero.image.startswith('http') else url_for('static', filename=c.hero.image.replace('img/uploads/', '../uploads/') if 'img/uploads/' in c.hero.image else c.hero.image) }}" alt="Aravind" width="320" height="320" fetchpriority="high">
+                    </picture>
                 </div>
             </div>
         </div>

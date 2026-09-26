@@ -25,6 +25,38 @@ except OSError:
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'}
 app.config['MAX_CONTENT_LENGTH'] = 8 * 1024 * 1024  # 8MB max
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 31536000  # 1 year static caching
+
+@app.template_filter('cloudinary_opt')
+def cloudinary_opt(url, width=None):
+    if not url:
+        return ''
+    if 'res.cloudinary.com' in url and '/upload/' in url and 'f_auto' not in url:
+        transform = 'f_auto,q_auto'
+        if width:
+            transform += f',w_{width}'
+        return url.replace('/upload/', f'/upload/{transform}/', 1)
+    return url
+
+@app.template_filter('webp_src')
+def webp_src(path):
+    if not path:
+        return ''
+    if not path.startswith('http') and not path.startswith('/'):
+        webp_rel = os.path.splitext(path)[0] + '.webp'
+        if app.static_folder:
+            full_path = os.path.join(app.static_folder, webp_rel.replace('/', os.sep))
+            if os.path.exists(full_path):
+                return webp_rel
+    return path
+
+@app.after_request
+def add_performance_headers(response):
+    if request.path.startswith('/static/'):
+        response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+    elif response.status_code == 200 and request.method == 'GET':
+        response.headers['Cache-Control'] = 'public, max-age=60, stale-while-revalidate=300'
+    return response
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS

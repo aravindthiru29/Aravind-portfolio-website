@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
-
 /* ═══════════════════════════════════════════════════════════
    LIGHT THEME (DEFAULT)
    ═══════════════════════════════════════════════════════════ */
@@ -34,6 +32,9 @@
     --section-red-text: #ffffff;
     --lightbox-bg: rgba(255, 255, 255, 0.95);
 
+    --skeleton-base: rgba(0, 0, 0, 0.07);
+    --skeleton-shimmer: rgba(0, 0, 0, 0.14);
+
     --transition-smooth: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 
     /* Theme toggle icon */
@@ -56,6 +57,9 @@
 
     --accent-red: #e61c23;
     --accent-red-glow: rgba(230, 28, 35, 0.2);
+
+    --skeleton-base: rgba(255, 255, 255, 0.06);
+    --skeleton-shimmer: rgba(255, 255, 255, 0.14);
 
     --text-primary: #ffffff;
     --text-secondary: #a0a0a0;
@@ -908,15 +912,138 @@ h2 {
      from  {
          opacity:  0;
          transform:  translateX(30px);
-         
     }
-
      to  {
          opacity:  1;
          transform:  translateX(0);
-         
     }
-     
 }
+
+/* ═══════════════════════════════════════════════════════════
+   SKELETON LOADING & PROGRESSIVE IMAGE SYSTEM
+   ═══════════════════════════════════════════════════════════ */
+@keyframes skeleton-shimmer-sweep {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.skeleton-shimmer {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--skeleton-base);
+}
+
+.skeleton-shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        var(--skeleton-shimmer) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    animation: skeleton-shimmer-sweep 1.6s infinite ease-in-out;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .skeleton-shimmer::after,
+    .skeleton-img-wrap::after {
+        animation: none !important;
+        opacity: 0.5 !important;
+    }
+}
+
+/* Image wrapper skeleton container */
+.skeleton-img-wrap {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--skeleton-base);
+    display: block;
+}
+
+.skeleton-img-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--skeleton-shimmer) 50%,
+        transparent 100%
+    );
+    animation: skeleton-shimmer-sweep 1.6s infinite ease-in-out;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.skeleton-img-wrap img,
+.skeleton-img-wrap picture img {
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* When loaded, remove skeleton shimmer and fade in img */
+.skeleton-img-wrap.is-loaded::after {
+    opacity: 0;
+    animation: none;
+}
+
+.skeleton-img-wrap.is-loaded img,
+.skeleton-img-wrap.is-loaded picture img {
+    opacity: 1;
+}
+
+/* Error state placeholder */
+.skeleton-img-wrap.is-error::after {
+    display: none;
+}
+
+/* Specific component dimensions to eliminate CLS */
+.skeleton-hero-avatar {
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .skeleton-hero-avatar {
+        width: 240px;
+        height: 240px;
+    }
+}
+
+.skeleton-proj-img {
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    border-radius: 12px;
+}
+
+.skeleton-mp-img {
+    aspect-ratio: 16 / 11;
+    width: 100%;
+    border-radius: 12px;
+}
+
+.skeleton-blog-img {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    border-radius: 8px;
+}
+
 
   

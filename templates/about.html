@@ -24,10 +24,16 @@
         <div class="row">
             <div class="col-lg-6 mb-5" data-aos="fade-right">
                 <div class="position-relative">
-                    <img src="{{ url_for('static', filename='img/hero/author-md-2.png') }}" alt="About Aravind"
-                        class="img-fluid grayscale hover-color shadow-lg rounded-4 about-3d-img" style="transition: all 0.5s; cursor: pointer;">
+                    <div class="skeleton-img-wrap rounded-4">
+                        <picture>
+                            <source type="image/webp" srcset="{{ url_for('static', filename='img/hero/author-md-2.webp') }}">
+                            <img src="{{ url_for('static', filename='img/hero/author-md-2.png') }}" alt="About Aravind"
+                                width="540" height="540" loading="lazy"
+                                class="img-fluid grayscale hover-color shadow-lg rounded-4 about-3d-img" style="transition: all 0.5s; cursor: pointer;">
+                        </picture>
+                    </div>
                     <div class="position-absolute bottom-0 end-0 bg-red p-4 rounded-start-4 shadow-lg d-none d-md-block"
-                        style="transform: translate(20px, 20px);">
+                        style="transform: translate(20px, 20px); z-index: 2;">
                         <h4 class="mb-0" style="color: #fff;">{{ c.about_full.years_exp }}</h4>
                         <p class="mb-0 small" style="color: #fff;">{{ c.about_full.years_label }}</p>
                     </div>

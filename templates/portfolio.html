@@ -275,19 +275,22 @@
             <div class="col-lg-6" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 120 }}">
                 <div class="v2-card shadow-lg rounded-4 overflow-hidden h-100">
                     <!-- Cover image -->
-                    <div style="height:300px; overflow:hidden; position:relative;">
+                    <div class="skeleton-img-wrap" style="height:300px; overflow:hidden; position:relative;">
                         {% if img %}
-                        <img src="{{ img if img.startswith('/') or img.startswith('http') else url_for('static', filename=img) }}"
+                        <img src="{{ img|cloudinary_opt(600) if img.startswith('http') and 'cloudinary' in img else (img if img.startswith('/') or img.startswith('http') else url_for('static', filename=img)) }}"
                              alt="{{ proj.title }}"
+                             loading="lazy"
+                             width="600"
+                             height="300"
                              class="w-100 h-100" style="object-fit:cover; transition: transform 0.5s ease;"
                              onerror="this.parentElement.innerHTML='<div class=\'mp-img-placeholder\'><i class=\'bi bi-image\'></i><span>{{ proj.category }}</span></div>'">
                         {% else %}
                         <div class="mp-img-placeholder"><i class="bi bi-image"></i><span>{{ proj.category }}</span></div>
                         {% endif %}
                         <!-- Gradient overlay -->
-                        <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 60%);pointer-events:none;"></div>
+                        <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 60%);pointer-events:none;z-index:2;"></div>
                         <!-- Category pill -->
-                        <span class="mp-badge">{{ proj.category }}</span>
+                        <span class="mp-badge" style="z-index:3;">{{ proj.category }}</span>
                     </div>
                     <!-- Card body -->
                     <div class="p-5">
@@ -370,11 +373,13 @@
                class="mp-card" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 80 }}">
 
                 <!-- Image area -->
-                <div class="mp-img-wrap">
+                <div class="mp-img-wrap skeleton-img-wrap">
                     {% if img %}
-                    <img src="{{ img if img.startswith('/') or img.startswith('http') else url_for('static', filename=img) }}"
+                    <img src="{{ img|cloudinary_opt(400) if img.startswith('http') and 'cloudinary' in img else (img if img.startswith('/') or img.startswith('http') else url_for('static', filename=img)) }}"
                          alt="{{ mp.title }}"
                          loading="lazy"
+                         width="300"
+                         height="220"
                          onerror="this.outerHTML='<div class=\'mp-img-placeholder\'><i class=\'bi bi-controller\' style=\'font-size:2.5rem;\'></i><span>{{ mp.category }}</span></div>'">
                     {% else %}
                     <div class="mp-img-placeholder">
@@ -383,8 +388,8 @@
                     </div>
                     {% endif %}
 
-                    <span class="mp-badge">{{ mp.category }}</span>
-                    <div class="mp-launch-icon"><i class="bi bi-arrow-up-right"></i></div>
+                    <span class="mp-badge" style="z-index:3;">{{ mp.category }}</span>
+                    <div class="mp-launch-icon" style="z-index:3;"><i class="bi bi-arrow-up-right"></i></div>
                 </div>
 
                 <!-- Body -->

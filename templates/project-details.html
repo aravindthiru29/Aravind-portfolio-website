@@ -175,8 +175,10 @@
 <!-- Cover Image -->
 <section class="v2-section pt-0" style="margin-top:-20px;">
     <div class="container" data-aos="zoom-in">
-        <img src="{{ project.image if project.image.startswith('/') or project.image.startswith('http') else url_for('static', filename=project.image) }}" 
-            alt="{{ project.title }}" class="project-cover">
+        <div class="skeleton-img-wrap rounded-4" style="max-height:520px;">
+            <img src="{{ project.image|cloudinary_opt(1200) if project.image.startswith('http') and 'cloudinary' in project.image else (project.image if project.image.startswith('/') or project.image.startswith('http') else url_for('static', filename=project.image)) }}" 
+                alt="{{ project.title }}" class="project-cover" width="1200" height="520" loading="eager">
+        </div>
     </div>
 </section>
 
@@ -214,8 +216,10 @@
                     <div class="gallery-grid">
                         {% for img in project.gallery_images %}
                         {% if img %}
-                        <img src="{{ img if img.startswith('/') or img.startswith('http') else url_for('static', filename=img) }}" 
-                            alt="{{ project.title }} screenshot {{ loop.index }}" class="gallery-img" onclick="openLightbox(this.src)">
+                        <div class="skeleton-img-wrap rounded-3">
+                            <img src="{{ img|cloudinary_opt(600) if img.startswith('http') and 'cloudinary' in img else (img if img.startswith('/') or img.startswith('http') else url_for('static', filename=img)) }}" 
+                                alt="{{ project.title }} screenshot {{ loop.index }}" class="gallery-img" width="300" height="240" loading="lazy" onclick="openLightbox(this.src)">
+                        </div>
                         {% endif %}
                         {% endfor %}
                     </div>

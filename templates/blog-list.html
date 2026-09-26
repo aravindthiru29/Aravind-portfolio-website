@@ -17,8 +17,8 @@
             <div class="col-lg-8" id="blog-posts-container">
                 {% for post in c.blog_posts %}
                 <article class="mb-100 blog-post-item" data-aos="fade-up" data-title="{{ post.title|lower }}" data-category="{{ post.category|lower }}">
-                    <div class="v2-blog-img mb-4 overflow-hidden rounded-4">
-                        <img src="{{ post.image if post.image.startswith('/') or post.image.startswith('http') else url_for('static', filename=post.image.replace('img/uploads/', '../uploads/') if 'img/uploads/' in post.image else post.image) }}" alt="{{ post.title }}" class="img-fluid w-100" style="transition: transform 0.5s;">
+                    <div class="v2-blog-img mb-4 overflow-hidden rounded-4 skeleton-img-wrap">
+                        <img src="{{ post.image|cloudinary_opt(800) if post.image.startswith('http') and 'cloudinary' in post.image else (post.image if post.image.startswith('/') or post.image.startswith('http') else url_for('static', filename=post.image.replace('img/uploads/', '../uploads/') if 'img/uploads/' in post.image else post.image)) }}" alt="{{ post.title }}" class="img-fluid w-100" width="800" height="450" loading="lazy" style="transition: transform 0.5s;">
                     </div>
                     <div class="d-flex gap-4 mb-3 text-red fw-bold">
                         <span>{{ post.category }}</span>

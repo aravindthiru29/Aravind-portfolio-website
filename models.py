@@ -166,11 +166,22 @@ def change_admin_username(old_username, new_username):
 
 # ─── Content CRUD ───
 
+_CONTENT_CACHE = {}
+
+def clear_content_cache():
+    """Clear in-memory content cache."""
+    global _CONTENT_CACHE
+    _CONTENT_CACHE.clear()
+
 def get_content(section_key):
     """Get content for a section as a Python dict/list."""
+    if section_key in _CONTENT_CACHE:
+        return _CONTENT_CACHE[section_key]
     row = execute_query('SELECT content FROM portfolio_content WHERE section_key = ?', (section_key,), fetchone=True)
     if row:
-        return json.loads(row['content'])
+        val = json.loads(row['content'])
+        _CONTENT_CACHE[section_key] = val
+        return val
     return None
 
 
@@ -183,12 +194,18 @@ def set_content(section_key, data):
         VALUES (?, ?, CURRENT_TIMESTAMP)
         ON CONFLICT(section_key) DO UPDATE SET content = EXCLUDED.content, updated_at = CURRENT_TIMESTAMP
     ''', (section_key, json_data), commit=True)
+    _CONTENT_CACHE[section_key] = data
 
 
 def get_all_content():
     """Get all content sections as a dictionary."""
+    if _CONTENT_CACHE:
+        return dict(_CONTENT_CACHE)
     rows = execute_query('SELECT section_key, content FROM portfolio_content', fetchall=True)
-    return {row['section_key']: json.loads(row['content']) for row in rows}
+    for row in rows:
+        _CONTENT_CACHE[row['section_key']] = json.loads(row['content'])
+    return dict(_CONTENT_CACHE)
+
 
 
 # ─── Default Content Seed ───────────────────────────────────────

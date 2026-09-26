@@ -190,8 +190,16 @@
 
         /* ── Animate ─────────────────────────────────────── */
         let frame = 0;
-        (function loop() {
-            requestAnimationFrame(loop);
+        let isHeroVisible = true;
+        let animId = null;
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function loop() {
+            if (!isHeroVisible || prefersReduced) {
+                animId = null;
+                return;
+            }
+            animId = requestAnimationFrame(loop);
             frame++;
             tx += (mx - tx) * 0.04;
             ty += (my - ty) * 0.04;
@@ -233,14 +241,30 @@
             points.rotation.x  = -ty * 0.08;
 
             renderer.render(scene, camera);
-        })();
+        }
+
+        if ('IntersectionObserver' in window) {
+            const heroObserver = new IntersectionObserver((entries) => {
+                isHeroVisible = entries[0].isIntersecting;
+                if (isHeroVisible && !animId && !prefersReduced) {
+                    animId = requestAnimationFrame(loop);
+                }
+            }, { threshold: 0.02 });
+            heroObserver.observe(section);
+        }
+
+        // Initial paint
+        renderer.render(scene, camera);
+        if (!prefersReduced) {
+            animId = requestAnimationFrame(loop);
+        }
     }
 
     /* ══════════════════════════════════════════════════════════
        2.  3D TILT ON CARDS & SIDEBAR
        ══════════════════════════════════════════════════════════ */
     function applyTilt(el, maxAngle = 14) {
-        if (el.dataset.tilt3d) return;
+        if (el.dataset.tilt3d || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         el.dataset.tilt3d = '1';
         el.style.transformStyle = 'preserve-3d';
         el.style.willChange     = 'transform';
