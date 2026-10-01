@@ -21,25 +21,25 @@
 <!-- Main About -->
 <section class="v2-section">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-6 mb-5" data-aos="fade-right">
-                <div class="position-relative">
-                    <div class="skeleton-img-wrap rounded-4">
+        <div class="row align-items-center">
+            <div class="col-lg-5 mb-5 mb-lg-0" data-aos="fade-right">
+                <div class="about-img-frame position-relative mx-auto">
+                    <div class="skeleton-img-wrap rounded-4 shadow-lg skeleton-about-img">
                         <picture>
                             <source type="image/webp" srcset="{{ url_for('static', filename='img/hero/author-md-2.webp') }}">
                             <img src="{{ url_for('static', filename='img/hero/author-md-2.png') }}" alt="About Aravind"
-                                width="540" height="540" loading="lazy"
-                                class="img-fluid grayscale hover-color shadow-lg rounded-4 about-3d-img" style="transition: all 0.5s; cursor: pointer;">
+                                width="432" height="577" loading="lazy"
+                                class="img-fluid grayscale hover-color about-3d-img" style="transition: all 0.5s; cursor: pointer;">
                         </picture>
                     </div>
-                    <div class="position-absolute bottom-0 end-0 bg-red p-4 rounded-start-4 shadow-lg d-none d-md-block"
-                        style="transform: translate(20px, 20px); z-index: 2;">
-                        <h4 class="mb-0" style="color: #fff;">{{ c.about_full.years_exp }}</h4>
+                    <div class="position-absolute bottom-0 end-0 bg-red p-3 p-md-4 rounded-start-4 shadow-lg d-none d-md-block"
+                        style="transform: translate(15px, 15px); z-index: 2;">
+                        <h4 class="mb-0 fw-bold" style="color: #fff;">{{ c.about_full.years_exp }}</h4>
                         <p class="mb-0 small" style="color: #fff;">{{ c.about_full.years_label }}</p>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6" data-aos="fade-left">
+            <div class="col-lg-7 ps-lg-5" data-aos="fade-left">
                 <h2 class="text-red mb-4">{{ c.about_full.section_title }}</h2>
                 <p class="fs-4 mb-4">{{ c.about_full.section_subtitle }}</p>
 
