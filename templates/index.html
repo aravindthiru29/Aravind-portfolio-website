@@ -8,28 +8,34 @@
     <div class="container" style="position:relative; z-index:2;">
         <div class="row align-items-center">
             <div class="col-lg-7 v2-hero-content hero-animate-in">
-                <span class="badge-red">Aravind Portfolio Website</span>
-                <h1>ARAVIND <span class="outline-text">PORTFOLIO</span> WEBSITE</h1>
-                <p class="text-gray fs-5 mb-4 mw-75">This Aravind portfolio website showcases AI engineering, data science projects, software development, and practical work as an AI Engineer and Data Scientist.</p>
+                <span class="badge-red">{{ c.hero.badge if (c is defined and c.hero is defined and c.hero.badge) else 'Aravind Portfolio Website' }}</span>
+                <h1>{{ c.hero.title_line1 if (c is defined and c.hero is defined and c.hero.title_line1) else 'ARAVIND' }} <span class="outline-text">{{ c.hero.title_highlight if (c is defined and c.hero is defined and c.hero.title_highlight) else 'PORTFOLIO' }}</span>{% if c is defined and c.hero is defined and c.hero.title_line2 %} {{ c.hero.title_line2 }}{% endif %}</h1>
+                <p class="text-gray fs-5 mb-4 mw-75">{{ c.hero.description if (c is defined and c.hero is defined and c.hero.description) else 'This Aravind portfolio website showcases AI engineering, data science projects, software development, and practical work as an AI Engineer and Data Scientist.' }}</p>
                 <div class="d-flex gap-4 mb-5">
                     <a href="{{ c.social_links.linkedin|default('https://linkedin.com/in/aravind-t') }}" target="_blank" class="text-decoration-none" style="color:var(--text-primary);"><i class="bi bi-linkedin text-red me-2"></i>LinkedIn</a>
                     <a href="{{ c.social_links.github|default('https://github.com/aravindthiru29') }}" target="_blank" class="text-decoration-none" style="color:var(--text-primary);"><i class="bi bi-github text-red me-2"></i>GitHub</a>
                     <a href="{{ c.contact.email|default('aravthiru131@gmail.com') }}" class="text-decoration-none" style="color:var(--text-primary);"><i class="bi bi-envelope-fill text-red me-2"></i>Email</a>
                 </div>
                 <div class="d-flex gap-3 flex-wrap">
-                    <a href="/resume" target="_blank" class="v2-btn"><i class="bi bi-file-earmark-pdf-fill me-2"></i>DOWNLOAD RESUME</a>
-                    <a href="/portfolio.html" class="v2-btn v2-btn-outline"><i class="bi bi-code-slash me-2"></i>VIEW PROJECTS</a>
+                    {% set cta1 = (c.hero.cta_primary if c is defined and c.hero is defined and c.hero.cta_primary else 'DOWNLOAD RESUME') %}
+                    {% set cta2 = (c.hero.cta_secondary if c is defined and c.hero is defined and c.hero.cta_secondary else 'VIEW PROJECTS') %}
+                    <a href="{% if 'call' in cta1|lower or 'contact' in cta1|lower or 'hire' in cta1|lower %}/contact{% else %}/resume{% endif %}" target="_blank" class="v2-btn">
+                        {% if 'resume' in cta1|lower or 'download' in cta1|lower %}<i class="bi bi-file-earmark-pdf-fill me-2"></i>{% elif 'call' in cta1|lower or 'contact' in cta1|lower %}<i class="bi bi-telephone-fill me-2"></i>{% elif 'work' in cta1|lower or 'project' in cta1|lower %}<i class="bi bi-code-slash me-2"></i>{% endif %}{{ cta1 }}
+                    </a>
+                    <a href="{% if 'resume' in cta2|lower or 'download' in cta2|lower %}/resume{% elif 'contact' in cta2|lower or 'call' in cta2|lower %}/contact{% else %}/portfolio.html{% endif %}" class="v2-btn v2-btn-outline">
+                        {% if 'resume' in cta2|lower %}<i class="bi bi-file-earmark-pdf-fill me-2"></i>{% elif 'work' in cta2|lower or 'project' in cta2|lower %}<i class="bi bi-code-slash me-2"></i>{% endif %}{{ cta2 }}
+                    </a>
                 </div>
             </div>
-            <div class="col-lg-5 hero-animate-in-delay">
+            <div class="col-lg-5 hero-animate-in-delay text-center">
                 <div class="v2-hero-img skeleton-img-wrap skeleton-hero-avatar">
                     <picture>
                         {% if 'author-thumb-2' in c.hero.image %}
                         <source type="image/webp" srcset="{{ url_for('static', filename='img/hero/author-thumb-2.webp') }}">
                         {% elif c.hero.image.startswith('http') and 'cloudinary' in c.hero.image %}
-                        <source type="image/webp" srcset="{{ c.hero.image|cloudinary_opt }}">
+                        <source type="image/webp" srcset="{{ c.hero.image|cloudinary_opt(800) }}">
                         {% endif %}
-                        <img src="{{ c.hero.image if c.hero.image.startswith('/') or c.hero.image.startswith('http') else url_for('static', filename=c.hero.image.replace('img/uploads/', '../uploads/') if 'img/uploads/' in c.hero.image else c.hero.image) }}" alt="Aravind" width="320" height="320" fetchpriority="high">
+                        <img src="{{ c.hero.image if c.hero.image.startswith('/') or c.hero.image.startswith('http') else url_for('static', filename=c.hero.image.replace('img/uploads/', '../uploads/') if 'img/uploads/' in c.hero.image else c.hero.image) }}" alt="Aravind" width="460" height="460" fetchpriority="high">
                     </picture>
                 </div>
             </div>

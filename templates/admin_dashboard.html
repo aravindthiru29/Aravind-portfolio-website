@@ -87,6 +87,8 @@
                                 <input class="admin-input" name="title_line2" value="{{ content.hero.title_line2 }}"/></div>
                             <div class="admin-input-group"><label>CTA Primary</label>
                                 <input class="admin-input" name="cta_primary" value="{{ content.hero.cta_primary }}"/></div>
+                            <div class="admin-input-group"><label>CTA Secondary</label>
+                                <input class="admin-input" name="cta_secondary" value="{{ content.hero.cta_secondary|default('VIEW WORK') }}"/></div>
                         </div>
                         <div class="admin-input-group"><label>Description</label>
                             <textarea class="admin-input" name="description" rows="3">{{ content.hero.description }}</textarea></div>
